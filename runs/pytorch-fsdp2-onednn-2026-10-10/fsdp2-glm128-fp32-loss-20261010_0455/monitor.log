@@ -1,0 +1,10 @@
+[monitor] 输出文件: /home/qujing/outputs/onednn_20261010/fsdp2-glm128-fp32-loss-20261010_0455/monitor.csv
+[monitor] 磁盘设备: (all devices)
+[monitor] GPU 数量: 8
+[monitor] FIFO 路径: /home/qujing/outputs/onednn_20261010/fsdp2-glm128-fp32-loss-20261010_0455/monitor.fifo
+[monitor] 进程树根 PID: 2371474
+[monitor] 资源合同: (disabled)
+[monitor] 开始采样...
+
+[monitor] 收到信号 15，正在停止...
+[monitor] 已停止。

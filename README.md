@@ -18,13 +18,31 @@ No GitHub remote is configured yet.
 - `runs/kt-2026-10-10/`: small raw KT evidence: run configurations, software
   versions, timing, logs, and the isolated Qwen text-path patch. No model
   weights or optimizer checkpoints are included.
+- `tools/fsdp2_onednn_full_ft.py`: PyTorch FSDP2 + oneDNN CPU expert baseline.
+- `runs/pytorch-fsdp2-onednn-2026-10-10/`: run configuration, per-step timings,
+  environment versions, resource monitor, and loss evidence for this baseline.
 
 ## Measurement convention
 
 For eight-GPU server throughput, global batch size is 8. Each case has 15
 optimizer steps, with the first 5 excluded. TPS is `8 * sequence_length /
-mean_step_seconds` over the remaining 10 steps. A semantic check repeats a
-fixed four-example batch on four GPUs and must not be plotted as throughput.
+mean_step_seconds` over the remaining 10 steps. KT semantic checks repeat a
+fixed four-example batch on four GPUs; the FSDP2 check repeats a fixed
+eight-example batch on eight GPUs. Semantic checks must not be plotted as
+throughput.
+
+The FSDP2 + oneDNN baseline has data parallel size 8, pipeline size 1, and
+tensor parallel size 1. FSDP2 owns the GPU trunk while each rank owns a
+disjoint set of CPU experts. Expert assignments use differentiable Gloo
+all-to-all; groups of four experts use CPU oneDNN AMX BF16 batched matmul.
+GPU and CPU master parameters are FP32, compute is BF16, CPU AdamW moments
+are BF16, GPU AdamW moments are FP32, and the global gradient norm is clipped
+to 1.0. The learning rate is a constant 1e-5. Its forward, backward, and
+optimizer host-wall timers synchronize CUDA at each boundary, so phase times
+have a different boundary from the historical coarse-host-wall KT runs.
+Whole-decoder gradient checkpointing is disabled because recomputing a decoder
+also reentered its Gloo expert collectives in different orders across ranks
+in a smoke test. Any later checkpointing must cover GPU-only submodules.
 
 The new GLM KT 4096 case ran while a separate service occupied about 10.5
 GiB on GPU 0. Its result is retained with that condition in the run evidence;

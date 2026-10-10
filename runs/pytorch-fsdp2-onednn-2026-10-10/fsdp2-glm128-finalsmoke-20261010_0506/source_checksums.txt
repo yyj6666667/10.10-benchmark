@@ -1,0 +1,3 @@
+4d83dc7686e2966c2d0ecc6bcf97ab128314ad42b73399723d4d56241966098e  /home/qujing/outputs/onednn_20261010/fsdp2_review/fsdp2_onednn_full_ft.py
+864a2011f84d0275c700c42f0576eb8f145d77be0e2a865862a5e6022315e0dd  /mnt/data2/wbw/Ktransformers-development/FFTtest/Qwen3.5-35B-A3B/monitor.py
+a67437fd5f800c158015cb7090d1cece374d50d98e2139f81d1faa3412c53fad  /home/qujing/outputs/onednn_20261010/fsdp2_review/run_fsdp2_onednn_case.sh

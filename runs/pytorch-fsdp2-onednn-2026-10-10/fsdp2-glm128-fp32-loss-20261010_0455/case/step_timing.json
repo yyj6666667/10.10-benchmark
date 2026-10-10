@@ -1,0 +1,65 @@
+{
+  "backend": "pytorch_fsdp2_onednn_cpu",
+  "model_kind": "glm45_air",
+  "sequence_length": 128,
+  "global_batch_size": 8,
+  "dp": 8,
+  "pp": 1,
+  "tp": 1,
+  "steps_requested": 3,
+  "steps_completed": 3,
+  "warmup_steps": 0,
+  "gradient_checkpointing": false,
+  "repeat_batch": true,
+  "parameter_dtype": "float32",
+  "compute_dtype": "bfloat16",
+  "residency": {
+    "model_layers": 46,
+    "moe_layers": 45,
+    "cpu_expert_parameters_local": 12457082880,
+    "gpu_trunk_parameters_full_before_fsdp": 7195582464,
+    "logical_parameter_count": 106852245504,
+    "loaded_checkpoint_tensors": 2805,
+    "sliced_expert_tensors": 0,
+    "gpu_trunk_parameters_shard_local": 899447808
+  },
+  "stable": {
+    "step_sec": 178.9405468943296,
+    "tps": 5.72257108728245,
+    "forward_sec": 7.796021369324687,
+    "backward_sec": 146.4866792469596,
+    "optimizer_sec": 25.13372851733584
+  },
+  "rows": [
+    {
+      "step": 1,
+      "loss": 6.033766210079193,
+      "forward_sec": 8.669567410950549,
+      "backward_sec": 143.2325514499098,
+      "optimizer_sec": 46.01178981200792,
+      "step_sec": 196.53193659393582,
+      "tps": 5.210349105324984,
+      "gpu_max_reserved_gib": 35.8359375
+    },
+    {
+      "step": 2,
+      "loss": 4.581653952598572,
+      "forward_sec": 5.829746622010134,
+      "backward_sec": 150.45733326603658,
+      "optimizer_sec": 16.11517007299699,
+      "step_sec": 172.39599180198275,
+      "tps": 5.939813271158795,
+      "gpu_max_reserved_gib": 35.859375
+    },
+    {
+      "step": 3,
+      "loss": 3.064980208873749,
+      "forward_sec": 8.888750075013377,
+      "backward_sec": 145.77015302493237,
+      "optimizer_sec": 13.27422566700261,
+      "step_sec": 167.89371228707023,
+      "tps": 6.099096780045764,
+      "gpu_max_reserved_gib": 35.859375
+    }
+  ]
+}

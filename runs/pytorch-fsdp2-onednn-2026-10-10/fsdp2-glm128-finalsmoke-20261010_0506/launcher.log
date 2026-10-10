@@ -1,0 +1,11 @@
+[Gloo] Rank 1 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 0 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank [Gloo] Rank 6 is connected to 7 peer ranks. 5Expected number of connected peer ranks is :  is connected to 77
+ peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 2 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 3 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 4 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 7 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[fsdp2_onednn] loaded model and sharded GPU trunk: {'model_layers': 46, 'moe_layers': 45, 'cpu_expert_parameters_local': 12457082880, 'gpu_trunk_parameters_full_before_fsdp': 7195582464, 'logical_parameter_count': 106852245504, 'loaded_checkpoint_tensors': 2805, 'sliced_expert_tensors': 0, 'gpu_trunk_parameters_shard_local': 899447808}
+[fsdp2_onednn] model=glm45_air seq=128 step=1/2 loss=6.032457 step_sec=128.215 tps=7.987
+[fsdp2_onednn] model=glm45_air seq=128 step=2/2 loss=4.604388 step_sec=134.990 tps=7.586

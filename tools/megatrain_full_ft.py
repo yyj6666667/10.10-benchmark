@@ -99,6 +99,18 @@ def make_text_model(model_kind: str, *, load_weights: bool):
                 assignments.setdefault(weight_map[source], []).append(
                     (source, parameter, ())
                 )
+    # Router correction biases are persistent buffers in GLM, not Parameters.
+    # to_empty() leaves them uninitialized, so they must be restored as well.
+    persistent_buffers = set(model.state_dict()) - set(dict(model.named_parameters()))
+    for name, buffer in model.named_buffers():
+        if name not in persistent_buffers:
+            continue
+        source = source_name(name, model_kind)
+        names.add(source)
+        if source in weight_map:
+            assignments.setdefault(weight_map[source], []).append(
+                (source, buffer, ())
+            )
     missing = sorted(names - weight_map.keys())
     if missing:
         raise RuntimeError(f"{len(missing)} checkpoint tensors missing: {missing[:4]}")

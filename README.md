@@ -58,7 +58,10 @@ is rerun; the chart uses the latest completed case. Compare configuration
 checksums before interpreting the raw CSV as one uniform series.
 On qj5090, seq4096 also moves dense GPU AdamW moments to CPU between steps.
 The moments return to GPU for each fused optimizer update; their FP32 values
-and the AdamW computation are unchanged.
+and the AdamW computation are unchanged. GLM seq4096 reached the 20 GiB host
+memory reserve during step 2, so it has no valid throughput measurement.
+The earlier GLM seq1024 memory failure was resolved by BF16 gradient storage;
+the revised 1024 and 2048 cases both finished all eight steps.
 CPU expert weights are unbound once per group before the expert loop. This
 lets autograd assemble each full weight gradient once rather than zeroing a
 full parent gradient for every expert selection. The seq2048 one-step profiler
@@ -112,6 +115,7 @@ GLM and observed CUDA OOM on Qwen. The revised PyTorch FSDP2 + CPU oneDNN
 sweep now runs, followed by MegaTrain's isolated GLM diagnostic, GLM sweep,
 and Qwen sweep. MegaTrain's earlier GLM first-step loss was non-finite; the
 follow-up restores per-layer router buffers when reusing a GPU layer template.
+The Qwen oneDNN fixed-batch check passed with loss 4.0037 to 0.1714.
 Completed
 cases use eight steps and two warmup steps, with one fixed-batch loss check
 per model and backend. `tools/watch_qj_results.sh`

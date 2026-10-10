@@ -12,7 +12,9 @@ steps=${3:-8}
 warmup=${4:-2}
 profile=${FSDP2_PROFILE:-0}
 gpu_state_offload=${FSDP2_GPU_STATE_OFFLOAD:-}
+compress_cpu_gradients=${FSDP2_COMPRESS_CPU_GRADIENTS:-0}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
+[[ $compress_cpu_gradients == 0 || $compress_cpu_gradients == 1 ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
 [[ $profile == 0 || $profile == 1 ]] || { echo "FSDP2_PROFILE must be 0 or 1" >&2; exit 2; }
 if [[ -z $gpu_state_offload ]]; then
@@ -56,11 +58,11 @@ PY
 stamp=$(date +%Y%m%d_%H%M%S)
 run_dir=$root/runs/${model_kind}_fsdp2_onednn_seq${seq_len}_8gpu_${stamp}_$$
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" "$profile" "$gpu_state_offload" <<'PY'
+"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" "$profile" "$gpu_state_offload" "$compress_cpu_gradients" <<'PY'
 import json
 import sys
 from pathlib import Path
-run, seq, steps, warmup, checkpoint, model_label, model_kind, profile, gpu_state_offload = sys.argv[1:]
+run, seq, steps, warmup, checkpoint, model_label, model_kind, profile, gpu_state_offload, compress_cpu_gradients = sys.argv[1:]
 Path(run, "run_config.json").write_text(json.dumps({
     "host": "qj5090",
     "model": model_label,
@@ -74,6 +76,7 @@ Path(run, "run_config.json").write_text(json.dumps({
     "dp": 8, "tp": 1,
     "global_batch": 8,
     "precision": "bf16_compute_fp32_master",
+    "cpu_gradient_stash_dtype": "bfloat16" if compress_cpu_gradients == "1" else "float32",
     "threads_per_rank": 8,
     "gradient_checkpointing": True,
     "gpu_optimizer_state_offload": gpu_state_offload == "1",
@@ -95,6 +98,7 @@ cmd=("$torchrun" --standalone --nproc_per_node=8 "$tools_dir/fsdp2_onednn_full_f
     --output-dir "$run_dir/case" --sequence-length "$seq_len"
     --steps "$steps" --warmup-steps "$warmup" --threads-per-rank 8
     --learning-rate 1e-5 --max-grad-norm 1.0 --gradient-checkpointing)
+if [[ $compress_cpu_gradients == 1 ]]; then cmd+=(--compress-cpu-gradients); fi
 if [[ ${FSDP2_REPEAT_BATCH:-0} == 1 ]]; then cmd+=(--repeat-batch); fi
 if [[ $profile == 1 ]]; then cmd+=(--profile); fi
 if [[ $gpu_state_offload == 1 ]]; then cmd+=(--offload-gpu-optimizer-state); fi

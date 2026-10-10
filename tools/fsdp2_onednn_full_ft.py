@@ -76,6 +76,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--learning-rate", type=float, default=1e-5)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument("--threads-per-rank", type=int, default=8)
+    parser.add_argument(
+        "--compress-cpu-gradients", action="store_true",
+        help="stash completed CPU expert gradients in BF16 to lower host memory",
+    )
     parser.add_argument("--repeat-batch", action="store_true")
     parser.add_argument("--release-cache-each-step", action="store_true")
     parser.add_argument(
@@ -689,18 +693,39 @@ def make_model(
 
 
 class CompactCPUAdamW:
-    """FP32 expert weights with BF16 resident moments to fit host memory."""
+    """FP32 expert weights, optional BF16 gradient stash, BF16 moments."""
 
-    def __init__(self, params: list[nn.Parameter], learning_rate: float) -> None:
+    def __init__(
+        self, params: list[nn.Parameter], learning_rate: float,
+        compress_gradients: bool = False,
+    ) -> None:
         self.params = params
         self.learning_rate = learning_rate
         self.state: dict[nn.Parameter, tuple[int, torch.Tensor, torch.Tensor]] = {}
+        self.compress_gradients = compress_gradients
+        self.gradients: dict[nn.Parameter, torch.Tensor] = {}
+        if compress_gradients:
+            for param in params:
+                param.register_post_accumulate_grad_hook(self._stash_gradient)
+
+    def _stash_gradient(self, param: nn.Parameter) -> None:
+        if param.grad is None:
+            return
+        grad = param.grad.detach().to(torch.bfloat16)
+        if param in self.gradients:
+            self.gradients[param].add_(grad)
+        else:
+            self.gradients[param] = grad
+        param.grad = None
+
+    def grad_for(self, param: nn.Parameter) -> torch.Tensor | None:
+        return self.gradients.get(param) if self.compress_gradients else param.grad
 
     @torch.no_grad()
     def step(self) -> None:
         beta1, beta2, eps = 0.9, 0.999, 1e-8
         for param in self.params:
-            grad = param.grad
+            grad = self.gradients.pop(param, None) if self.compress_gradients else param.grad
             if grad is None:
                 continue
             if param.device.type != "cpu" or param.dtype != torch.float32:
@@ -715,32 +740,42 @@ class CompactCPUAdamW:
             step += 1
             # Perform the arithmetic in FP32; only the persistent state is
             # compact. This also avoids rounding beta2=0.999 to 1 in BF16.
-            first = first_bf16.float()
-            second = second_bf16.float()
-            first.mul_(beta1).add_(grad, alpha=1 - beta1)
-            second.mul_(beta2).addcmul_(grad, grad, value=1 - beta2)
-            first_bf16.copy_(first)
-            second_bf16.copy_(second)
-            denominator = second.sqrt_().div_(math.sqrt(1 - beta2**step)).add_(eps)
-            param.addcdiv_(
-                first,
-                denominator,
-                value=-self.learning_rate / (1 - beta1**step),
-            )
+            # Bound temporary FP32 storage independently of expert size.
+            weight_flat = param.view(-1)
+            grad_flat = grad.reshape(-1)
+            first_flat = first_bf16.view(-1)
+            second_flat = second_bf16.view(-1)
+            for offset in range(0, param.numel(), 16_777_216):
+                end = min(offset + 16_777_216, param.numel())
+                gradient = grad_flat[offset:end].float()
+                first = first_flat[offset:end].float()
+                second = second_flat[offset:end].float()
+                first.mul_(beta1).add_(gradient, alpha=1 - beta1)
+                second.mul_(beta2).addcmul_(gradient, gradient, value=1 - beta2)
+                first_flat[offset:end].copy_(first)
+                second_flat[offset:end].copy_(second)
+                denominator = second.sqrt_().div_(math.sqrt(1 - beta2**step)).add_(eps)
+                weight = weight_flat[offset:end]
+                weight.mul_(1 - self.learning_rate * 0.01)
+                weight.addcdiv_(
+                    first, denominator,
+                    value=-self.learning_rate / (1 - beta1**step),
+                )
             self.state[param] = (step, first_bf16, second_bf16)
             # The gradient is dead after this parameter's update. Releasing it
             # here lets the new AdamW moments reuse the same host memory.
             param.grad = None
-            del grad, first, second, denominator
+            del grad
 
     def zero_grad(self) -> None:
+        self.gradients.clear()
         for param in self.params:
             param.grad = None
 
 
 def clip_global_grad_norm(
     gpu_params: list[nn.Parameter],
-    cpu_params: list[nn.Parameter],
+    cpu_optimizer: CompactCPUAdamW,
     world_size: int,
     device: torch.device,
     max_norm: float,
@@ -748,12 +783,15 @@ def clip_global_grad_norm(
     """Clip one norm over unique FSDP GPU shards and owned CPU expert shards."""
     cpu_sumsq = torch.zeros((), dtype=torch.float64)
     gpu_sumsq = torch.zeros((), dtype=torch.float64, device=device)
-    for param in cpu_params:
-        if param.grad is not None:
+    for param in cpu_optimizer.params:
+        grad = cpu_optimizer.grad_for(param)
+        if grad is not None:
             # Gloo all-to-all accumulates gradients from every rank's local
             # loss. FSDP2 has already averaged its GPU gradients.
-            param.grad.div_(world_size)
-            norm = torch.linalg.vector_norm(param.grad.detach()).to(torch.float64)
+            grad.div_(world_size)
+            norm = torch.linalg.vector_norm(
+                grad.detach(), dtype=torch.float32
+            ).to(torch.float64)
             cpu_sumsq += norm.square()
     for param in gpu_params:
         if param.grad is not None:
@@ -768,9 +806,13 @@ def clip_global_grad_norm(
         raise RuntimeError(f"nonfinite global gradient norm: {global_norm}")
     scale = min(1.0, max_norm / (global_norm + 1e-6))
     if scale < 1:
-        for param in (*gpu_params, *cpu_params):
+        for param in gpu_params:
             if param.grad is not None:
                 param.grad.mul_(scale)
+        for param in cpu_optimizer.params:
+            grad = cpu_optimizer.grad_for(param)
+            if grad is not None:
+                grad.mul_(scale)
     return global_norm
 
 
@@ -861,6 +903,9 @@ def write_results(
         "compute_dtype": "bfloat16",
         "gpu_master_dtype": "float32",
         "cpu_master_dtype": "float32",
+        "cpu_gradient_stash_dtype": (
+            "bfloat16" if args.compress_cpu_gradients else "float32"
+        ),
         "cpu_optimizer_state_dtype": "bfloat16",
         "gpu_optimizer_state_dtype": "float32",
         "gpu_optimizer_state_offload": args.offload_gpu_optimizer_state,
@@ -907,7 +952,9 @@ def run_training(
     gpu_optimizer = torch.optim.AdamW(
         gpu_params, lr=args.learning_rate, weight_decay=0, fused=True
     )
-    cpu_optimizer = CompactCPUAdamW(cpu_params, args.learning_rate)
+    cpu_optimizer = CompactCPUAdamW(
+        cpu_params, args.learning_rate, args.compress_cpu_gradients
+    )
     offloaded_moments: dict[tuple[nn.Parameter, str], OffloadedMoment] = {}
     rows: list[dict[str, float | int]] = []
     profile = args.profile and rank == 0
@@ -941,7 +988,7 @@ def run_training(
             cpu_optimizer.learning_rate = rate
             with trace_scope(profile, f"step {step}/gradient clipping"):
                 norm = clip_global_grad_norm(
-                    gpu_params, cpu_params, world_size, device, args.max_grad_norm
+                    gpu_params, cpu_optimizer, world_size, device, args.max_grad_norm
                 )
             if args.offload_gpu_optimizer_state:
                 with trace_scope(profile, f"step {step}/restore GPU moments"):

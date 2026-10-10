@@ -54,7 +54,7 @@ for model in glm45_air qwen35_122b; do
             run=$(find "$root/runs" -maxdepth 1 -type d \
                 -name "${model}_megatrain_seq${seq_len}_8gpu_*" -printf '%T@ %p\n' \
                 | sort -nr | head -1 | cut -d' ' -f2-)
-            if [[ -n $run && -f $run/exit_code.txt ]]; then
+            if [[ -n $run && -f $run/exit_code.txt && $(cat "$run/exit_code.txt") == "$status" ]]; then
                 /mnt/data/venvs/sft-yyj-pro/bin/python \
                     "$root/tools/record_qj_case_status.py" "$short" megatrain \
                     "$seq_len" "$run" "$status"

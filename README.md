@@ -1,6 +1,8 @@
 # 10.10 benchmark
 
-Single-node, full-parameter fine-tuning benchmark for sap4 and qj5090.
+The current single-node, full-parameter fine-tuning benchmark runs only on
+qj5090, reached through the sap1 SSH jump host. Older host analyses remain
+in `references/` for context and are excluded from the current chart.
 Results and small run evidence are kept in the private GitHub repository
 `yyj6666667/10.10-benchmark`.
 
@@ -30,9 +32,9 @@ Results and small run evidence are kept in the private GitHub repository
 For eight-GPU server throughput, global batch size is 8. Completed KT cases
 used 15 optimizer steps, with the first 5 excluded. New runs use 8 steps,
 with the first 2 excluded. TPS is `8 * sequence_length / mean_step_seconds`
-over the measured steps. KT semantic checks repeat a
-fixed four-example batch on four GPUs; the FSDP2 check repeats a fixed
-eight-example batch on eight GPUs. Semantic checks must not be plotted as
+over the measured steps. The GLM KT semantic check repeats four examples on
+four GPUs. Qwen KT, MegaTrain, ZeRO, and FSDP2 semantic checks repeat eight
+examples on eight GPUs. Semantic checks must not be plotted as
 throughput.
 
 The FSDP2 + oneDNN baseline uses eight data-parallel ranks. FSDP2 shards the
@@ -58,11 +60,10 @@ lets autograd assemble each full weight gradient once rather than zeroing a
 full parent gradient for every expert selection. The seq2048 one-step profiler
 comparison is recorded in `results/qj5090_glm_fsdp2_onednn_seq2048_profile.md`.
 
-The new GLM KT 4096 case ran while a separate service occupied about 10.5
-GiB on GPU 0. Its result is retained with that condition in the run evidence;
-it is not a clean, same-host comparison against the historical framework
-results. Future cases should each include their configuration, environment
-versions, step timings, resource measurements, and final status.
+An earlier GLM KT 4096 diagnostic ran while another service occupied GPU 0;
+it is excluded from this chart. The clean qj5090 retry succeeded and its
+configuration, timing, resources, and log are preserved under
+`runs/kt-qj5090-20261010/glm_sweep/`.
 
 Model checkpoints, adapter weights, optimizer state, and regenerable training
 checkpoints are excluded from this data repository.
@@ -100,13 +101,14 @@ log is `/mnt/hurry-bench/logs/glm-kt-sweep-20261010.log`; each case retains
 its configuration, timing, resource summary, and training log under
 `/mnt/hurry-bench/runs/`.
 
-The current isolated GLM 4096 retry is followed by
-`tools/run_qj_qwen_kt_queue.sh`, which validates Qwen loss before its eight
-lengths. `tools/run_qj_fsdp2_onednn_queue.sh` then runs both oneDNN sweeps
-with 8 steps and 2 warmup steps per case. `tools/watch_qj_results.sh` syncs
-each completed result table, regenerates the chart, and pushes it to the
-private repository. The queues wait for all GPU compute processes to exit
-before launching the next framework.
+GLM KT lengths 32–4096 have completed. `tools/run_qj_qwen_kt_queue.sh`
+validated Qwen's fixed-batch loss descent before starting its eight lengths.
+The dependent queues run MegaTrain, ZeRO-3 CPU offload, and PyTorch FSDP2 +
+CPU oneDNN in that order, with eight steps and two warmup steps per case and
+one fixed-batch loss check per model and backend. `tools/watch_qj_results.sh`
+syncs each completed result table or observed failure, regenerates the chart,
+and pushes it to the private repository. The queues wait for the active GPU
+job to exit before launching the next framework.
 
 The GLM seq4096 gradient-clipping PyTorch profiler comparison and both local
 Chrome traces are under `runs/kt-qj5090-20261010/profiles/`. The fused BF16
@@ -129,10 +131,14 @@ finish with finite gradients and a lower final loss before Qwen throughput
 measurements begin. `tools/verify_qwen_bf16_checkpoint.py` inspects shard
 headers and rejects FP8 tensors before training.
 
-qj5090 has an archived MegaTrain source and a prior 397B single-GPU routed
-LoRA run, but the current benchmark venv has no installed MegaTrain module or
-verified eight-GPU BF16 full-finetuning setup for the figure's 122B and GLM
-models.
+MegaTrain uses the official `infinity` CPU-master source extracted under
+`/mnt/hurry-bench/src/megatrain`. Its benchmark harness loads the text-only
+106.85B or 122.11B model, uses eight GPU worker processes and BF16 CPUAdam
+states, and verifies fixed-batch loss descent before throughput is accepted.
+ZeRO uses DeepSpeed 0.19.1 with stage 3, both parameters and optimizer state
+offloaded to CPU, and BF16 master gradients and optimizer states. This differs
+from the historical optimizer-only offload setup to fit qj5090's 32 GiB GPUs;
+the exact config is `tools/zero3_cpu_offload.json`.
 
 ## qj5090 FSDP2 + oneDNN baseline
 

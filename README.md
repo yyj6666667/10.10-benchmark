@@ -52,10 +52,10 @@ submodules. CPU routed experts and Gloo all-to-all remain outside the
 checkpoint, because replaying those collectives can change their order across
 ranks. The revised sweep stashes completed CPU gradients in BF16 while
 retaining FP32 expert master weights. Its AdamW update works on bounded chunks
-and releases each gradient after updating that parameter. Existing GLM 32–512
-results came from the earlier uncompressed implementation and will be replaced
-by the revised eight-step sweep; compare configuration checksums before
-interpreting them as one uniform series.
+and releases each gradient after updating that parameter. Earlier GLM rows
+from the uncompressed implementation remain in the raw CSV until each length
+is rerun; the chart uses the latest completed case. Compare configuration
+checksums before interpreting the raw CSV as one uniform series.
 On qj5090, seq4096 also moves dense GPU AdamW moments to CPU between steps.
 The moments return to GPU for each fused optimizer update; their FP32 values
 and the AdamW computation are unchanged.
@@ -107,10 +107,12 @@ its configuration, timing, resource summary, and training log under
 
 GLM KT lengths 32–4096 have completed. `tools/run_qj_qwen_kt_queue.sh`
 validated Qwen's fixed-batch loss descent before starting its eight lengths.
-The current dependent queues run the corrected ZeRO-3 optimizer-offload
-baseline, then the revised PyTorch FSDP2 + CPU oneDNN sweep. MegaTrain's
-eight-GPU fixed-batch check has returned a non-finite first-step loss, so its
-performance sweep waits for a separate finite-value diagnostic. Completed
+The ZeRO-3 optimizer-offload preflight reached qj5090's host-memory guard on
+GLM and observed CUDA OOM on Qwen. The revised PyTorch FSDP2 + CPU oneDNN
+sweep now runs, followed by MegaTrain's isolated GLM diagnostic, GLM sweep,
+and Qwen sweep. MegaTrain's earlier GLM first-step loss was non-finite; the
+follow-up restores per-layer router buffers when reusing a GPU layer template.
+Completed
 cases use eight steps and two warmup steps, with one fixed-batch loss check
 per model and backend. `tools/watch_qj_results.sh`
 syncs each completed result table or observed failure, regenerates the chart,

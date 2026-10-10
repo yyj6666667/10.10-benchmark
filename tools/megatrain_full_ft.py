@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Eight-GPU BF16 full fine-tuning through the official MegaTrain CPU master.
+"""BF16 full fine-tuning through the official MegaTrain CPU master.
 
 The harness supplies the same text-only checkpoint and tokenized examples as
 the KT and FSDP2 cases. MegaTrain owns layer streaming, recomputation,
@@ -32,9 +32,17 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--warmup-steps", type=int, default=2)
     parser.add_argument("--repeat-batch", action="store_true")
     parser.add_argument("--check-only", action="store_true")
+    parser.add_argument("--devices", default="0,1,2,3,4,5,6,7")
+    parser.add_argument("--diagnostic-forward-only", action="store_true")
     args = parser.parse_args()
     if args.steps <= args.warmup_steps or args.sequence_length < 2:
         parser.error("steps must exceed warmup; sequence length must be at least 2")
+    try:
+        args.devices = [int(device) for device in args.devices.split(",")]
+    except ValueError:
+        parser.error("devices must be a comma-separated list of GPU indices")
+    if not args.devices or len(args.devices) != len(set(args.devices)):
+        parser.error("devices must contain unique GPU indices")
     return args
 
 
@@ -138,6 +146,7 @@ def make_text_model(model_kind: str, *, load_weights: bool):
 
 def main() -> None:
     args = arguments()
+    world_size = len(args.devices)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     model, contract = make_text_model(args.model_kind, load_weights=not args.check_only)
     print("[contract] " + json.dumps(contract), flush=True)
@@ -156,7 +165,7 @@ def main() -> None:
                               args.sequence_length)
     config = CPUMasterConfig(
         model_name=str(MODELS[args.model_kind].checkpoint),
-        devices=list(range(8)), batch_size=8, max_seq_len=args.sequence_length,
+        devices=args.devices, batch_size=world_size, max_seq_len=args.sequence_length,
         num_steps=args.steps, learning_rate=1e-5, max_grad_norm=1.0,
         dtype=torch.bfloat16, attn_implementation="sdpa",
         dataset_name="fft_real_100", dataset_dir=str(args.dataset_dir),
@@ -168,6 +177,22 @@ def main() -> None:
     parameters = engine.get_parameters()
     if sum(p.numel() for p in parameters) != contract["parameters"]:
         raise RuntimeError("MegaTrain optimizer does not own the full text model")
+    if args.diagnostic_forward_only:
+        try:
+            batch = {
+                key: torch.cat([examples[i][key] for i in range(world_size)])
+                for key in ("input_ids", "attention_mask", "labels")
+            }
+            loss, tokens, timing = engine.forward_and_backward(**batch)
+            print("[diagnostic] " + json.dumps({
+                "devices": args.devices, "loss": loss, "tokens": tokens,
+                "timing": timing, "finite": math.isfinite(loss),
+            }), flush=True)
+            if not math.isfinite(loss):
+                raise RuntimeError("non-finite diagnostic loss")
+        finally:
+            engine.cleanup()
+        return
     from deepspeed.ops.adam import DeepSpeedCPUAdam
 
     # MegaTrain's normal fast CPU optimizer. BF16 moments keep the 100B+
@@ -177,8 +202,8 @@ def main() -> None:
     rows = []
     try:
         for step in range(args.steps):
-            indices = ([i % 8 for i in range(8)] if args.repeat_batch else
-                       [(step * 8 + i) % len(examples) for i in range(8)])
+            indices = ([i % world_size for i in range(world_size)] if args.repeat_batch else
+                       [(step * world_size + i) % len(examples) for i in range(world_size)])
             batch = {key: torch.cat([examples[i][key] for i in indices])
                      for key in ("input_ids", "attention_mask", "labels")}
             started = time.perf_counter()
@@ -211,7 +236,7 @@ def main() -> None:
     mean = lambda field: statistics.fmean(row[field] for row in stable)
     result = {
         "backend": "megatrain", "model_kind": args.model_kind,
-        "sequence_length": args.sequence_length, "global_batch": 8,
+        "sequence_length": args.sequence_length, "global_batch": world_size,
         "steps_requested": args.steps, "steps_completed": len(rows),
         "warmup_steps": args.warmup_steps,
         "contract": contract, "repeat_batch": args.repeat_batch,
@@ -221,7 +246,7 @@ def main() -> None:
         "stable": {field: mean(field) for field in
                    ("step_sec", "forward_sec", "backward_sec", "optimizer_sec")},
     }
-    result["stable"]["tps"] = 8 * args.sequence_length / result["stable"]["step_sec"]
+    result["stable"]["tps"] = world_size * args.sequence_length / result["stable"]["step_sec"]
     (args.output_dir / "step_timing.json").write_text(json.dumps(result, indent=2) + "\n")
 
 

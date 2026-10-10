@@ -136,6 +136,7 @@ def assemble() -> list[dict[str, str]]:
 
 def plot(rows: list[dict[str, str]]) -> None:
     plt.rcParams.update({"font.size": 10, "axes.titlesize": 15, "axes.labelsize": 11})
+    plt.rcParams["svg.hashsalt"] = "qj5090-figure9"
     fig, axes = plt.subplots(1, 2, figsize=(15.5, 5.8), sharey=True, layout="constrained")
     success = [float(row["tps"]) for row in rows if row["status"] == "SUCCESS"]
     ymax = max(25, max(success, default=0) * 1.18)
@@ -173,7 +174,9 @@ def plot(rows: list[dict[str, str]]) -> None:
              "Blank = not measured; red × = observed OOM. No historical measurements included.",
              ha="center", fontsize=9, color="#4a4a4a")
     for extension in ("png", "svg"):
-        fig.savefig(RESULTS / f"qj5090_figure9.{extension}", dpi=220, bbox_inches="tight")
+        options = {"metadata": {"Date": None}} if extension == "svg" else {}
+        fig.savefig(RESULTS / f"qj5090_figure9.{extension}", dpi=220,
+                    bbox_inches="tight", **options)
     plt.close(fig)
 
 

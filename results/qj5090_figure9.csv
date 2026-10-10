@@ -19,7 +19,7 @@ Qwen3.5-122B-A10B,pytorch_onednn,32,SUCCESS,28.27,1313.49,46.841,5.47,2.801,14.1
 Qwen3.5-122B-A10B,pytorch_onednn,64,SUCCESS,28.35,1387.46,46.037,11.12,3.533,15.556,26.965,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
 Qwen3.5-122B-A10B,pytorch_onednn,128,SUCCESS,28.69,1455.28,54.722,18.71,4.287,17.429,33.020,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
 Qwen3.5-122B-A10B,pytorch_onednn,256,SUCCESS,29.57,1500.87,54.080,37.87,5.512,21.115,27.460,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
-Qwen3.5-122B-A10B,pytorch_onednn,512,NOT_MEASURED,,,,,,,,qj5090,,
+Qwen3.5-122B-A10B,pytorch_onednn,512,SUCCESS,30.68,1294.27,62.155,65.90,8.237,27.067,26.863,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
 Qwen3.5-122B-A10B,pytorch_onednn,1024,NOT_MEASURED,,,,,,,,qj5090,,
 Qwen3.5-122B-A10B,pytorch_onednn,2048,NOT_MEASURED,,,,,,,,qj5090,,
 Qwen3.5-122B-A10B,pytorch_onednn,4096,NOT_MEASURED,,,,,,,,qj5090,,

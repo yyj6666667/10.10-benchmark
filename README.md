@@ -160,6 +160,11 @@ MegaTrain uses the official `infinity` CPU-master source extracted under
 `/mnt/hurry-bench/src/megatrain`. Its benchmark harness loads the text-only
 106.85B or 122.11B model, uses eight GPU worker processes and BF16 CPUAdam
 states, and verifies fixed-batch loss descent before throughput is accepted.
+The first GLM semantic attempts were invalid: the loader retained references
+to meta tensors across `to_empty()`, which replaced them with CPU parameters;
+the embedding output was zero and the first layer produced NaNs. The loader
+now resolves tensor names after CPU allocation and rejects non-CPU targets.
+Those earlier attempts are excluded from throughput.
 ZeRO uses DeepSpeed 0.19.1 stage 3 with optimizer state offloaded to CPU and
 parameter shards on GPU, matching the historical offload layout. BF16 master
 gradients and optimizer states remain enabled. The exact config is

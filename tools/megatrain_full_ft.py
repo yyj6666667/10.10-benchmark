@@ -74,7 +74,9 @@ def make_text_model(model_kind: str, *, load_weights: bool):
     if count != spec.parameter_count:
         raise RuntimeError(f"parameter contract {count} != {spec.parameter_count}")
     weight_map = checkpoint_keys(spec.checkpoint)
-    assignments: dict[str, list[tuple[str, torch.nn.Parameter, tuple]]] = {}
+    # Keep names here: to_empty() replaces meta Parameters with new CPU
+    # Parameters, so references captured before it point to stale meta tensors.
+    assignments: dict[str, list[tuple[str, str, tuple]]] = {}
     names = set()
     for name, parameter in model.named_parameters():
         if model_kind == "glm45_air" and name.endswith(".experts.gate_up_proj"):
@@ -89,7 +91,7 @@ def make_text_model(model_kind: str, *, load_weights: bool):
                     names.add(source)
                     if source in weight_map:
                         assignments.setdefault(weight_map[source], []).append(
-                            (source, parameter, selector)
+                            (source, name, selector)
                         )
         elif model_kind == "glm45_air" and name.endswith(".experts.down_proj"):
             parent = name.rsplit(".", 1)[0]
@@ -98,14 +100,14 @@ def make_text_model(model_kind: str, *, load_weights: bool):
                 names.add(source)
                 if source in weight_map:
                     assignments.setdefault(weight_map[source], []).append(
-                        (source, parameter, (expert,))
+                        (source, name, (expert,))
                     )
         else:
             source = source_name(name, model_kind)
             names.add(source)
             if source in weight_map:
                 assignments.setdefault(weight_map[source], []).append(
-                    (source, parameter, ())
+                    (source, name, ())
                 )
     # Router correction biases are persistent buffers in GLM, not Parameters.
     # to_empty() leaves them uninitialized, so they must be restored as well.
@@ -117,7 +119,7 @@ def make_text_model(model_kind: str, *, load_weights: bool):
         names.add(source)
         if source in weight_map:
             assignments.setdefault(weight_map[source], []).append(
-                (source, buffer, ())
+                (source, name, ())
             )
     missing = sorted(names - weight_map.keys())
     if missing:
@@ -130,12 +132,16 @@ def make_text_model(model_kind: str, *, load_weights: bool):
     model.to_empty(device="cpu")
     rotary = model.model.rotary_emb
     model.model.rotary_emb = type(rotary)(config, device="cpu")
+    live_tensors = dict(model.named_parameters()) | dict(model.named_buffers())
     with torch.no_grad():
         for shard_no, (shard, entries) in enumerate(sorted(assignments.items()), 1):
             with safe_open(str(spec.checkpoint / shard), framework="pt", device="cpu") as reader:
-                for source, parameter, selector in entries:
+                for source, name, selector in entries:
                     tensor = reader.get_tensor(source)
+                    parameter = live_tensors[name]
                     target = parameter[selector] if selector else parameter
+                    if target.device.type != "cpu":
+                        raise RuntimeError(f"checkpoint target is not live CPU storage: {name}")
                     if tensor.shape != target.shape:
                         raise RuntimeError(f"checkpoint shape differs: {source}")
                     target.copy_(tensor)

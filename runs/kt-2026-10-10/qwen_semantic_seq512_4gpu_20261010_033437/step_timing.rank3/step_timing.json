@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "kt",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 5,
+  "tokens_per_step": 2048,
+  "num_steps": 15,
+  "num_stable_steps": 10,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 39.289514461066574,
+      "backward_sec": 56.794451404944994,
+      "optimizer_sec": 0.3931232119211927,
+      "step_total_sec": 102.18968956405297,
+      "step_tps": 20.041160793587736
+    },
+    {
+      "global_step": 2,
+      "microbatches": 1,
+      "forward_sec": 4.635761009063572,
+      "backward_sec": 7.3885973680298775,
+      "optimizer_sec": 0.018768609035760164,
+      "step_total_sec": 14.589008825016208,
+      "step_tps": 140.37965324198265
+    },
+    {
+      "global_step": 3,
+      "microbatches": 1,
+      "forward_sec": 4.463136226055212,
+      "backward_sec": 8.484235850977711,
+      "optimizer_sec": 0.019614196964539587,
+      "step_total_sec": 15.506359774968587,
+      "step_tps": 132.07484088599696
+    },
+    {
+      "global_step": 4,
+      "microbatches": 1,
+      "forward_sec": 4.381437104078941,
+      "backward_sec": 7.33140113891568,
+      "optimizer_sec": 0.02411875792313367,
+      "step_total_sec": 14.199456898961216,
+      "step_tps": 144.23086844608997
+    },
+    {
+      "global_step": 5,
+      "microbatches": 1,
+      "forward_sec": 4.347254502004944,
+      "backward_sec": 7.349699505022727,
+      "optimizer_sec": 0.01699764805380255,
+      "step_total_sec": 14.248236967017874,
+      "step_tps": 143.7370816291696
+    },
+    {
+      "global_step": 6,
+      "microbatches": 1,
+      "forward_sec": 4.9591185570461676,
+      "backward_sec": 8.056255546980537,
+      "optimizer_sec": 0.016843433026224375,
+      "step_total_sec": 15.57298635400366,
+      "step_tps": 131.50977939908614
+    },
+    {
+      "global_step": 7,
+      "microbatches": 1,
+      "forward_sec": 4.309555919026025,
+      "backward_sec": 7.332719621947035,
+      "optimizer_sec": 0.019825682044029236,
+      "step_total_sec": 13.666308436077088,
+      "step_tps": 149.85758660280013
+    },
+    {
+      "global_step": 8,
+      "microbatches": 1,
+      "forward_sec": 4.37437122000847,
+      "backward_sec": 7.3393479300430045,
+      "optimizer_sec": 0.01985878893174231,
+      "step_total_sec": 14.264182974002324,
+      "step_tps": 143.57639717133836
+    },
+    {
+      "global_step": 9,
+      "microbatches": 1,
+      "forward_sec": 4.345652189920656,
+      "backward_sec": 7.310296665993519,
+      "optimizer_sec": 0.017688150983303785,
+      "step_total_sec": 14.206184240058064,
+      "step_tps": 144.16256789244832
+    },
+    {
+      "global_step": 10,
+      "microbatches": 1,
+      "forward_sec": 4.3443296670448035,
+      "backward_sec": 7.303970215958543,
+      "optimizer_sec": 0.016307001933455467,
+      "step_total_sec": 14.19843693007715,
+      "step_tps": 144.24122951602052
+    },
+    {
+      "global_step": 11,
+      "microbatches": 1,
+      "forward_sec": 4.402387524954975,
+      "backward_sec": 7.311934642959386,
+      "optimizer_sec": 0.01880012103356421,
+      "step_total_sec": 14.310090373968706,
+      "step_tps": 143.1157977678107
+    },
+    {
+      "global_step": 12,
+      "microbatches": 1,
+      "forward_sec": 4.424788233009167,
+      "backward_sec": 7.258552092011087,
+      "optimizer_sec": 0.011558898026123643,
+      "step_total_sec": 14.166435537976213,
+      "step_tps": 144.56706448915045
+    },
+    {
+      "global_step": 13,
+      "microbatches": 1,
+      "forward_sec": 4.317650628974661,
+      "backward_sec": 7.305153939989395,
+      "optimizer_sec": 0.011638149968348444,
+      "step_total_sec": 14.166680569993332,
+      "step_tps": 144.56456400505712
+    },
+    {
+      "global_step": 14,
+      "microbatches": 1,
+      "forward_sec": 4.362103760940954,
+      "backward_sec": 7.260606131982058,
+      "optimizer_sec": 0.016678560059517622,
+      "step_total_sec": 14.194328143028542,
+      "step_tps": 144.28298256623458
+    },
+    {
+      "global_step": 15,
+      "microbatches": 1,
+      "forward_sec": 4.439483396941796,
+      "backward_sec": 7.267103648046032,
+      "optimizer_sec": 0.015252731973305345,
+      "step_total_sec": 14.268286083941348,
+      "step_tps": 143.5351091190259
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 15,
+      "mean_sec": 6.759769626675794,
+      "min_sec": 4.309555919026025,
+      "max_sec": 39.289514461066574
+    },
+    "backward_sec": {
+      "count": 15,
+      "mean_sec": 10.739621713586773,
+      "min_sec": 7.258552092011087,
+      "max_sec": 56.794451404944994
+    },
+    "optimizer_sec": {
+      "count": 15,
+      "mean_sec": 0.042471596125202876,
+      "min_sec": 0.011558898026123643,
+      "max_sec": 0.3931232119211927
+    },
+    "step_total_sec": {
+      "count": 15,
+      "mean_sec": 20.249778111542884,
+      "min_sec": 13.666308436077088,
+      "max_sec": 102.18968956405297
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 10,
+      "mean_sec": 4.427944109786767,
+      "min_sec": 4.309555919026025,
+      "max_sec": 4.9591185570461676
+    },
+    "backward_sec": {
+      "count": 10,
+      "mean_sec": 7.37459404359106,
+      "min_sec": 7.258552092011087,
+      "max_sec": 8.056255546980537
+    },
+    "optimizer_sec": {
+      "count": 10,
+      "mean_sec": 0.016445151797961445,
+      "min_sec": 0.011558898026123643,
+      "max_sec": 0.01985878893174231
+    },
+    "step_total_sec": {
+      "count": 10,
+      "mean_sec": 14.301391964312643,
+      "min_sec": 13.666308436077088,
+      "max_sec": 15.57298635400366
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 2048,
+    "mean_stable_step_sec": 14.301391964312643,
+    "stable_tps": 143.2028438288057
+  }
+}

@@ -1,0 +1,2 @@
+run_id,model,backend,host,sequence_length,num_gpus,global_batch,precision,steps,warmup_steps,stable_step_seconds,tokens_per_second,status,condition
+glm_benchmark_seq4096_8gpu_20261010_025735,GLM-4.5-Air,ktransformers,sap4,4096,8,8,BF16,15,5,95.855382,341.848,SUCCESS,"GPU 0 had an external service using about 10.5 GiB; not a clean cross-framework comparison"

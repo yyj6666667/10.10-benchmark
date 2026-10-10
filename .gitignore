@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# Training weights and resumable state are not benchmark evidence.
+checkpoint-*/
+*.safetensors
+adapter_model.bin
+pytorch_model*.bin
+optimizer.pt
+scheduler.pt
+trainer_state.pt
+wandb/

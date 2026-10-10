@@ -1,0 +1,11 @@
+{
+  "model": "glm",
+  "mode": "semantic",
+  "sequence_length": 512,
+  "num_gpus": 4,
+  "steps": 15,
+  "max_samples": 4,
+  "dataset": "fft_real_100",
+  "checkpoint": "/mnt/data2/models/GLM-4.5-Air",
+  "logging_strategy": "steps"
+}

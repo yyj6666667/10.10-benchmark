@@ -1,0 +1,69 @@
+{
+  "profile": "server",
+  "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/kt-rerun-glm-semantic-512-20261010_024740.scope",
+  "memory_max_effective_bytes": null,
+  "memory_max_effective_gib": null,
+  "memory_max_chain": [
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/kt-rerun-glm-semantic-512-20261010_024740.scope",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup",
+      "value": "unknown"
+    }
+  ],
+  "memory_swap_max_effective_bytes": null,
+  "memory_swap_max_chain": [
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/kt-rerun-glm-semantic-512-20261010_024740.scope",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice/user-1000.slice",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup/user.slice",
+      "value": "max"
+    },
+    {
+      "cgroup": "/sys/fs/cgroup",
+      "value": "unknown"
+    }
+  ],
+  "numa_nodes": "0,1",
+  "numa_policy": "default",
+  "memory_policy": "observed_only_no_benchmark_cgroup_limit",
+  "validation": "one_shot_before_exec",
+  "cpu_memory_accounting": "cgroup_v2_memory_current",
+  "memory_current_path": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/kt-rerun-glm-semantic-512-20261010_024740.scope/memory.current",
+  "memory_stat_path": "/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/kt-rerun-glm-semantic-512-20261010_024740.scope/memory.stat",
+  "memory_current_supported": true,
+  "dedicated_case_cgroup": false,
+  "status": "OK"
+}

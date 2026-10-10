@@ -1,0 +1,11 @@
+{
+  "model": "glm",
+  "mode": "benchmark",
+  "sequence_length": 4096,
+  "num_gpus": 8,
+  "steps": 15,
+  "max_samples": 100,
+  "dataset": "fft_real_100",
+  "checkpoint": "/mnt/data2/models/GLM-4.5-Air",
+  "logging_strategy": "no"
+}

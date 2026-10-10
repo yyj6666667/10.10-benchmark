@@ -66,6 +66,42 @@ else
 fi
 
 wait_for_resources
+echo "BEGIN MegaTrain GLM fixed-batch loss check at $(date -Is)"
+if MEGATRAIN_REPEAT_BATCH=1 bash "$root/tools/run_qj_megatrain_case.sh" \
+    glm45_air 32 8 2; then
+    echo "PASS MegaTrain GLM fixed-batch loss check at $(date -Is)"
+    for seq_len in 32 64 128 256 512 1024 2048 4096; do
+        wait_for_resources
+        echo "BEGIN MegaTrain GLM seq=$seq_len at $(date -Is)"
+        if bash "$root/tools/run_qj_megatrain_case.sh" glm45_air "$seq_len" 8 2; then
+            echo "PASS MegaTrain GLM seq=$seq_len at $(date -Is)"
+        else
+            status=$?
+            run=$(find "$root/runs" -maxdepth 1 -type d \
+                -name "glm45_air_megatrain_seq${seq_len}_8gpu_*" \
+                -printf '%T@ %p\n' | sort -nr | head -1 | cut -d' ' -f2-)
+            "$python" "$root/tools/record_qj_case_status.py" glm megatrain \
+                "$seq_len" "$run" "$status"
+            echo "FAIL MegaTrain GLM seq=$seq_len exit=$status at $(date -Is)" >&2
+            if (( seq_len == 32 )); then break; fi
+        fi
+    done
+else
+    status=$?
+    run=$(find "$root/runs" -maxdepth 1 -type d \
+        -name 'glm45_air_megatrain_seq32_8gpu_*' -printf '%T@ %p\n' \
+        | sort -nr | head -1 | cut -d' ' -f2-)
+    "$python" "$root/tools/record_qj_case_status.py" glm megatrain 32 \
+        "$run" "$status"
+    source=$run/launcher.log
+    [[ -f $run/host_memory_guard.txt ]] && source=$run/host_memory_guard.txt
+    "$python" "$root/tools/mark_qj_unrun_cases.py" glm megatrain \
+        --after 32 --source "qj5090:$source" \
+        --reason 'Not run: seq32 fixed-batch semantic check failed before valid timing'
+    echo "FAIL MegaTrain GLM fixed-batch loss check exit=$status at $(date -Is)" >&2
+fi
+
+wait_for_resources
 echo "BEGIN MegaTrain Qwen fixed-batch loss check at $(date -Is)"
 if MEGATRAIN_REPEAT_BATCH=1 bash "$root/tools/run_qj_megatrain_case.sh" \
     qwen35_122b 32 8 2; then

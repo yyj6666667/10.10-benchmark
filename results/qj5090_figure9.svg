@@ -1177,8 +1177,8 @@ z
    <g id="patch_25">
     <path d="M 465.228035 457.291697 
 L 477.519482 457.291697 
-L 477.519482 457.291697 
-L 465.228035 457.291697 
+L 477.519482 375.016506 
+L 465.228035 375.016506 
 z
 " clip-path="url(#p08baac8bb4)" style="fill: url(#h2598238d40); stroke: #252b32; stroke-width: 0.65; stroke-linejoin: miter"/>
    </g>

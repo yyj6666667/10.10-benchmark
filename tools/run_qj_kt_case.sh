@@ -129,6 +129,7 @@ PYTHONPATH="$overlay:$root/src/accelerate:$root/src/transformers:$tools_dir:$lla
     "$python" -c 'import inspect, torch, kt_kernel, accelerate, transformers; from kt_kernel.grad_norm import bf16_sumsq; print("torch",torch.__version__); print("kt_kernel",inspect.getfile(kt_kernel)); print("accelerate",inspect.getfile(accelerate)); print("transformers",inspect.getfile(transformers)); print("bf16_sumsq",inspect.getfile(bf16_sumsq))' \
     > "$run_dir/versions.txt"
 nvidia-smi -L >> "$run_dir/versions.txt"
+lscpu | rg 'Model name:|Socket\(s\):|Core\(s\) per socket:|Thread\(s\) per core:|NUMA node\(s\):' >> "$run_dir/versions.txt"
 
 if [[ ${KT_BENCH_DRY_RUN:-0} == 1 ]]; then
     echo "$run_dir dry-run"

@@ -1,4 +1,5 @@
 model,backend,sequence_length,status,source,note
 GLM-4.5-Air-106B,megatrain,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_195333_3616795_semantic/launcher.log,exit=1; RuntimeError: non-finite loss or gradient at step 1
 GLM-4.5-Air-106B,pytorch_onednn,1024,FAILED,qj5090:/mnt/hurry-bench/runs/glm45_air_fsdp2_onednn_seq1024_8gpu_20261010_190454_3611557/launcher.log,exit=1; NCCL collective timed out after 600 s
-GLM-4.5-Air-106B,zero_offload,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261010_202101_3633552_semantic/launcher.log,exit=126; training exited without a complete timed result; min MemAvailable=12.4 GiB
+GLM-4.5-Air-106B,zero_offload,32,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261010_202101_3633552_semantic/host_memory_guard.txt,exit=126; host_memory_guard: MemAvailable=10030456 KiB at 2026-10-10T20:27:53+00:00; sent TERM to process group 3633764; min MemAvailable=12.4 GiB
+Qwen3.5-122B-A10B,zero_offload,32,OOM,qj5090:/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261010_202830_3637418_semantic/launcher.log,exit=1; [rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.00 GiB. GPU 0 has a total capacity of 31.36 GiB of which 1.33 GiB is free. Including no; min MemAvailable=1453.5 GiB

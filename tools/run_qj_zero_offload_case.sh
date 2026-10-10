@@ -29,6 +29,7 @@ for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/zero3_cpu_offload.json" "$root/tools/kt_bench_entry.py" \
     "$root/tools/record_qj_semantic_check.py" \
     "$root/tools/step_phase_timer.py" "$root/tools/kt_case_monitor.py" \
+    "$root/tools/host_memory_guard.sh" \
     "$root/src/llamafactory-overlay/llamafactory/cli.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
 done
@@ -77,6 +78,7 @@ train.pop('dataloader_prefetch_factor', None)
     'global_batch': 8, 'precision': 'bf16', 'dataset': 'fft_real_100',
     'gradient_clipping': 1.0,
     'optimizer_offload': 'cpu', 'parameter_offload': False,
+    'host_available_guard_gib': 20,
     'mode': mode,
 }, indent=2) + '\n')
 PY
@@ -93,6 +95,9 @@ cmd=("$torchrun" --standalone --nproc_per_node=8 -m kt_bench_entry "$run_dir/tra
 printf '%q ' "${cmd[@]}" > "$run_dir/command.txt"
 printf '\n' >> "$run_dir/command.txt"
 set +e
+bash "$root/tools/host_memory_guard.sh" "$$" "$run_dir" 20 \
+    > "$run_dir/host_memory_guard.log" 2>&1 &
+guard_pid=$!
 env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 \
     TOKENIZERS_PARALLELISM=false HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
@@ -107,6 +112,8 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     --gpu-ids 0,1,2,3,4,5,6,7 -- "${cmd[@]}" \
     > "$run_dir/launcher.log" 2>&1
 status=$?
+kill -TERM "$guard_pid" 2>/dev/null || true
+wait "$guard_pid" 2>/dev/null || true
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
 if [[ $status -eq 0 && $mode == semantic ]]; then

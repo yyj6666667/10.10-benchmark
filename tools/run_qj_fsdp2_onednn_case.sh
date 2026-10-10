@@ -35,6 +35,7 @@ gpu_ids=0,1,2,3,4,5,6,7
 for file in "$checkpoint/config.json" "$checkpoint/model.safetensors.index.json" \
     "$root/data/fft_real_100.json" "$root/data/dataset_info.json" \
     "$tools_dir/fsdp2_onednn_full_ft.py" "$tools_dir/kt_case_monitor.py" \
+    "$tools_dir/host_memory_guard.sh" \
     "$tools_dir/record_qj_semantic_check.py" \
     "$tools_dir/collect_qj_fsdp2_onednn_result.py" \
     "$root/src/llamafactory-overlay/llamafactory/__init__.py" \
@@ -81,6 +82,7 @@ Path(run, "run_config.json").write_text(json.dumps({
     "gradient_checkpointing": True,
     "gpu_optimizer_state_offload": gpu_state_offload == "1",
     "max_grad_norm": 1.0,
+    "host_available_guard_gib": 20,
 }, indent=2) + "\n")
 PY
 sha256sum "$tools_dir/fsdp2_onednn_full_ft.py" "$tools_dir/run_qj_fsdp2_onednn_case.sh" \
@@ -132,6 +134,9 @@ available_kib=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
 }
 
 set +e
+bash "$root/tools/host_memory_guard.sh" "$$" "$run_dir" 20 \
+    > "$run_dir/host_memory_guard.log" 2>&1 &
+guard_pid=$!
 env CUDA_VISIBLE_DEVICES="$gpu_ids" OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 \
     OPENBLAS_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 OMP_DYNAMIC=FALSE MKL_DYNAMIC=FALSE \
     TOKENIZERS_PARALLELISM=false HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
@@ -140,6 +145,8 @@ env CUDA_VISIBLE_DEVICES="$gpu_ids" OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 \
     "$python" "$tools_dir/kt_case_monitor.py" --output "$run_dir" --gpu-ids "$gpu_ids" -- \
     "${cmd[@]}" > "$run_dir/launcher.log" 2>&1
 status=$?
+kill -TERM "$guard_pid" 2>/dev/null || true
+wait "$guard_pid" 2>/dev/null || true
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
 if [[ $status -eq 0 && ${FSDP2_REPEAT_BATCH:-0} == 1 ]]; then

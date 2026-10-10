@@ -19,7 +19,7 @@ while kill -0 "$runner" 2>/dev/null; do
         monitor=$(pgrep -P "$runner" -f 'kt_case_monitor.py' | head -1 || true)
         torchrun=''
         if [[ -n $monitor ]]; then
-            torchrun=$(pgrep -P "$monitor" -f 'torchrun.*kt_bench_entry' | head -1 || true)
+            torchrun=$(pgrep -P "$monitor" -f 'torchrun' | head -1 || true)
         fi
         printf 'host_memory_guard: MemAvailable=%s KiB at %s; reserve=%s GiB; runner=%s; torchrun=%s\n' \
             "$available_kib" "$(date -u -Is)" "$reserve_gib" "$runner" "$torchrun" \

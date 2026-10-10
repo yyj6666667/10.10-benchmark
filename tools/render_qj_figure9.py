@@ -156,8 +156,13 @@ def plot(rows: list[dict[str, str]]) -> None:
             if ax is axes[0]:
                 legend_handles.append(bars)
             for xpos, seq in zip(bar_x, SEQUENCES):
-                if model_rows[backend, seq]["status"] == "OOM":
-                    ax.text(xpos, ymax * 0.012, "×", color="#d62728", fontsize=14,
+                status = model_rows[backend, seq]["status"]
+                marks = {"OOM": ("×", "#d62728"),
+                         "FAILED": ("!", "#c67820"),
+                         "BLOCKED": ("·", "#777777")}
+                if status in marks:
+                    mark, color = marks[status]
+                    ax.text(xpos, ymax * 0.012, mark, color=color, fontsize=14,
                             ha="center", va="bottom", weight="bold")
         ax.set_title(model, weight="bold")
         ax.set_xticks(x, ("32", "64", "128", "256", "512", "1K", "2K", "4K"))
@@ -171,7 +176,7 @@ def plot(rows: list[dict[str, str]]) -> None:
     fig.suptitle("qj5090 · 8 × RTX 5090 · BF16 full fine-tuning · global batch 8", y=1.16,
                  fontsize=12)
     fig.text(0.5, -0.025,
-             "Blank = not measured; red × = observed OOM. No historical measurements included.",
+             "Blank = not measured; × = observed OOM; ! = failed; · = blocked. No historical measurements.",
              ha="center", fontsize=9, color="#4a4a4a")
     for extension in ("png", "svg"):
         options = {"metadata": {"Date": None}} if extension == "svg" else {}

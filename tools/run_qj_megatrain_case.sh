@@ -28,6 +28,7 @@ for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/megatrain_full_ft.py" "$root/tools/kt_case_monitor.py" \
     "$root/tools/record_qj_semantic_check.py" \
     "$root/tools/collect_qj_fsdp2_onednn_result.py" \
+    "$root/tools/host_memory_guard.sh" \
     "$root/src/megatrain/infinity/model/cpu_master.py" \
     "$root/src/megatrain/infinity/model/mp_worker.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
@@ -67,6 +68,7 @@ Path(run, 'run_config.json').write_text(json.dumps({
     'mode': mode,
     'checkpoint_interval': 1, 'num_grad_slabs': 2,
     'dataset': 'fft_real_100', 'gradient_clipping': 1.0,
+    'host_available_guard_gib': 20,
 }, indent=2) + '\n')
 PY
 sha256sum "$root/tools/megatrain_full_ft.py" \
@@ -89,6 +91,9 @@ printf '%q ' "${cmd[@]}" > "$run_dir/command.txt"
 printf '\n' >> "$run_dir/command.txt"
 
 set +e
+bash "$root/tools/host_memory_guard.sh" "$$" "$run_dir" 20 \
+    > "$run_dir/host_memory_guard.log" 2>&1 &
+guard_pid=$!
 env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 \
     TORCH_EXTENSIONS_DIR="$root/torch_extensions" \
@@ -99,6 +104,8 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     --gpu-ids 0,1,2,3,4,5,6,7 -- "${cmd[@]}" \
     > "$run_dir/launcher.log" 2>&1
 status=$?
+kill -TERM "$guard_pid" 2>/dev/null || true
+wait "$guard_pid" 2>/dev/null || true
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
 if [[ $status -eq 0 && ${MEGATRAIN_REPEAT_BATCH:-0} != 1 ]]; then

@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "kt",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 5,
+  "tokens_per_step": 2048,
+  "num_steps": 15,
+  "num_stable_steps": 10,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 9.418875988572836,
+      "backward_sec": 16.248716093599796,
+      "optimizer_sec": 0.27199970558285713,
+      "step_total_sec": 29.378263290971518,
+      "step_tps": 69.71140464349328
+    },
+    {
+      "global_step": 2,
+      "microbatches": 1,
+      "forward_sec": 28.71139655634761,
+      "backward_sec": 6.962501548230648,
+      "optimizer_sec": 0.009960625320672989,
+      "step_total_sec": 37.301726792007685,
+      "step_tps": 54.90362447346022
+    },
+    {
+      "global_step": 3,
+      "microbatches": 1,
+      "forward_sec": 8.52385638654232,
+      "backward_sec": 6.722722209990025,
+      "optimizer_sec": 0.007652126252651215,
+      "step_total_sec": 16.92834435775876,
+      "step_tps": 120.98052572172193
+    },
+    {
+      "global_step": 4,
+      "microbatches": 1,
+      "forward_sec": 8.429121050983667,
+      "backward_sec": 6.7106023244559765,
+      "optimizer_sec": 0.00957123190164566,
+      "step_total_sec": 16.702194835990667,
+      "step_tps": 122.6186151048169
+    },
+    {
+      "global_step": 5,
+      "microbatches": 1,
+      "forward_sec": 8.590580340474844,
+      "backward_sec": 6.67829417809844,
+      "optimizer_sec": 0.008505728095769882,
+      "step_total_sec": 16.895106371492147,
+      "step_tps": 121.2185324536151
+    },
+    {
+      "global_step": 6,
+      "microbatches": 1,
+      "forward_sec": 8.85714042186737,
+      "backward_sec": 6.6815248392522335,
+      "optimizer_sec": 0.008624482899904251,
+      "step_total_sec": 17.085739213973284,
+      "step_tps": 119.86604584980893
+    },
+    {
+      "global_step": 7,
+      "microbatches": 1,
+      "forward_sec": 8.442407492548227,
+      "backward_sec": 6.711111228913069,
+      "optimizer_sec": 0.008467856794595718,
+      "step_total_sec": 16.762298841029406,
+      "step_tps": 122.1789457056493
+    },
+    {
+      "global_step": 8,
+      "microbatches": 1,
+      "forward_sec": 8.41616227850318,
+      "backward_sec": 6.699351817369461,
+      "optimizer_sec": 0.007111907005310059,
+      "step_total_sec": 16.74562606215477,
+      "step_tps": 122.30059314584207
+    },
+    {
+      "global_step": 9,
+      "microbatches": 1,
+      "forward_sec": 8.674896098673344,
+      "backward_sec": 6.718339469283819,
+      "optimizer_sec": 0.007962163537740707,
+      "step_total_sec": 17.069242492318153,
+      "step_tps": 119.9818914589609
+    },
+    {
+      "global_step": 10,
+      "microbatches": 1,
+      "forward_sec": 8.957407843321562,
+      "backward_sec": 6.714926730841398,
+      "optimizer_sec": 0.007787030190229416,
+      "step_total_sec": 17.31623999401927,
+      "step_tps": 118.27047908248811
+    },
+    {
+      "global_step": 11,
+      "microbatches": 1,
+      "forward_sec": 8.70631354674697,
+      "backward_sec": 6.7120595946908,
+      "optimizer_sec": 0.009184908121824265,
+      "step_total_sec": 17.047233808785677,
+      "step_tps": 120.13679304055283
+    },
+    {
+      "global_step": 12,
+      "microbatches": 1,
+      "forward_sec": 9.095192942768335,
+      "backward_sec": 6.695399928838015,
+      "optimizer_sec": 0.007900293916463852,
+      "step_total_sec": 17.42563344910741,
+      "step_tps": 117.52800872239766
+    },
+    {
+      "global_step": 13,
+      "microbatches": 1,
+      "forward_sec": 8.755123749375343,
+      "backward_sec": 6.7047079205513,
+      "optimizer_sec": 0.007552936673164368,
+      "step_total_sec": 17.07360153272748,
+      "step_tps": 119.95125902840695
+    },
+    {
+      "global_step": 14,
+      "microbatches": 1,
+      "forward_sec": 8.671046398580074,
+      "backward_sec": 6.715301733464003,
+      "optimizer_sec": 0.008544042706489563,
+      "step_total_sec": 17.023911267518997,
+      "step_tps": 120.30137891446306
+    },
+    {
+      "global_step": 15,
+      "microbatches": 1,
+      "forward_sec": 9.25485921651125,
+      "backward_sec": 6.717881169170141,
+      "optimizer_sec": 0.008555885404348373,
+      "step_total_sec": 17.619100369513035,
+      "step_tps": 116.23748982914748
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 15,
+      "mean_sec": 10.100292020787796,
+      "min_sec": 8.41616227850318,
+      "max_sec": 28.71139655634761
+    },
+    "backward_sec": {
+      "count": 15,
+      "mean_sec": 7.359562719116608,
+      "min_sec": 6.67829417809844,
+      "max_sec": 16.248716093599796
+    },
+    "optimizer_sec": {
+      "count": 15,
+      "mean_sec": 0.02595872829357783,
+      "min_sec": 0.007111907005310059,
+      "max_sec": 0.27199970558285713
+    },
+    "step_total_sec": {
+      "count": 15,
+      "mean_sec": 19.224950845291218,
+      "min_sec": 16.702194835990667,
+      "max_sec": 37.301726792007685
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 10,
+      "mean_sec": 8.783054998889565,
+      "min_sec": 8.41616227850318,
+      "max_sec": 9.25485921651125
+    },
+    "backward_sec": {
+      "count": 10,
+      "mean_sec": 6.707060443237424,
+      "min_sec": 6.6815248392522335,
+      "max_sec": 6.718339469283819
+    },
+    "optimizer_sec": {
+      "count": 10,
+      "mean_sec": 0.008169150725007058,
+      "min_sec": 0.007111907005310059,
+      "max_sec": 0.009184908121824265
+    },
+    "step_total_sec": {
+      "count": 10,
+      "mean_sec": 17.116862703114748,
+      "min_sec": 16.74562606215477,
+      "max_sec": 17.619100369513035
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 2048,
+    "mean_stable_step_sec": 17.116862703114748,
+    "stable_tps": 119.64809413510844
+  }
+}

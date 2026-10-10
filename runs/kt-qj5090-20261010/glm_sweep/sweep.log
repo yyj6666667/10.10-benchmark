@@ -1,0 +1,43 @@
+BEGIN GLM KT seq=32 at 2026-10-10T13:06:29+00:00
+model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 8822784 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq32_8gpu_20261010_130630 status=0
+PASS GLM KT seq=32 at 2026-10-10T13:11:43+00:00
+BEGIN GLM KT fixed-batch loss check seq=512 at 2026-10-10T13:12:03+00:00
+model checkpoint: 47 shards present
+semantic loss: 2.721 -> 0.02275; passed=True
+[kt_bench] removed generated dataset cache: 4808704 allocated bytes
+/mnt/hurry-bench/runs/glm_semantic_seq512_8gpu_20261010_131203 status=0
+PASS GLM KT fixed-batch loss check at 2026-10-10T13:20:09+00:00
+BEGIN GLM KT seq=64 at 2026-10-10T13:20:29+00:00
+model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 8871936 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq64_8gpu_20261010_132029 status=0
+PASS GLM KT seq=64 at 2026-10-10T13:25:50+00:00
+BEGIN GLM KT seq=128 at 2026-10-10T13:26:10+00:00
+model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 8953856 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq128_8gpu_20261010_132610 status=0
+PASS GLM KT seq=128 at 2026-10-10T13:31:47+00:00
+BEGIN GLM KT seq=256 at 2026-10-10T13:32:07+00:00
+model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 9150464 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq256_8gpu_20261010_133208 status=0
+PASS GLM KT seq=256 at 2026-10-10T13:38:36+00:00
+BEGIN GLM KT seq=512 at 2026-10-10T13:38:56+00:00
+model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 9478144 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq512_8gpu_20261010_133856 status=0
+PASS GLM KT seq=512 at 2026-10-10T13:46:59+00:00
+BEGIN GLM KT seq=1024 at 2026-10-10T13:47:19+00:00
+model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 10117120 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq1024_8gpu_20261010_134719 status=0
+PASS GLM KT seq=1024 at 2026-10-10T13:58:10+00:00
+BEGIN GLM KT seq=2048 at 2026-10-10T13:58:30+00:00
+model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 11460608 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq2048_8gpu_20261010_135830 status=0
+PASS GLM KT seq=2048 at 2026-10-10T14:15:11+00:00
+BEGIN GLM KT seq=4096 at 2026-10-10T14:15:31+00:00
+model checkpoint: 47 shards present

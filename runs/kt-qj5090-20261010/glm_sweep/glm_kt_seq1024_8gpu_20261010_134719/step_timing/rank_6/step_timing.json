@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "kt",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 5,
+  "tokens_per_step": 8192,
+  "num_steps": 15,
+  "num_stable_steps": 10,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 26.38003485649824,
+      "backward_sec": 25.207431703805923,
+      "optimizer_sec": 0.3147215209901333,
+      "step_total_sec": 55.499797351658344,
+      "step_tps": 147.60414255377856
+    },
+    {
+      "global_step": 2,
+      "microbatches": 1,
+      "forward_sec": 33.730313777923584,
+      "backward_sec": 18.553492583334446,
+      "optimizer_sec": 0.008953280746936798,
+      "step_total_sec": 53.94686455652118,
+      "step_tps": 151.8531256143178
+    },
+    {
+      "global_step": 3,
+      "microbatches": 1,
+      "forward_sec": 13.826627753674984,
+      "backward_sec": 18.110973842442036,
+      "optimizer_sec": 0.0072249360382556915,
+      "step_total_sec": 33.571618646383286,
+      "step_tps": 244.0156397070993
+    },
+    {
+      "global_step": 4,
+      "microbatches": 1,
+      "forward_sec": 14.092201560735703,
+      "backward_sec": 18.000457413494587,
+      "optimizer_sec": 0.008736897259950638,
+      "step_total_sec": 33.73150999099016,
+      "step_tps": 242.85897673089997
+    },
+    {
+      "global_step": 5,
+      "microbatches": 1,
+      "forward_sec": 14.047918926924467,
+      "backward_sec": 18.021245952695608,
+      "optimizer_sec": 0.021136239171028137,
+      "step_total_sec": 33.71026595309377,
+      "step_tps": 243.01202522100473
+    },
+    {
+      "global_step": 6,
+      "microbatches": 1,
+      "forward_sec": 13.981945648789406,
+      "backward_sec": 18.009297981858253,
+      "optimizer_sec": 0.008200574666261673,
+      "step_total_sec": 33.62792148813605,
+      "step_tps": 243.60708713115503
+    },
+    {
+      "global_step": 7,
+      "microbatches": 1,
+      "forward_sec": 13.935251403599977,
+      "backward_sec": 18.128087755292654,
+      "optimizer_sec": 0.012104656547307968,
+      "step_total_sec": 33.73469143360853,
+      "step_tps": 242.83607324887626
+    },
+    {
+      "global_step": 8,
+      "microbatches": 1,
+      "forward_sec": 14.058982864022255,
+      "backward_sec": 18.080348145216703,
+      "optimizer_sec": 0.014100220054388046,
+      "step_total_sec": 33.83199256658554,
+      "step_tps": 242.13767438843965
+    },
+    {
+      "global_step": 9,
+      "microbatches": 1,
+      "forward_sec": 14.59878895059228,
+      "backward_sec": 17.935781434178352,
+      "optimizer_sec": 0.010430172085762024,
+      "step_total_sec": 34.139792740345,
+      "step_tps": 239.9545908876896
+    },
+    {
+      "global_step": 10,
+      "microbatches": 1,
+      "forward_sec": 14.66892535239458,
+      "backward_sec": 17.881621554493904,
+      "optimizer_sec": 0.010837782174348831,
+      "step_total_sec": 34.2042291238904,
+      "step_tps": 239.50254719461543
+    },
+    {
+      "global_step": 11,
+      "microbatches": 1,
+      "forward_sec": 14.469533797353506,
+      "backward_sec": 17.98009629920125,
+      "optimizer_sec": 0.007695239037275314,
+      "step_total_sec": 34.12450759112835,
+      "step_tps": 240.06207204964173
+    },
+    {
+      "global_step": 12,
+      "microbatches": 1,
+      "forward_sec": 14.315513025969267,
+      "backward_sec": 18.01676742359996,
+      "optimizer_sec": 0.009947337210178375,
+      "step_total_sec": 34.00731272250414,
+      "step_tps": 240.88936596801406
+    },
+    {
+      "global_step": 13,
+      "microbatches": 1,
+      "forward_sec": 14.474795956164598,
+      "backward_sec": 17.93591946735978,
+      "optimizer_sec": 0.012031804770231247,
+      "step_total_sec": 34.075691379606724,
+      "step_tps": 240.40598057836226
+    },
+    {
+      "global_step": 14,
+      "microbatches": 1,
+      "forward_sec": 14.179368283599615,
+      "backward_sec": 18.104469064623117,
+      "optimizer_sec": 0.009000591933727264,
+      "step_total_sec": 33.9412230476737,
+      "step_tps": 241.3584209529972
+    },
+    {
+      "global_step": 15,
+      "microbatches": 1,
+      "forward_sec": 13.989085365086794,
+      "backward_sec": 18.04247970879078,
+      "optimizer_sec": 0.009189445525407791,
+      "step_total_sec": 33.63329379633069,
+      "step_tps": 243.5681753207807
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 15,
+      "mean_sec": 16.31661916822195,
+      "min_sec": 13.826627753674984,
+      "max_sec": 33.730313777923584
+    },
+    "backward_sec": {
+      "count": 15,
+      "mean_sec": 18.533898022025824,
+      "min_sec": 17.881621554493904,
+      "max_sec": 25.207431703805923
+    },
+    "optimizer_sec": {
+      "count": 15,
+      "mean_sec": 0.03095404654741287,
+      "min_sec": 0.0072249360382556915,
+      "max_sec": 0.3147215209901333
+    },
+    "step_total_sec": {
+      "count": 15,
+      "mean_sec": 36.652047492563725,
+      "min_sec": 33.571618646383286,
+      "max_sec": 55.499797351658344
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 10,
+      "mean_sec": 14.267219064757228,
+      "min_sec": 13.935251403599977,
+      "max_sec": 14.66892535239458
+    },
+    "backward_sec": {
+      "count": 10,
+      "mean_sec": 18.011486883461476,
+      "min_sec": 17.881621554493904,
+      "max_sec": 18.128087755292654
+    },
+    "optimizer_sec": {
+      "count": 10,
+      "mean_sec": 0.010353782400488853,
+      "min_sec": 0.007695239037275314,
+      "max_sec": 0.014100220054388046
+    },
+    "step_total_sec": {
+      "count": 10,
+      "mean_sec": 33.93206558898091,
+      "min_sec": 33.62792148813605,
+      "max_sec": 34.2042291238904
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 8192,
+    "mean_stable_step_sec": 33.93206558898091,
+    "stable_tps": 241.42355785909677
+  }
+}

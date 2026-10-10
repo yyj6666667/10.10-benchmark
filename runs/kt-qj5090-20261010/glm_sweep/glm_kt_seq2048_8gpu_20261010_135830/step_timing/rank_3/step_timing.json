@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "kt",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 5,
+  "tokens_per_step": 16384,
+  "num_steps": 15,
+  "num_stable_steps": 10,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 50.03583595901728,
+      "backward_sec": 45.34697055071592,
+      "optimizer_sec": 0.31073257699608803,
+      "step_total_sec": 99.00051324442029,
+      "step_tps": 165.49409152607004
+    },
+    {
+      "global_step": 2,
+      "microbatches": 1,
+      "forward_sec": 41.97282088175416,
+      "backward_sec": 34.409533362835646,
+      "optimizer_sec": 0.016309332102537155,
+      "step_total_sec": 77.9805245809257,
+      "step_tps": 210.10374177461716
+    },
+    {
+      "global_step": 3,
+      "microbatches": 1,
+      "forward_sec": 20.55888867750764,
+      "backward_sec": 33.68874455988407,
+      "optimizer_sec": 0.008190926164388657,
+      "step_total_sec": 55.896732822060585,
+      "step_tps": 293.11194362926665
+    },
+    {
+      "global_step": 4,
+      "microbatches": 1,
+      "forward_sec": 21.17671663314104,
+      "backward_sec": 33.75697424262762,
+      "optimizer_sec": 0.007344979792833328,
+      "step_total_sec": 56.58836143091321,
+      "step_tps": 289.5295001606057
+    },
+    {
+      "global_step": 5,
+      "microbatches": 1,
+      "forward_sec": 20.90841556340456,
+      "backward_sec": 33.584746330976486,
+      "optimizer_sec": 0.011845715343952179,
+      "step_total_sec": 56.10846007987857,
+      "step_tps": 292.00587534705085
+    },
+    {
+      "global_step": 6,
+      "microbatches": 1,
+      "forward_sec": 20.83451735600829,
+      "backward_sec": 33.60725373029709,
+      "optimizer_sec": 0.007922206073999405,
+      "step_total_sec": 56.05522933602333,
+      "step_tps": 292.2831677627441
+    },
+    {
+      "global_step": 7,
+      "microbatches": 1,
+      "forward_sec": 20.853937920182943,
+      "backward_sec": 33.69189655780792,
+      "optimizer_sec": 0.00838366150856018,
+      "step_total_sec": 56.2044001147151,
+      "step_tps": 291.50742586985535
+    },
+    {
+      "global_step": 8,
+      "microbatches": 1,
+      "forward_sec": 20.898535426706076,
+      "backward_sec": 33.61270033195615,
+      "optimizer_sec": 0.011911202222108841,
+      "step_total_sec": 56.22401066869497,
+      "step_tps": 291.4057500547976
+    },
+    {
+      "global_step": 9,
+      "microbatches": 1,
+      "forward_sec": 21.598025929182768,
+      "backward_sec": 33.60494212433696,
+      "optimizer_sec": 0.007787376642227173,
+      "step_total_sec": 56.890112426131964,
+      "step_tps": 287.99380597592483
+    },
+    {
+      "global_step": 10,
+      "microbatches": 1,
+      "forward_sec": 21.26696092262864,
+      "backward_sec": 33.54787290096283,
+      "optimizer_sec": 0.011349156498908997,
+      "step_total_sec": 56.49568185210228,
+      "step_tps": 290.00446517117894
+    },
+    {
+      "global_step": 11,
+      "microbatches": 1,
+      "forward_sec": 20.744739044457674,
+      "backward_sec": 33.58279401063919,
+      "optimizer_sec": 0.010584685951471329,
+      "step_total_sec": 56.00474149733782,
+      "step_tps": 292.54665876421933
+    },
+    {
+      "global_step": 12,
+      "microbatches": 1,
+      "forward_sec": 20.869186151772738,
+      "backward_sec": 33.6674926802516,
+      "optimizer_sec": 0.010871518403291702,
+      "step_total_sec": 56.189108446240425,
+      "step_tps": 291.5867585917577
+    },
+    {
+      "global_step": 13,
+      "microbatches": 1,
+      "forward_sec": 20.83898765593767,
+      "backward_sec": 33.593418922275305,
+      "optimizer_sec": 0.009527463465929031,
+      "step_total_sec": 56.110529996454716,
+      "step_tps": 291.9951032548651
+    },
+    {
+      "global_step": 14,
+      "microbatches": 1,
+      "forward_sec": 20.765196308493614,
+      "backward_sec": 33.62621593847871,
+      "optimizer_sec": 0.009461063891649246,
+      "step_total_sec": 56.07638554275036,
+      "step_tps": 292.17289669123744
+    },
+    {
+      "global_step": 15,
+      "microbatches": 1,
+      "forward_sec": 21.08176264539361,
+      "backward_sec": 33.655924417078495,
+      "optimizer_sec": 0.010093316435813904,
+      "step_total_sec": 56.367662247270346,
+      "step_tps": 290.66310978318796
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 15,
+      "mean_sec": 24.29363513837258,
+      "min_sec": 20.55888867750764,
+      "max_sec": 50.03583595901728
+    },
+    "backward_sec": {
+      "count": 15,
+      "mean_sec": 34.46516537740827,
+      "min_sec": 33.54787290096283,
+      "max_sec": 45.34697055071592
+    },
+    "optimizer_sec": {
+      "count": 15,
+      "mean_sec": 0.030154345432917277,
+      "min_sec": 0.007344979792833328,
+      "max_sec": 0.31073257699608803
+    },
+    "step_total_sec": {
+      "count": 15,
+      "mean_sec": 60.54616361906131,
+      "min_sec": 55.896732822060585,
+      "max_sec": 99.00051324442029
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 10,
+      "mean_sec": 20.975184936076403,
+      "min_sec": 20.744739044457674,
+      "max_sec": 21.598025929182768
+    },
+    "backward_sec": {
+      "count": 10,
+      "mean_sec": 33.61905116140842,
+      "min_sec": 33.54787290096283,
+      "max_sec": 33.69189655780792
+    },
+    "optimizer_sec": {
+      "count": 10,
+      "mean_sec": 0.00978916510939598,
+      "min_sec": 0.007787376642227173,
+      "max_sec": 0.011911202222108841
+    },
+    "step_total_sec": {
+      "count": 10,
+      "mean_sec": 56.26178621277213,
+      "min_sec": 56.00474149733782,
+      "max_sec": 56.890112426131964
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 16384,
+    "mean_stable_step_sec": 56.26178621277213,
+    "stable_tps": 291.21009308233846
+  }
+}

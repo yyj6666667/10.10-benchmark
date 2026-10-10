@@ -50,8 +50,12 @@ coarse-host-wall KT runs.
 Activation checkpointing covers the GPU attention, linear attention, and MLP
 submodules. CPU routed experts and Gloo all-to-all remain outside the
 checkpoint, because replaying those collectives can change their order across
-ranks. The CPU optimizer releases each parameter's gradient immediately after
-updating it, so new AdamW moments do not accumulate alongside all gradients.
+ranks. The revised sweep stashes completed CPU gradients in BF16 while
+retaining FP32 expert master weights. Its AdamW update works on bounded chunks
+and releases each gradient after updating that parameter. Existing GLM 32–512
+results came from the earlier uncompressed implementation and will be replaced
+by the revised eight-step sweep; compare configuration checksums before
+interpreting them as one uniform series.
 On qj5090, seq4096 also moves dense GPU AdamW moments to CPU between steps.
 The moments return to GPU for each fused optimizer update; their FP32 values
 and the AdamW computation are unchanged.
@@ -103,9 +107,12 @@ its configuration, timing, resource summary, and training log under
 
 GLM KT lengths 32–4096 have completed. `tools/run_qj_qwen_kt_queue.sh`
 validated Qwen's fixed-batch loss descent before starting its eight lengths.
-The dependent queues run MegaTrain, ZeRO-3 CPU offload, and PyTorch FSDP2 +
-CPU oneDNN in that order, with eight steps and two warmup steps per case and
-one fixed-batch loss check per model and backend. `tools/watch_qj_results.sh`
+The current dependent queues run the corrected ZeRO-3 optimizer-offload
+baseline, then the revised PyTorch FSDP2 + CPU oneDNN sweep. MegaTrain's
+eight-GPU fixed-batch check has returned a non-finite first-step loss, so its
+performance sweep waits for a separate finite-value diagnostic. Completed
+cases use eight steps and two warmup steps, with one fixed-batch loss check
+per model and backend. `tools/watch_qj_results.sh`
 syncs each completed result table or observed failure, regenerates the chart,
 and pushes it to the private repository. The queues wait for the active GPU
 job to exit before launching the next framework.
@@ -135,10 +142,12 @@ MegaTrain uses the official `infinity` CPU-master source extracted under
 `/mnt/hurry-bench/src/megatrain`. Its benchmark harness loads the text-only
 106.85B or 122.11B model, uses eight GPU worker processes and BF16 CPUAdam
 states, and verifies fixed-batch loss descent before throughput is accepted.
-ZeRO uses DeepSpeed 0.19.1 with stage 3, both parameters and optimizer state
-offloaded to CPU, and BF16 master gradients and optimizer states. This differs
-from the historical optimizer-only offload setup to fit qj5090's 32 GiB GPUs;
-the exact config is `tools/zero3_cpu_offload.json`.
+ZeRO uses DeepSpeed 0.19.1 stage 3 with optimizer state offloaded to CPU and
+parameter shards on GPU, matching the historical offload layout. BF16 master
+gradients and optimizer states remain enabled. The exact config is
+`tools/zero3_cpu_offload.json`; qj5090's 32 GiB GPUs are smaller than the
+historical 48 GiB cards, so each sequence requires a fresh result or a
+recorded failure.
 
 ## qj5090 FSDP2 + oneDNN baseline
 

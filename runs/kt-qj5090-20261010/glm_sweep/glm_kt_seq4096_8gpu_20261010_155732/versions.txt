@@ -1,0 +1,18 @@
+torch 2.9.1+cu128
+kt_kernel /mnt/hurry-bench/py-overlay-contract/kt_kernel/__init__.py
+accelerate /mnt/hurry-bench/src/accelerate/accelerate/__init__.py
+transformers /mnt/hurry-bench/src/transformers/transformers/__init__.py
+bf16_sumsq /mnt/hurry-bench/py-overlay-contract/kt_kernel/grad_norm.py
+GPU 0: NVIDIA GeForce RTX 5090 (UUID: GPU-10d15237-62da-0528-a338-528d55d62842)
+GPU 1: NVIDIA GeForce RTX 5090 (UUID: GPU-6a346502-fcfe-f4dd-05b9-97bd5ab47b34)
+GPU 2: NVIDIA GeForce RTX 5090 (UUID: GPU-c5695d8d-2985-95cf-dd51-43d3dd0af510)
+GPU 3: NVIDIA GeForce RTX 5090 (UUID: GPU-e7e7d9a0-b571-ee0a-b0fe-db48703dc87f)
+GPU 4: NVIDIA GeForce RTX 5090 (UUID: GPU-4fd2e59c-6d67-1fa0-da6d-4c4baabf7c79)
+GPU 5: NVIDIA GeForce RTX 5090 (UUID: GPU-7eb3936c-b58d-b1a3-de7d-8907845ccbb8)
+GPU 6: NVIDIA GeForce RTX 5090 (UUID: GPU-e1c08124-1aa7-30d0-21ba-94fc9e01056c)
+GPU 7: NVIDIA GeForce RTX 5090 (UUID: GPU-49f63a9a-0335-df36-709f-c1ad85080621)
+Model name:                              AMD EPYC 9355 32-Core Processor
+Thread(s) per core:                      2
+Core(s) per socket:                      32
+Socket(s):                               2
+NUMA node(s):                            2

@@ -22,6 +22,7 @@ checkpoint=/mnt/data/models/GLM-4.5-Air
 [[ $model_kind == qwen35_122b ]] && checkpoint=/mnt/data/models/Qwen3.5-122B-A10B
 for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/megatrain_full_ft.py" "$root/tools/kt_case_monitor.py" \
+    "$root/tools/record_qj_semantic_check.py" \
     "$root/tools/collect_qj_fsdp2_onednn_result.py" \
     "$root/src/megatrain/infinity/model/cpu_master.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
@@ -128,6 +129,12 @@ PY
         status=4
         printf '%s\n' "$status" > "$run_dir/exit_code.txt"
     fi
+fi
+if [[ $status -eq 0 && ${MEGATRAIN_REPEAT_BATCH:-0} == 1 ]]; then
+    short=glm
+    [[ $model_kind == qwen35_122b ]] && short=qwen
+    "$python" "$root/tools/record_qj_semantic_check.py" \
+        "$short" megatrain "$run_dir"
 fi
 echo "$run_dir status=$status"
 exit "$status"

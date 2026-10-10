@@ -45,6 +45,21 @@ PY
             fi
             paths+=("$target")
         fi
+        if [[ -f $scratch/semantic_checks.csv ]]; then
+            source=$scratch/semantic_checks.csv
+            target=results/qj5090_semantic_checks.csv
+            normalized=$scratch/semantic_checks_normalized.csv
+            python - "$source" "$normalized" <<'PY'
+import sys
+from pathlib import Path
+Path(sys.argv[2]).write_text(Path(sys.argv[1]).read_text().replace("\r\n", "\n"))
+PY
+            if [[ ! -f $target ]] || ! cmp -s "$normalized" "$target"; then
+                cp "$normalized" "$target"
+                changed=1
+            fi
+            paths+=("$target")
+        fi
         if (( changed )); then
             if python tools/render_qj_figure9.py; then
                 git add -- "${paths[@]}" results/qj5090_figure9.csv \

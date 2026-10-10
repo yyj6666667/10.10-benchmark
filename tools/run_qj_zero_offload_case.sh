@@ -25,6 +25,7 @@ if [[ $model == qwen ]]; then
 fi
 for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/zero3_cpu_offload.json" "$root/tools/kt_bench_entry.py" \
+    "$root/tools/record_qj_semantic_check.py" \
     "$root/tools/step_phase_timer.py" "$root/tools/kt_case_monitor.py" \
     "$root/src/llamafactory-overlay/llamafactory/cli.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
@@ -126,6 +127,10 @@ PY
         status=4
         printf '%s\n' "$status" > "$run_dir/exit_code.txt"
     fi
+fi
+if [[ $status -eq 0 && $mode == semantic ]]; then
+    "$python" "$root/tools/record_qj_semantic_check.py" \
+        "$model" zero_offload "$run_dir"
 fi
 if [[ $status -eq 0 && $mode == benchmark ]]; then
     "$python" "$root/tools/collect_qj_kt_result.py" "$run_dir" \

@@ -33,6 +33,7 @@ gpu_ids=0,1,2,3,4,5,6,7
 for file in "$checkpoint/config.json" "$checkpoint/model.safetensors.index.json" \
     "$root/data/fft_real_100.json" "$root/data/dataset_info.json" \
     "$tools_dir/fsdp2_onednn_full_ft.py" "$tools_dir/kt_case_monitor.py" \
+    "$tools_dir/record_qj_semantic_check.py" \
     "$tools_dir/collect_qj_fsdp2_onednn_result.py" \
     "$root/src/llamafactory-overlay/llamafactory/__init__.py" \
     "$root/src/transformers/transformers/__init__.py"; do
@@ -158,6 +159,12 @@ PY
         status=4
         printf '%s\n' "$status" > "$run_dir/exit_code.txt"
     fi
+fi
+if [[ $status -eq 0 && ${FSDP2_REPEAT_BATCH:-0} == 1 ]]; then
+    short=glm
+    [[ $model_kind == qwen35_122b ]] && short=qwen
+    "$python" "$tools_dir/record_qj_semantic_check.py" \
+        "$short" pytorch_fsdp2_onednn_cpu "$run_dir"
 fi
 if [[ $status -eq 0 && ${FSDP2_REPEAT_BATCH:-0} != 1 && $profile != 1 ]]; then
     "$python" "$tools_dir/collect_qj_fsdp2_onednn_result.py" "$run_dir" > "$run_dir/performance.csv"

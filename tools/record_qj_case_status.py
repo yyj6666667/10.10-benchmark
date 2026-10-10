@@ -69,6 +69,11 @@ def main() -> None:
                                ("Error", "SIGKILL", "Killed", "Traceback"))]
             if relevant:
                 diagnostic = relevant[-1][:160]
+    guard = args.run_dir / "host_memory_guard.txt"
+    if status == "FAILED" and guard.exists():
+        status = "BLOCKED"
+        diagnostic = guard.read_text().strip()
+        evidence = guard
     samples = args.run_dir / "resource_samples.jsonl"
     if samples.exists():
         available = []

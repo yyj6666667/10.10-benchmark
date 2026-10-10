@@ -9,7 +9,8 @@ mkdir -p "$MPLCONFIGDIR"
 
 while true; do
     scratch=$(mktemp -d /tmp/qj-results-sync.XXXXXX)
-    if scp -q -o BatchMode=yes -J sap1 -r \
+    if scp -q -o BatchMode=yes -o ConnectTimeout=10 \
+        -o ServerAliveInterval=10 -o ServerAliveCountMax=2 -J sap1 -r \
         qj5090:/mnt/hurry-bench/results/. "$scratch/"; then
         changed=0
         paths=()

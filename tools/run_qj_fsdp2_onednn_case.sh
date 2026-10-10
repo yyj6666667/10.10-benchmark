@@ -14,6 +14,7 @@ profile=${FSDP2_PROFILE:-0}
 gpu_state_offload=${FSDP2_GPU_STATE_OFFLOAD:-}
 compress_cpu_gradients=${FSDP2_COMPRESS_CPU_GRADIENTS:-0}
 checkpoint_cpu_experts=${FSDP2_CHECKPOINT_CPU_EXPERTS:-}
+chunked_causal_loss=${FSDP2_CHUNKED_CAUSAL_LOSS:-}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
 [[ $compress_cpu_gradients == 0 || $compress_cpu_gradients == 1 ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
@@ -28,6 +29,11 @@ if [[ -z $checkpoint_cpu_experts ]]; then
     fi
 fi
 [[ $checkpoint_cpu_experts == 0 || $checkpoint_cpu_experts == 1 ]] || exit 2
+if [[ -z $chunked_causal_loss ]]; then
+    chunked_causal_loss=0
+    if (( seq_len >= 4096 )); then chunked_causal_loss=1; fi
+fi
+[[ $chunked_causal_loss == 0 || $chunked_causal_loss == 1 ]] || exit 2
 if [[ -z $gpu_state_offload ]]; then
     if (( seq_len >= 4096 )); then gpu_state_offload=1; else gpu_state_offload=0; fi
 fi
@@ -70,11 +76,11 @@ PY
 stamp=$(date +%Y%m%d_%H%M%S)
 run_dir=$root/runs/${model_kind}_fsdp2_onednn_seq${seq_len}_8gpu_${stamp}_$$
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" "$profile" "$gpu_state_offload" "$compress_cpu_gradients" "$checkpoint_cpu_experts" <<'PY'
+"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" "$profile" "$gpu_state_offload" "$compress_cpu_gradients" "$checkpoint_cpu_experts" "$chunked_causal_loss" <<'PY'
 import json
 import sys
 from pathlib import Path
-run, seq, steps, warmup, checkpoint, model_label, model_kind, profile, gpu_state_offload, compress_cpu_gradients, checkpoint_cpu_experts = sys.argv[1:]
+run, seq, steps, warmup, checkpoint, model_label, model_kind, profile, gpu_state_offload, compress_cpu_gradients, checkpoint_cpu_experts, chunked_causal_loss = sys.argv[1:]
 Path(run, "run_config.json").write_text(json.dumps({
     "host": "qj5090",
     "model": model_label,
@@ -92,6 +98,7 @@ Path(run, "run_config.json").write_text(json.dumps({
     "threads_per_rank": 8,
     "gradient_checkpointing": True,
     "cpu_expert_checkpointing": checkpoint_cpu_experts == "1",
+    "chunked_causal_loss": chunked_causal_loss == "1",
     "gpu_optimizer_state_offload": gpu_state_offload == "1",
     "max_grad_norm": 1.0,
     "host_available_guard_gib": 20,
@@ -114,6 +121,7 @@ cmd=("$torchrun" --standalone --nproc_per_node=8 "$tools_dir/fsdp2_onednn_full_f
     --learning-rate 1e-5 --max-grad-norm 1.0 --gradient-checkpointing)
 if [[ $compress_cpu_gradients == 1 ]]; then cmd+=(--compress-cpu-gradients); fi
 if [[ $checkpoint_cpu_experts == 1 ]]; then cmd+=(--checkpoint-cpu-experts); fi
+if [[ $chunked_causal_loss == 1 ]]; then cmd+=(--chunked-causal-loss); fi
 if [[ ${FSDP2_REPEAT_BATCH:-0} == 1 ]]; then cmd+=(--repeat-batch); fi
 if [[ $profile == 1 ]]; then cmd+=(--profile); fi
 if [[ $gpu_state_offload == 1 ]]; then cmd+=(--offload-gpu-optimizer-state); fi

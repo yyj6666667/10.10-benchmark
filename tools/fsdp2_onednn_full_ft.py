@@ -84,6 +84,10 @@ def parse_args() -> argparse.Namespace:
         "--checkpoint-cpu-experts", action="store_true",
         help="recompute CPU expert linears in backward to reduce saved activations",
     )
+    parser.add_argument(
+        "--chunked-causal-loss", action="store_true",
+        help="compute FP32 cross entropy in token chunks without a full FP32 logits copy",
+    )
     parser.add_argument("--repeat-batch", action="store_true")
     parser.add_argument("--release-cache-each-step", action="store_true")
     parser.add_argument(
@@ -925,6 +929,7 @@ def write_results(
         "gpu_optimizer_state_offload": args.offload_gpu_optimizer_state,
         "gradient_checkpointing": args.gradient_checkpointing,
         "cpu_expert_checkpointing": args.checkpoint_cpu_experts,
+        "chunked_causal_loss": args.chunked_causal_loss,
         "release_cache_each_step": args.release_cache_each_step,
         "model_stats": model_stats,
         "stable": {
@@ -950,6 +955,47 @@ def write_results(
         writer.writerows(rows)
 
 
+def chunked_causal_lm_loss(
+    logits: torch.Tensor,
+    labels: torch.Tensor,
+    vocab_size: int,
+    num_items_in_batch: torch.Tensor | int | None = None,
+    ignore_index: int = -100,
+    shift_labels: torch.Tensor | None = None,
+    **_kwargs: Any,
+) -> torch.Tensor:
+    """Same causal cross entropy as Transformers, with bounded FP32 chunks."""
+    if shift_labels is None:
+        shift_labels = F.pad(labels, (0, 1), value=ignore_index)[..., 1:]
+    flat_logits = logits.reshape(-1, vocab_size)
+    flat_labels = shift_labels.reshape(-1).to(logits.device)
+
+    def chunk_loss(scores: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
+        return F.cross_entropy(
+            scores.float(), targets, ignore_index=ignore_index, reduction="sum"
+        )
+
+    losses = [
+        checkpoint(
+            chunk_loss,
+            flat_logits[start : start + 128],
+            flat_labels[start : start + 128],
+            use_reentrant=False,
+        )
+        for start in range(0, flat_logits.shape[0], 128)
+    ]
+    total = torch.stack(losses).sum()
+    if num_items_in_batch is not None:
+        divisor = (
+            num_items_in_batch.to(total.device)
+            if torch.is_tensor(num_items_in_batch)
+            else num_items_in_batch
+        )
+    else:
+        divisor = (flat_labels != ignore_index).sum()
+    return total / divisor
+
+
 def run_training(
     args: argparse.Namespace,
     model: nn.Module,
@@ -960,6 +1006,8 @@ def run_training(
     world_size: int,
     device: torch.device,
 ) -> None:
+    if args.chunked_causal_loss:
+        model.loss_function = chunked_causal_lm_loss
     gpu_params = [p for p in model.parameters() if p.device.type == "cuda"]
     cpu_params = [p for p in model.parameters() if p.device.type == "cpu"]
     if not gpu_params or not cpu_params:

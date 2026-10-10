@@ -72,6 +72,12 @@ CPU expert weights are unbound once per group before the expert loop. This
 lets autograd assemble each full weight gradient once rather than zeroing a
 full parent gradient for every expert selection. The seq2048 one-step profiler
 comparison is recorded in `results/qj5090_glm_fsdp2_onednn_seq2048_profile.md`.
+The first Qwen seq4096 attempt hit CUDA OOM while the default causal loss
+converted the full logits tensor to FP32. The seq4096 retry computes the same
+cross entropy in 128-token chunks and recomputes each chunk in backward, so
+the full FP32 logits copy is never live. The run configuration records this
+option; a BF16/FP32 reference check matched loss within 7.6e-6 and gradients
+exactly on a small masked test case.
 
 An earlier GLM KT 4096 diagnostic ran while another service occupied GPU 0;
 it is excluded from this chart. The clean qj5090 retry succeeded and its

@@ -23,6 +23,8 @@ if [[ $model == qwen ]]; then
     checkpoint=/mnt/data/models/Qwen3.5-122B-A10B
     template=qwen3
 fi
+expected_params=106852245504
+[[ $model == qwen ]] && expected_params=122111526912
 for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/zero3_cpu_offload.json" "$root/tools/kt_bench_entry.py" \
     "$root/tools/record_qj_semantic_check.py" \
@@ -99,6 +101,7 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     FFT_STEP_TIMING_WARMUP_STEPS="$warmup" \
     FFT_STEP_TIMING_TOKENS_PER_STEP="$((8 * seq_len))" \
     FFT_TRAINING_BACKEND=deepspeed DISABLE_VERSION_CHECK=1 \
+    FFT_EXPECTED_TRAINABLE_PARAMS="$expected_params" \
     PYTORCH_ALLOC_CONF=expandable_segments:True \
     "$python" "$root/tools/kt_case_monitor.py" --output "$run_dir" \
     --gpu-ids 0,1,2,3,4,5,6,7 -- "${cmd[@]}" \

@@ -101,6 +101,26 @@ def main() -> None:
     Trainer.save_model = skip_model_save
 
     if os.environ.get("FFT_TRAINING_BACKEND") == "deepspeed":
+        expected = int(os.environ["FFT_EXPECTED_TRAINABLE_PARAMS"])
+        original_train = Trainer.train
+
+        @functools.wraps(original_train)
+        def validated_train(self: Trainer, *args: object, **kwargs: object):
+            # ZeRO-3 stores a shard locally; ds_numel is the logical size.
+            logical = sum(
+                getattr(parameter, "ds_numel", parameter.numel())
+                for parameter in self.model.parameters()
+                if parameter.requires_grad
+            )
+            if logical != expected:
+                raise RuntimeError(
+                    f"trainable parameter contract {logical} != {expected}"
+                )
+            if int(os.environ.get("RANK", "0")) == 0:
+                print(f"[contract] trainable_parameters={logical}", flush=True)
+            return original_train(self, *args, **kwargs)
+
+        Trainer.train = validated_train
         # torchrun has already created the eight ranks. Calling the CLI here
         # would launch a second torchrun from every rank.
         from llamafactory.train.tuner import run_exp

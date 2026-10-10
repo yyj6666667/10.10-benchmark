@@ -116,14 +116,18 @@ from pathlib import Path
 run = Path(sys.argv[1])
 timing = json.loads((run / 'case/step_timing.json').read_text())
 losses = [row['loss'] for row in timing['rows']]
-passed = len(losses) == timing['steps_requested'] and all(map(math.isfinite, losses)) and losses[-1] < losses[0]
+passed = (len(losses) == timing['steps_requested']
+          and len(losses) >= 3
+          and all(map(math.isfinite, losses))
+          and losses[-1] < losses[1]
+          and losses[-1] < losses[0])
 (run / 'loss_check.json').write_text(json.dumps({
     'losses': losses, 'initial_loss': losses[0], 'final_loss': losses[-1],
     'passed': passed, 'repeat_batch': True,
 }, indent=2) + '\n')
 print(f'semantic loss: {losses[0]:.6f} -> {losses[-1]:.6f}; passed={passed}')
 if not passed:
-    raise SystemExit('fixed-batch loss did not decrease')
+    raise SystemExit('fixed-batch loss did not continue decreasing after the first update')
 PY
     then
         status=4

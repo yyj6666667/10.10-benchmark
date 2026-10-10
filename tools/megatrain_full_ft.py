@@ -175,8 +175,9 @@ def main() -> None:
             grad_norm = torch.nn.utils.clip_grad_norm_(parameters, 1.0)
             optimizer.step()
             engine._sync_params_to_gpu()
-            engine.zero_grad()
-            optimizer.zero_grad(set_to_none=True)
+            # CPUMasterModel clears its shared gradients before each dispatch.
+            # Keep Parameter.grad attached to that shared storage so CPUAdam
+            # continues updating the parameters on subsequent steps.
             completed = time.perf_counter()
             if not math.isfinite(loss) or not math.isfinite(float(grad_norm)):
                 raise RuntimeError(f"non-finite loss or gradient at step {step + 1}")

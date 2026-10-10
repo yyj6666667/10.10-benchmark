@@ -1,4 +1,4 @@
 model,backend,sequence_length,status,source,note
-GLM-4.5-Air-106B,megatrain,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_180930_3588308_semantic/launcher.log,exit=1; process file descriptor limit reached
+GLM-4.5-Air-106B,megatrain,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_195333_3616795_semantic/launcher.log,exit=1; RuntimeError: non-finite loss or gradient at step 1
 GLM-4.5-Air-106B,pytorch_onednn,1024,FAILED,qj5090:/mnt/hurry-bench/runs/glm45_air_fsdp2_onednn_seq1024_8gpu_20261010_190454_3611557/launcher.log,exit=1; NCCL collective timed out after 600 s
 GLM-4.5-Air-106B,zero_offload,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261010_181409_3590529_semantic/launcher.log,exit=1; nested torchrun launch failed

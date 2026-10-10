@@ -81,7 +81,9 @@ isolated in `/mnt/hurry-bench/py-overlay-qwen` and recorded as
 `tools/qwen_text_path_contract.patch`. A Qwen case uses
 `tools/run_qj_kt_case.sh SEQ 15 qwen`; the no-training preflight is under
 `runs/kt-qj5090-20261010/preflight/`. The queued GLM sweep waits for both
-concurrent model downloads to finish so download I/O does not affect timing.
+model downloads to finish so download I/O does not affect timing.
+The Qwen transfer is paused while GLM finishes; `tools/resume_qwen_after_glm.sh`
+resumes its downloader when the GLM download log reports success.
 After GLM, `tools/wait_qj_glm_then_run_qwen.sh` runs a fixed-batch Qwen loss
 check, then the eight Qwen sequence lengths in order. The loss check must
 finish with finite gradients and a lower final loss before Qwen throughput

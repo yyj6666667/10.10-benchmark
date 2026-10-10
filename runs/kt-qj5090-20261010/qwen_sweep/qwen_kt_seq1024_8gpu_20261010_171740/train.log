@@ -1,0 +1,1187 @@
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_4
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_5
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_1
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_7
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_3
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_0
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_6
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=kt out=/mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/step_timing/rank_2
+[WARNING|2026-10-10 17:17:54] llamafactory.extras.misc:155 >> Version checking has been disabled, may lead to unexpected behaviors.
+[Gloo] Rank 0 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank [Gloo] Rank [Gloo] Rank [Gloo] Rank [Gloo] Rank [Gloo] Rank [Gloo] Rank 152436 is connected to 7 is connected to  is connected to  is connected to  is connected to  is connected to 7 is connected to 77777 peer ranks. 7 peer ranks.  peer ranks.  peer ranks.  peer ranks.  peer ranks. Expected number of connected peer ranks is :  peer ranks. Expected number of connected peer ranks is : Expected number of connected peer ranks is : Expected number of connected peer ranks is : Expected number of connected peer ranks is : Expected number of connected peer ranks is : 7Expected number of connected peer ranks is : 77777
+7
+
+
+
+
+
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 4, world size: 8, device: cuda:4, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 0, world size: 8, device: cuda:0, distributed training: True, compute dtype: torch.bfloat16
+[INFO|hub.py:364] 2026-10-10 17:17:55,919 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-10 17:17:55,919 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/config.json
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 1, world size: 8, device: cuda:1, distributed training: True, compute dtype: torch.bfloat16
+[INFO|configuration_utils.py:847] 2026-10-10 17:17:55,932 >> Model config Qwen3_5MoeConfig {
+  "architectures": [
+    "Qwen3_5MoeForConditionalGeneration"
+  ],
+  "image_token_id": 248056,
+  "model_type": "qwen3_5_moe",
+  "text_config": {
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "attn_output_gate": true,
+    "bos_token_id": null,
+    "dtype": "bfloat16",
+    "eos_token_id": 248044,
+    "full_attention_interval": 4,
+    "head_dim": 256,
+    "hidden_act": "silu",
+    "hidden_size": 3072,
+    "initializer_range": 0.02,
+    "layer_types": [
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention"
+    ],
+    "linear_conv_kernel_dim": 4,
+    "linear_key_head_dim": 128,
+    "linear_num_key_heads": 16,
+    "linear_num_value_heads": 64,
+    "linear_value_head_dim": 128,
+    "mamba_ssm_dtype": "float32",
+    "max_position_embeddings": 262144,
+    "mlp_only_layers": [],
+    "model_type": "qwen3_5_moe_text",
+    "moe_intermediate_size": 1024,
+    "mtp_num_hidden_layers": 1,
+    "mtp_use_dedicated_embeddings": false,
+    "num_attention_heads": 32,
+    "num_experts": 256,
+    "num_experts_per_tok": 8,
+    "num_hidden_layers": 48,
+    "num_key_value_heads": 2,
+    "output_router_logits": false,
+    "pad_token_id": null,
+    "partial_rotary_factor": 0.25,
+    "rms_norm_eps": 1e-06,
+    "rope_parameters": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    },
+    "router_aux_loss_coef": 0.001,
+    "shared_expert_intermediate_size": 1024,
+    "tie_word_embeddings": false,
+    "use_cache": true,
+    "vocab_size": 248320
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.6.0",
+  "video_token_id": 248057,
+  "vision_config": {
+    "deepstack_visual_indexes": [],
+    "depth": 27,
+    "hidden_act": "gelu_pytorch_tanh",
+    "hidden_size": 1152,
+    "in_channels": 3,
+    "initializer_range": 0.02,
+    "intermediate_size": 4304,
+    "model_type": "qwen3_5_moe_vision",
+    "num_heads": 16,
+    "num_position_embeddings": 2304,
+    "out_hidden_size": 3072,
+    "patch_size": 16,
+    "spatial_merge_size": 2,
+    "temporal_patch_size": 2
+  },
+  "vision_end_token_id": 248054,
+  "vision_start_token_id": 248053
+}
+
+[INFO|hub.py:364] 2026-10-10 17:17:55,933 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-10 17:17:55,933 >> Offline mode: forcing local_files_only=True
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 7, world size: 8, device: cuda:7, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 6, world size: 8, device: cuda:6, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 5, world size: 8, device: cuda:5, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 2, world size: 8, device: cuda:2, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-10 17:17:55] llamafactory.hparams.parser:508 >> Process rank: 3, world size: 8, device: cuda:3, distributed training: True, compute dtype: torch.bfloat16
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[INFO|hub.py:364] 2026-10-10 17:17:56,772 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-10 17:17:56,773 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:268] 2026-10-10 17:17:56,773 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:342] 2026-10-10 17:17:56,773 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/preprocessor_config.json
+[INFO|processing_utils.py:950] 2026-10-10 17:17:56,776 >> Offline mode: forcing local_files_only=True
+[INFO|processing_utils.py:1122] 2026-10-10 17:17:56,776 >> loading configuration file None
+[INFO|image_processing_base.py:268] 2026-10-10 17:17:56,776 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:342] 2026-10-10 17:17:56,776 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/preprocessor_config.json
+[WARNING|logging.py:340] 2026-10-10 17:17:56,776 >> The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[INFO|image_processing_base.py:268] 2026-10-10 17:17:56,781 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:342] 2026-10-10 17:17:56,781 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/preprocessor_config.json
+[INFO|image_processing_base.py:385] 2026-10-10 17:17:56,781 >> Image processor Qwen2VLImageProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "merge_size": 2,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "size": {
+    "longest_edge": 16777216,
+    "shortest_edge": 65536
+  },
+  "temporal_patch_size": 2
+}
+
+[INFO|hub.py:364] 2026-10-10 17:17:56,781 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-10 17:17:56,781 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/config.json
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[INFO|configuration_utils.py:847] 2026-10-10 17:17:56,785 >> Model config Qwen3_5MoeConfig {
+  "architectures": [
+    "Qwen3_5MoeForConditionalGeneration"
+  ],
+  "image_token_id": 248056,
+  "model_type": "qwen3_5_moe",
+  "text_config": {
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "attn_output_gate": true,
+    "bos_token_id": null,
+    "dtype": "bfloat16",
+    "eos_token_id": 248044,
+    "full_attention_interval": 4,
+    "head_dim": 256,
+    "hidden_act": "silu",
+    "hidden_size": 3072,
+    "initializer_range": 0.02,
+    "layer_types": [
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention"
+    ],
+    "linear_conv_kernel_dim": 4,
+    "linear_key_head_dim": 128,
+    "linear_num_key_heads": 16,
+    "linear_num_value_heads": 64,
+    "linear_value_head_dim": 128,
+    "mamba_ssm_dtype": "float32",
+    "max_position_embeddings": 262144,
+    "mlp_only_layers": [],
+    "model_type": "qwen3_5_moe_text",
+    "moe_intermediate_size": 1024,
+    "mtp_num_hidden_layers": 1,
+    "mtp_use_dedicated_embeddings": false,
+    "num_attention_heads": 32,
+    "num_experts": 256,
+    "num_experts_per_tok": 8,
+    "num_hidden_layers": 48,
+    "num_key_value_heads": 2,
+    "output_router_logits": false,
+    "pad_token_id": null,
+    "partial_rotary_factor": 0.25,
+    "rms_norm_eps": 1e-06,
+    "rope_parameters": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    },
+    "router_aux_loss_coef": 0.001,
+    "shared_expert_intermediate_size": 1024,
+    "tie_word_embeddings": false,
+    "use_cache": true,
+    "vocab_size": 248320
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.6.0",
+  "video_token_id": 248057,
+  "vision_config": {
+    "deepstack_visual_indexes": [],
+    "depth": 27,
+    "hidden_act": "gelu_pytorch_tanh",
+    "hidden_size": 1152,
+    "in_channels": 3,
+    "initializer_range": 0.02,
+    "intermediate_size": 4304,
+    "model_type": "qwen3_5_moe_vision",
+    "num_heads": 16,
+    "num_position_embeddings": 2304,
+    "out_hidden_size": 3072,
+    "patch_size": 16,
+    "spatial_merge_size": 2,
+    "temporal_patch_size": 2
+  },
+  "vision_end_token_id": 248054,
+  "vision_start_token_id": 248053
+}
+
+[INFO|hub.py:364] 2026-10-10 17:17:56,785 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-10 17:17:56,785 >> Offline mode: forcing local_files_only=True
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[INFO|video_processing_utils.py:600] 2026-10-10 17:17:57,604 >> Offline mode: forcing local_files_only=True
+[INFO|video_processing_utils.py:684] 2026-10-10 17:17:57,605 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/video_preprocessor_config.json
+[INFO|video_processing_utils.py:600] 2026-10-10 17:17:57,608 >> Offline mode: forcing local_files_only=True
+[INFO|video_processing_utils.py:684] 2026-10-10 17:17:57,608 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/video_preprocessor_config.json
+[INFO|video_processing_utils.py:727] 2026-10-10 17:17:57,608 >> Video processor Qwen3VLVideoProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "do_sample_frames": true,
+  "fps": 2,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "max_frames": 768,
+  "merge_size": 2,
+  "min_frames": 4,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_metadata": false,
+  "size": {
+    "longest_edge": 25165824,
+    "shortest_edge": 4096
+  },
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen3VLVideoProcessor"
+}
+
+[INFO|processing_utils.py:1199] 2026-10-10 17:17:57,609 >> Processor Qwen3VLProcessor:
+- image_processor: Qwen2VLImageProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "merge_size": 2,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "size": {
+    "longest_edge": 16777216,
+    "shortest_edge": 65536
+  },
+  "temporal_patch_size": 2
+}
+
+- tokenizer: TokenizersBackend(name_or_path='/mnt/data/models/Qwen3.5-122B-A10B', vocab_size=248044, model_max_length=262144, padding_side='right', truncation_side='right', special_tokens={'eos_token': '<|im_end|>', 'pad_token': '<|endoftext|>', 'audio_bos_token': '<|audio_start|>', 'audio_eos_token': '<|audio_end|>', 'audio_token': '<|audio_pad|>', 'image_token': '<|image_pad|>', 'video_token': '<|video_pad|>', 'vision_bos_token': '<|vision_start|>', 'vision_eos_token': '<|vision_end|>'}, added_tokens_decoder={
+	248044: AddedToken("<|endoftext|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248045: AddedToken("<|im_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248046: AddedToken("<|im_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248047: AddedToken("<|object_ref_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248048: AddedToken("<|object_ref_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248049: AddedToken("<|box_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248050: AddedToken("<|box_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248051: AddedToken("<|quad_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248052: AddedToken("<|quad_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248053: AddedToken("<|vision_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248054: AddedToken("<|vision_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248055: AddedToken("<|vision_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248056: AddedToken("<|image_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248057: AddedToken("<|video_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248058: AddedToken("<tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248059: AddedToken("</tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248060: AddedToken("<|fim_prefix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248061: AddedToken("<|fim_middle|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248062: AddedToken("<|fim_suffix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248063: AddedToken("<|fim_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248064: AddedToken("<|repo_name|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248065: AddedToken("<|file_sep|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248066: AddedToken("<tool_response>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248067: AddedToken("</tool_response>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248068: AddedToken("<think>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248069: AddedToken("</think>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248070: AddedToken("<|audio_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248071: AddedToken("<|audio_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248072: AddedToken("<tts_pad>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248073: AddedToken("<tts_text_bos>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248074: AddedToken("<tts_text_eod>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248075: AddedToken("<tts_text_bos_single>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248076: AddedToken("<|audio_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+})
+- video_processor: Qwen3VLVideoProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "do_sample_frames": true,
+  "fps": 2,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "max_frames": 768,
+  "merge_size": 2,
+  "min_frames": 4,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_metadata": false,
+  "size": {
+    "longest_edge": 25165824,
+    "shortest_edge": 4096
+  },
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen3VLVideoProcessor"
+}
+
+
+{
+  "image_processor": {
+    "do_convert_rgb": true,
+    "do_normalize": true,
+    "do_rescale": true,
+    "do_resize": true,
+    "image_mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "image_processor_type": "Qwen2VLImageProcessor",
+    "image_std": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "merge_size": 2,
+    "patch_size": 16,
+    "resample": 3,
+    "rescale_factor": 0.00392156862745098,
+    "size": {
+      "longest_edge": 16777216,
+      "shortest_edge": 65536
+    },
+    "temporal_patch_size": 2
+  },
+  "processor_class": "Qwen3VLProcessor",
+  "video_processor": {
+    "do_convert_rgb": true,
+    "do_normalize": true,
+    "do_rescale": true,
+    "do_resize": true,
+    "do_sample_frames": true,
+    "fps": 2,
+    "image_mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "image_std": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "max_frames": 768,
+    "merge_size": 2,
+    "min_frames": 4,
+    "patch_size": 16,
+    "resample": 3,
+    "rescale_factor": 0.00392156862745098,
+    "return_metadata": false,
+    "size": {
+      "longest_edge": 25165824,
+      "shortest_edge": 4096
+    },
+    "temporal_patch_size": 2,
+    "video_processor_type": "Qwen3VLVideoProcessor"
+  }
+}
+
+[WARNING|2026-10-10 17:17:57] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-10 17:17:57] llamafactory.data.loader:144 >> Loading dataset fft_real_100.json...
+Setting num_proc from 16 back to 1 for the train split to disable multiprocessing as it only contains one shard.
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 100 examples [00:00, 6503.30 examples/s]
+Converting format of dataset (num_proc=16):   0%|          | 0/100 [00:00<?, ? examples/s]Converting format of dataset (num_proc=16):   7%|▋         | 7/100 [00:00<00:03, 28.67 examples/s]Converting format of dataset (num_proc=16): 100%|██████████| 100/100 [00:00<00:00, 236.57 examples/s]
+Running tokenizer on dataset (num_proc=16):   0%|          | 0/100 [00:00<?, ? examples/s]Running tokenizer on dataset (num_proc=16):   7%|▋         | 7/100 [00:00<00:12,  7.75 examples/s]Running tokenizer on dataset (num_proc=16):  14%|█▍        | 14/100 [00:01<00:05, 16.05 examples/s]Running tokenizer on dataset (num_proc=16):  21%|██        | 21/100 [00:01<00:03, 24.70 examples/s]Running tokenizer on dataset (num_proc=16):  28%|██▊       | 28/100 [00:01<00:02, 33.05 examples/s]Running tokenizer on dataset (num_proc=16):  34%|███▍      | 34/100 [00:01<00:01, 38.54 examples/s]Running tokenizer on dataset (num_proc=16):  46%|████▌     | 46/100 [00:01<00:00, 54.71 examples/s]Running tokenizer on dataset (num_proc=16):  58%|█████▊    | 58/100 [00:01<00:00, 47.89 examples/s]Running tokenizer on dataset (num_proc=16):  70%|███████   | 70/100 [00:01<00:00, 55.69 examples/s]Running tokenizer on dataset (num_proc=16):  82%|████████▏ | 82/100 [00:02<00:00, 57.70 examples/s]Running tokenizer on dataset (num_proc=16):  94%|█████████▍| 94/100 [00:02<00:00, 57.16 examples/s]Running tokenizer on dataset (num_proc=16): 100%|██████████| 100/100 [00:02<00:00, 37.85 examples/s]
+training example:
+input_ids:
+[248045, 846, 198, 58387, 264, 15352, 321, 11346, 6157, 314, 279, 2614, 10597, 2128, 318, 13218, 220, 16, 1590, 248046, 198, 248045, 74455, 198, 248068, 271, 248069, 271, 1919, 2128, 318, 1209, 220, 16, 11, 10014, 220, 20, 16, 23, 22, 20, 8, 14103, 264, 2020, 314, 12960, 303, 5484, 6618, 11, 5757, 3061, 11, 321, 11436, 24460, 13, 561, 2614, 13753, 3300, 11346, 10597, 87306, 11, 1754, 22451, 383, 264, 12103, 43029, 314, 3349, 12563, 1558, 4706, 321, 42903, 13, 271, 760, 8997, 4536, 303, 264, 20340, 8404, 17830, 15089, 41163, 25721, 864, 11312, 1817, 1754, 3817, 13, 357, 13094, 20952, 13640, 279, 7920, 1528, 310, 264, 1433, 275, 4471, 888, 11312, 11, 494, 864, 279, 1844, 12283, 11312, 513, 3955, 13, 561, 51666, 2706, 80255, 8703, 4557, 34873, 13398, 28109, 41270, 11, 25325, 6009, 17638, 1332, 264, 2526, 18830, 314, 11312, 13081, 279, 12401, 8421, 314, 10885, 13, 62377, 39972, 314, 279, 2706, 80255, 8703, 34429, 369, 7326, 364, 4706, 19150, 321, 1534, 1558, 4131, 303, 3349, 5861, 36, 3983, 13, 271, 760, 8997, 4536, 303, 264, 20340, 8404, 17830, 15089, 41163, 25721, 864, 11312, 1817, 1754, 3817, 13, 357, 13094, 20952, 13640, 279, 7920, 1528, 310, 264, 1433, 275, 4471, 888, 11312, 11, 494, 864, 279, 1844, 12283, 11312, 513, 3955, 13, 561, 51666, 2706, 80255, 8703, 4557, 34873, 13398, 28109, 41270, 11, 25325, 6009, 17638, 1332, 264, 2526, 18830, 314, 11312, 13081, 279, 12401, 8421, 314, 10885, 13, 62377, 39972, 314, 279, 2706, 80255, 8703, 34429, 369, 7326, 364, 4706, 19150, 321, 1534, 1558, 4131, 303, 3349, 5861, 36, 3983, 13, 271, 3214, 1954, 14400, 62978, 9870, 1558, 16432, 11, 7695, 364, 3238, 72245, 15005, 321, 26208, 29482, 13, 10588, 2195, 1264, 10845, 321, 632, 47478, 3992, 1558, 3817, 11881, 3827, 264, 33761, 314, 1146, 1119, 7896, 421, 7915, 9888, 314, 279, 4706, 40701, 440, 33761, 1331, 13, 26012, 15700, 440, 33761, 11930, 303, 279, 2020, 314, 220, 16, 15, 15, 11, 15, 15, 15, 310, 220, 17, 15, 15, 11, 15, 15, 15, 10885, 10752, 1603, 9888, 314, 2658, 48148, 1414, 1345, 19720, 67657, 37794, 1898, 11930, 13, 76802, 30187, 11036, 6891, 34707, 1973, 37281, 383, 35169, 43015, 13, 271, 42750, 1954, 12178, 599, 3512, 61050, 7141, 364, 58282, 3349, 3983, 303, 4779, 14429, 55792, 21066, 13, 3113, 13661, 13914, 440, 16253, 9192, 2308, 1047, 2586, 8948, 23, 11, 8948, 19, 11, 466, 1442, 4570, 15579, 12, 29456, 1954, 24469, 2107, 4779, 41453, 321, 4779, 32288, 8242, 11, 3428, 440, 16866, 5253, 383, 1558, 13016, 13, 20510, 9966, 1954, 29845, 1680, 430, 469, 2737, 48, 11, 32235, 48, 11, 321, 49018, 42750, 31268, 36367, 795, 321, 14658, 12760, 310, 28377, 9966, 1954, 1412, 11, 45328, 279, 4906, 314, 279, 2400, 12, 26308, 1558, 13, 271, 9153, 5555, 6699, 2308, 35971, 8198, 279, 6414, 5129, 364, 67356, 77885, 3992, 3983, 310, 26208, 29482, 466, 8806, 13, 25215, 5555, 70342, 5245, 1680, 430, 6282, 5434, 11, 2400, 6699, 2308, 35971, 8570, 1396, 4528, 303, 279, 1558, 11, 10377, 6966, 23419, 321, 3057, 1861, 13, 4213, 11, 424, 7225, 26678, 50398, 321, 24816, 5134, 364, 660, 4868, 11, 6187, 310, 4779, 8242, 421, 513, 10813, 2250, 310, 2943, 2942, 279, 1558, 1331, 4924, 11, 4295, 47879, 4098, 4706, 14400, 1680, 430, 426, 5318, 47, 466, 17642, 10733, 9625, 1240, 13, 271, 77565, 1527, 63853, 29612, 279, 16432, 314, 264, 3349, 10756, 1558, 310, 264, 8882, 5286, 539, 4706, 279, 5286, 310, 2353, 279, 10756, 579, 2468, 7731, 4598, 1056, 1066, 279, 4751, 7793, 8928, 13, 561, 8153, 18356, 41270, 8677, 539, 279, 10756, 6564, 8807, 1928, 883, 916, 14371, 11532, 321, 1558, 25969, 421, 2503, 8928, 7249, 4021, 11969, 13, 21755, 5562, 3274, 18336, 1527, 63853, 440, 27510, 4416, 12219, 5954, 5286, 3983, 310, 10752, 3043, 12, 22635, 4906, 440, 264, 18830, 314, 279, 4868, 13, 271, 28409, 7230, 59771, 27028, 70178, 50398, 539, 577, 78741, 279, 19556, 4471, 948, 1141, 3521, 436, 17, 7230, 34105, 264, 5024, 11823, 13, 1061, 14334, 369, 7695, 2894, 303, 279, 3988, 17102, 314, 4706, 948, 4528, 16947, 1189, 7936, 3349, 89303, 11, 321, 303, 3983, 440, 1599, 13224, 1332, 19556, 8195, 19965, 628, 22889, 88544, 7638, 13, 561, 59771, 11823, 369, 10813, 716, 1881, 220, 15, 13, 20, 321, 220, 16, 13, 15, 11, 440, 16097, 16070, 314, 19556, 38433, 6600, 4706, 310, 10817, 53442, 466, 3728, 17638, 303, 1704, 1340, 3983, 13, 271, 34944, 899, 6618, 31910, 15346, 11182, 310, 28758, 3790, 24460, 1521, 4706, 383, 491, 8806, 10813, 401, 21645, 4906, 383, 8334, 9218, 8806, 11, 264, 24057, 3750, 430, 51779, 62830, 13, 997, 377, 1506, 278, 5792, 5245, 47699, 62830, 539, 19720, 264, 33341, 4011, 314, 3162, 9989, 11, 1345, 84283, 19222, 44782, 537, 4203, 310, 13914, 23860, 2894, 364, 2235, 8806, 13, 20424, 3309, 13089, 278, 6699, 2308, 35971, 314, 3349, 77885, 3983, 8524, 48056, 2599, 62830, 1056, 4706, 264, 25766, 16761, 3790, 13, 271, 760, 8997, 4536, 303, 264, 20340, 8404, 17830, 15089, 41163, 25721, 864, 11312, 1817, 1754, 3817, 13, 357, 13094, 20952, 13640, 279, 7920, 1528, 310, 264, 1433, 275, 4471, 888, 11312, 11, 494, 864, 279, 1844, 12283, 11312, 513, 3955, 13, 561, 51666, 2706, 80255, 8703, 4557, 34873, 13398, 28109, 41270, 11, 25325, 6009, 17638, 1332, 264, 2526, 18830, 314, 11312, 13081, 279, 12401, 8421, 314, 10885, 13, 62377, 39972, 314, 279, 2706, 80255, 8703, 34429, 369, 7326, 364, 4706, 19150, 321, 1534, 1558, 4131, 303, 3349, 5861, 36, 3983, 13, 271, 24531, 14835, 2074, 45127, 3714, 4528, 34030, 3808, 5081, 7370, 11, 10377, 13094, 13224, 2166, 3349, 310, 4786, 383, 264, 3074, 21966, 310, 381, 23424, 10857, 7638, 13, 8618, 3545, 9687, 264, 2713, 466, 3145, 15511, 314, 279, 4528, 5979, 11, 25822, 264, 2136, 5979, 29283, 11, 321, 1179, 87086, 303, 449, 660, 5331, 12986, 466, 660, 2294, 1792, 310, 15491, 6907, 2961, 13, 5788, 7139, 364, 1546, 3349, 34030, 11, 15167, 14835, 2074, 37631, 10222, 29997, 52351, 310, 279, 1324, 314, 15167, 12, 44564, 20169, 11, 3154, 424, 1379, 22957, 948, 32288, 369, 40374, 13, 271, 34944, 899, 6618, 31910, 15346, 11182, 310, 28758, 3790, 24460, 1521, 4706, 383, 491, 8806, 10813, 401]
+inputs:
+<|im_start|>user
+Provide a comprehensive and detailed analysis of the following technical document (sample 1):<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software, and hardware optimization. The following sections provide detailed technical exposition, each expanding on a distinct facet of large-scale model training and inference.
+
+The router module in a mixture-of-experts transformer determines which experts process each token. A linear projection maps the hidden state to a logit vector over experts, from which the top-k experts are selected. The auxiliary load-balancing loss encourages uniform routing distributions, preventing expert collapse where a small fraction of experts handles the vast majority of tokens. Proper tuning of the load-balancing coefficient is essential for training stability and final model quality in large MoE models.
+
+The router module in a mixture-of-experts transformer determines which experts process each token. A linear projection maps the hidden state to a logit vector over experts, from which the top-k experts are selected. The auxiliary load-balancing loss encourages uniform routing distributions, preventing expert collapse where a small fraction of experts handles the vast majority of tokens. Proper tuning of the load-balancing coefficient is essential for training stability and final model quality in large MoE models.
+
+Tokenization strategies profoundly influence model capabilities, particularly for low-resource languages and specialized domains. Byte-pair encoding and unigram language model tokenizers learn a vocabulary of subword units that balance coverage of the training corpus with vocabulary size. Models trained with vocabulary sizes in the range of 100,000 to 200,000 tokens achieve good coverage of multilingual text while maintaining manageable embedding table sizes. SentencePiece processes raw Unicode without relying on whitespace conventions.
+
+Quantization techniques have become indispensable tools for deploying large models in memory-constrained environments. By representing weights with fewer bits-typically INT8, INT4, or even lower precision-quantization reduces both memory footprint and memory bandwidth requirements, often with minimal impact on model accuracy. Advanced quantization schemes such as GPTQ, AWQ, and SmoothQuant incorporate calibration data and activation statistics to minimize quantization error, preserving the performance of the full-precision model.
+
+Full parameter fine-tuning remains the gold standard for adapting pretrained language models to specialized domains or tasks. Unlike parameter-efficient methods such as LoRA, full fine-tuning updates every weight in the model, allowing maximum flexibility and expressivity. However, it requires storing gradients and optimizer states for all parameters, leading to memory requirements that are typically three to four times the model size itself, necessitating distributed training strategies such as FSDP or DeepSpeed ZeRO.
+
+Knowledge distillation transfers the capabilities of a large teacher model to a smaller student by training the student to match the teacher's output distribution rather than just the ground truth labels. The soft probability distributions produced by the teacher carry rich information about inter-class relationships and model uncertainty that hard labels alone cannot capture. Combining task-specific distillation with intermediate feature matching allows student models to achieve near-teacher performance with a fraction of the parameters.
+
+Gradient norm clipping prevents exploding gradients by rescaling the gradient vector when its global L2 norm exceeds a specified threshold. This technique is particularly important in the early stages of training when weight initialization may produce large activations, and in models with many layers where gradient magnitudes can compound multiplicatively. The clipping threshold is typically set between 0.5 and 1.0, with careful monitoring of gradient norms throughout training to detect instability or mode collapse in generative models.
+
+Continual learning poses fundamental challenges to neural network optimization because training on new tasks typically degrades performance on previously learned tasks, a phenomenon known as catastrophic forgetting. Rehearsal-based methods mitigate forgetting by maintaining a replay buffer of past examples, while regularization approaches penalize changes to weights deemed important for old tasks. Domain-incremental fine-tuning of large pretrained models generally exhibits less forgetting than training a randomly initialized network.
+
+The router module in a mixture-of-experts transformer determines which experts process each token. A linear projection maps the hidden state to a logit vector over experts, from which the top-k experts are selected. The auxiliary load-balancing loss encourages uniform routing distributions, preventing expert collapse where a small fraction of experts handles the vast majority of tokens. Proper tuning of the load-balancing coefficient is essential for training stability and final model quality in large MoE models.
+
+Tensor parallelism partitions individual weight matrices across multiple devices, allowing linear layers too large to fit on a single GPU to be computed collaboratively. Each device holds a row or column slice of the weight matrix, performs a local matrix multiply, and then participates in an all-reduce or all-gather to combine partial results. While effective for very large matrices, tensor parallelism introduces communication overhead proportional to the number of tensor-parallel ranks, making it most beneficial when bandwidth is ample.
+
+Continual learning poses fundamental challenges to neural network optimization because training on new tasks typically de
+label_ids:
+[-100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, -100, 248068, 271, 248069, 271, 1919, 2128, 318, 1209, 220, 16, 11, 10014, 220, 20, 16, 23, 22, 20, 8, 14103, 264, 2020, 314, 12960, 303, 5484, 6618, 11, 5757, 3061, 11, 321, 11436, 24460, 13, 561, 2614, 13753, 3300, 11346, 10597, 87306, 11, 1754, 22451, 383, 264, 12103, 43029, 314, 3349, 12563, 1558, 4706, 321, 42903, 13, 271, 760, 8997, 4536, 303, 264, 20340, 8404, 17830, 15089, 41163, 25721, 864, 11312, 1817, 1754, 3817, 13, 357, 13094, 20952, 13640, 279, 7920, 1528, 310, 264, 1433, 275, 4471, 888, 11312, 11, 494, 864, 279, 1844, 12283, 11312, 513, 3955, 13, 561, 51666, 2706, 80255, 8703, 4557, 34873, 13398, 28109, 41270, 11, 25325, 6009, 17638, 1332, 264, 2526, 18830, 314, 11312, 13081, 279, 12401, 8421, 314, 10885, 13, 62377, 39972, 314, 279, 2706, 80255, 8703, 34429, 369, 7326, 364, 4706, 19150, 321, 1534, 1558, 4131, 303, 3349, 5861, 36, 3983, 13, 271, 760, 8997, 4536, 303, 264, 20340, 8404, 17830, 15089, 41163, 25721, 864, 11312, 1817, 1754, 3817, 13, 357, 13094, 20952, 13640, 279, 7920, 1528, 310, 264, 1433, 275, 4471, 888, 11312, 11, 494, 864, 279, 1844, 12283, 11312, 513, 3955, 13, 561, 51666, 2706, 80255, 8703, 4557, 34873, 13398, 28109, 41270, 11, 25325, 6009, 17638, 1332, 264, 2526, 18830, 314, 11312, 13081, 279, 12401, 8421, 314, 10885, 13, 62377, 39972, 314, 279, 2706, 80255, 8703, 34429, 369, 7326, 364, 4706, 19150, 321, 1534, 1558, 4131, 303, 3349, 5861, 36, 3983, 13, 271, 3214, 1954, 14400, 62978, 9870, 1558, 16432, 11, 7695, 364, 3238, 72245, 15005, 321, 26208, 29482, 13, 10588, 2195, 1264, 10845, 321, 632, 47478, 3992, 1558, 3817, 11881, 3827, 264, 33761, 314, 1146, 1119, 7896, 421, 7915, 9888, 314, 279, 4706, 40701, 440, 33761, 1331, 13, 26012, 15700, 440, 33761, 11930, 303, 279, 2020, 314, 220, 16, 15, 15, 11, 15, 15, 15, 310, 220, 17, 15, 15, 11, 15, 15, 15, 10885, 10752, 1603, 9888, 314, 2658, 48148, 1414, 1345, 19720, 67657, 37794, 1898, 11930, 13, 76802, 30187, 11036, 6891, 34707, 1973, 37281, 383, 35169, 43015, 13, 271, 42750, 1954, 12178, 599, 3512, 61050, 7141, 364, 58282, 3349, 3983, 303, 4779, 14429, 55792, 21066, 13, 3113, 13661, 13914, 440, 16253, 9192, 2308, 1047, 2586, 8948, 23, 11, 8948, 19, 11, 466, 1442, 4570, 15579, 12, 29456, 1954, 24469, 2107, 4779, 41453, 321, 4779, 32288, 8242, 11, 3428, 440, 16866, 5253, 383, 1558, 13016, 13, 20510, 9966, 1954, 29845, 1680, 430, 469, 2737, 48, 11, 32235, 48, 11, 321, 49018, 42750, 31268, 36367, 795, 321, 14658, 12760, 310, 28377, 9966, 1954, 1412, 11, 45328, 279, 4906, 314, 279, 2400, 12, 26308, 1558, 13, 271, 9153, 5555, 6699, 2308, 35971, 8198, 279, 6414, 5129, 364, 67356, 77885, 3992, 3983, 310, 26208, 29482, 466, 8806, 13, 25215, 5555, 70342, 5245, 1680, 430, 6282, 5434, 11, 2400, 6699, 2308, 35971, 8570, 1396, 4528, 303, 279, 1558, 11, 10377, 6966, 23419, 321, 3057, 1861, 13, 4213, 11, 424, 7225, 26678, 50398, 321, 24816, 5134, 364, 660, 4868, 11, 6187, 310, 4779, 8242, 421, 513, 10813, 2250, 310, 2943, 2942, 279, 1558, 1331, 4924, 11, 4295, 47879, 4098, 4706, 14400, 1680, 430, 426, 5318, 47, 466, 17642, 10733, 9625, 1240, 13, 271, 77565, 1527, 63853, 29612, 279, 16432, 314, 264, 3349, 10756, 1558, 310, 264, 8882, 5286, 539, 4706, 279, 5286, 310, 2353, 279, 10756, 579, 2468, 7731, 4598, 1056, 1066, 279, 4751, 7793, 8928, 13, 561, 8153, 18356, 41270, 8677, 539, 279, 10756, 6564, 8807, 1928, 883, 916, 14371, 11532, 321, 1558, 25969, 421, 2503, 8928, 7249, 4021, 11969, 13, 21755, 5562, 3274, 18336, 1527, 63853, 440, 27510, 4416, 12219, 5954, 5286, 3983, 310, 10752, 3043, 12, 22635, 4906, 440, 264, 18830, 314, 279, 4868, 13, 271, 28409, 7230, 59771, 27028, 70178, 50398, 539, 577, 78741, 279, 19556, 4471, 948, 1141, 3521, 436, 17, 7230, 34105, 264, 5024, 11823, 13, 1061, 14334, 369, 7695, 2894, 303, 279, 3988, 17102, 314, 4706, 948, 4528, 16947, 1189, 7936, 3349, 89303, 11, 321, 303, 3983, 440, 1599, 13224, 1332, 19556, 8195, 19965, 628, 22889, 88544, 7638, 13, 561, 59771, 11823, 369, 10813, 716, 1881, 220, 15, 13, 20, 321, 220, 16, 13, 15, 11, 440, 16097, 16070, 314, 19556, 38433, 6600, 4706, 310, 10817, 53442, 466, 3728, 17638, 303, 1704, 1340, 3983, 13, 271, 34944, 899, 6618, 31910, 15346, 11182, 310, 28758, 3790, 24460, 1521, 4706, 383, 491, 8806, 10813, 401, 21645, 4906, 383, 8334, 9218, 8806, 11, 264, 24057, 3750, 430, 51779, 62830, 13, 997, 377, 1506, 278, 5792, 5245, 47699, 62830, 539, 19720, 264, 33341, 4011, 314, 3162, 9989, 11, 1345, 84283, 19222, 44782, 537, 4203, 310, 13914, 23860, 2894, 364, 2235, 8806, 13, 20424, 3309, 13089, 278, 6699, 2308, 35971, 314, 3349, 77885, 3983, 8524, 48056, 2599, 62830, 1056, 4706, 264, 25766, 16761, 3790, 13, 271, 760, 8997, 4536, 303, 264, 20340, 8404, 17830, 15089, 41163, 25721, 864, 11312, 1817, 1754, 3817, 13, 357, 13094, 20952, 13640, 279, 7920, 1528, 310, 264, 1433, 275, 4471, 888, 11312, 11, 494, 864, 279, 1844, 12283, 11312, 513, 3955, 13, 561, 51666, 2706, 80255, 8703, 4557, 34873, 13398, 28109, 41270, 11, 25325, 6009, 17638, 1332, 264, 2526, 18830, 314, 11312, 13081, 279, 12401, 8421, 314, 10885, 13, 62377, 39972, 314, 279, 2706, 80255, 8703, 34429, 369, 7326, 364, 4706, 19150, 321, 1534, 1558, 4131, 303, 3349, 5861, 36, 3983, 13, 271, 24531, 14835, 2074, 45127, 3714, 4528, 34030, 3808, 5081, 7370, 11, 10377, 13094, 13224, 2166, 3349, 310, 4786, 383, 264, 3074, 21966, 310, 381, 23424, 10857, 7638, 13, 8618, 3545, 9687, 264, 2713, 466, 3145, 15511, 314, 279, 4528, 5979, 11, 25822, 264, 2136, 5979, 29283, 11, 321, 1179, 87086, 303, 449, 660, 5331, 12986, 466, 660, 2294, 1792, 310, 15491, 6907, 2961, 13, 5788, 7139, 364, 1546, 3349, 34030, 11, 15167, 14835, 2074, 37631, 10222, 29997, 52351, 310, 279, 1324, 314, 15167, 12, 44564, 20169, 11, 3154, 424, 1379, 22957, 948, 32288, 369, 40374, 13, 271, 34944, 899, 6618, 31910, 15346, 11182, 310, 28758, 3790, 24460, 1521, 4706, 383, 491, 8806, 10813, 401]
+labels:
+<think>
+
+</think>
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software, and hardware optimization. The following sections provide detailed technical exposition, each expanding on a distinct facet of large-scale model training and inference.
+
+The router module in a mixture-of-experts transformer determines which experts process each token. A linear projection maps the hidden state to a logit vector over experts, from which the top-k experts are selected. The auxiliary load-balancing loss encourages uniform routing distributions, preventing expert collapse where a small fraction of experts handles the vast majority of tokens. Proper tuning of the load-balancing coefficient is essential for training stability and final model quality in large MoE models.
+
+The router module in a mixture-of-experts transformer determines which experts process each token. A linear projection maps the hidden state to a logit vector over experts, from which the top-k experts are selected. The auxiliary load-balancing loss encourages uniform routing distributions, preventing expert collapse where a small fraction of experts handles the vast majority of tokens. Proper tuning of the load-balancing coefficient is essential for training stability and final model quality in large MoE models.
+
+Tokenization strategies profoundly influence model capabilities, particularly for low-resource languages and specialized domains. Byte-pair encoding and unigram language model tokenizers learn a vocabulary of subword units that balance coverage of the training corpus with vocabulary size. Models trained with vocabulary sizes in the range of 100,000 to 200,000 tokens achieve good coverage of multilingual text while maintaining manageable embedding table sizes. SentencePiece processes raw Unicode without relying on whitespace conventions.
+
+Quantization techniques have become indispensable tools for deploying large models in memory-constrained environments. By representing weights with fewer bits-typically INT8, INT4, or even lower precision-quantization reduces both memory footprint and memory bandwidth requirements, often with minimal impact on model accuracy. Advanced quantization schemes such as GPTQ, AWQ, and SmoothQuant incorporate calibration data and activation statistics to minimize quantization error, preserving the performance of the full-precision model.
+
+Full parameter fine-tuning remains the gold standard for adapting pretrained language models to specialized domains or tasks. Unlike parameter-efficient methods such as LoRA, full fine-tuning updates every weight in the model, allowing maximum flexibility and expressivity. However, it requires storing gradients and optimizer states for all parameters, leading to memory requirements that are typically three to four times the model size itself, necessitating distributed training strategies such as FSDP or DeepSpeed ZeRO.
+
+Knowledge distillation transfers the capabilities of a large teacher model to a smaller student by training the student to match the teacher's output distribution rather than just the ground truth labels. The soft probability distributions produced by the teacher carry rich information about inter-class relationships and model uncertainty that hard labels alone cannot capture. Combining task-specific distillation with intermediate feature matching allows student models to achieve near-teacher performance with a fraction of the parameters.
+
+Gradient norm clipping prevents exploding gradients by rescaling the gradient vector when its global L2 norm exceeds a specified threshold. This technique is particularly important in the early stages of training when weight initialization may produce large activations, and in models with many layers where gradient magnitudes can compound multiplicatively. The clipping threshold is typically set between 0.5 and 1.0, with careful monitoring of gradient norms throughout training to detect instability or mode collapse in generative models.
+
+Continual learning poses fundamental challenges to neural network optimization because training on new tasks typically degrades performance on previously learned tasks, a phenomenon known as catastrophic forgetting. Rehearsal-based methods mitigate forgetting by maintaining a replay buffer of past examples, while regularization approaches penalize changes to weights deemed important for old tasks. Domain-incremental fine-tuning of large pretrained models generally exhibits less forgetting than training a randomly initialized network.
+
+The router module in a mixture-of-experts transformer determines which experts process each token. A linear projection maps the hidden state to a logit vector over experts, from which the top-k experts are selected. The auxiliary load-balancing loss encourages uniform routing distributions, preventing expert collapse where a small fraction of experts handles the vast majority of tokens. Proper tuning of the load-balancing coefficient is essential for training stability and final model quality in large MoE models.
+
+Tensor parallelism partitions individual weight matrices across multiple devices, allowing linear layers too large to fit on a single GPU to be computed collaboratively. Each device holds a row or column slice of the weight matrix, performs a local matrix multiply, and then participates in an all-reduce or all-gather to combine partial results. While effective for very large matrices, tensor parallelism introduces communication overhead proportional to the number of tensor-parallel ranks, making it most beneficial when bandwidth is ample.
+
+Continual learning poses fundamental challenges to neural network optimization because training on new tasks typically de
+[INFO|hub.py:364] 2026-10-10 17:18:00,942 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-10 17:18:00,943 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/config.json
+[INFO|configuration_utils.py:847] 2026-10-10 17:18:00,956 >> Model config Qwen3_5MoeConfig {
+  "architectures": [
+    "Qwen3_5MoeForConditionalGeneration"
+  ],
+  "image_token_id": 248056,
+  "model_type": "qwen3_5_moe",
+  "text_config": {
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "attn_output_gate": true,
+    "bos_token_id": null,
+    "dtype": "bfloat16",
+    "eos_token_id": 248044,
+    "full_attention_interval": 4,
+    "head_dim": 256,
+    "hidden_act": "silu",
+    "hidden_size": 3072,
+    "initializer_range": 0.02,
+    "layer_types": [
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention"
+    ],
+    "linear_conv_kernel_dim": 4,
+    "linear_key_head_dim": 128,
+    "linear_num_key_heads": 16,
+    "linear_num_value_heads": 64,
+    "linear_value_head_dim": 128,
+    "mamba_ssm_dtype": "float32",
+    "max_position_embeddings": 262144,
+    "mlp_only_layers": [],
+    "model_type": "qwen3_5_moe_text",
+    "moe_intermediate_size": 1024,
+    "mtp_num_hidden_layers": 1,
+    "mtp_use_dedicated_embeddings": false,
+    "num_attention_heads": 32,
+    "num_experts": 256,
+    "num_experts_per_tok": 8,
+    "num_hidden_layers": 48,
+    "num_key_value_heads": 2,
+    "output_router_logits": false,
+    "pad_token_id": null,
+    "partial_rotary_factor": 0.25,
+    "rms_norm_eps": 1e-06,
+    "rope_parameters": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    },
+    "router_aux_loss_coef": 0.001,
+    "shared_expert_intermediate_size": 1024,
+    "tie_word_embeddings": false,
+    "use_cache": true,
+    "vocab_size": 248320
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.6.0",
+  "video_token_id": 248057,
+  "vision_config": {
+    "deepstack_visual_indexes": [],
+    "depth": 27,
+    "hidden_act": "gelu_pytorch_tanh",
+    "hidden_size": 1152,
+    "in_channels": 3,
+    "initializer_range": 0.02,
+    "intermediate_size": 4304,
+    "model_type": "qwen3_5_moe_vision",
+    "num_heads": 16,
+    "num_position_embeddings": 2304,
+    "out_hidden_size": 3072,
+    "patch_size": 16,
+    "spatial_merge_size": 2,
+    "temporal_patch_size": 2
+  },
+  "vision_end_token_id": 248054,
+  "vision_start_token_id": 248053
+}
+
+[INFO|2026-10-10 17:18:00] llamafactory.model.model_utils.kv_cache:144 >> KV cache is disabled during training.
+[INFO|modeling_utils.py:706] 2026-10-10 17:18:01,115 >> loading weights file /mnt/data/models/Qwen3.5-122B-A10B/model.safetensors.index.json
+[INFO|modeling_utils.py:790] 2026-10-10 17:18:01,116 >> Since the `dtype` attribute can't be found in model's config object, will use dtype={dtype} as derived from model's weights
+[INFO|configuration_utils.py:1027] 2026-10-10 17:18:01,117 >> Generate config GenerationConfig {
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "use_cache": false
+}
+
+[WARNING|logging.py:340] 2026-10-10 17:18:01,130 >> The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 13825.71it/s]
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+KT activation policy: cpu=retain, gpu=recompute, checkpoint_forward_reuse=True, share_cache_pool=False, world_size=8
+Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 65519.70it/s]
+Loading weights:   0%|          | 0/1068 [00:00<?, ?it/s]Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 32011.64it/s]
+Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 28459.45it/s]
+Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 32306.23it/s]
+Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 27610.60it/s]
+Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 29002.46it/s]
+Loading weights: 100%|██████████| 1068/1068 [00:00<00:00, 29650.55it/s]
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+<string>:32: FutureWarning: KT_REUSE_CHECKPOINT_FORWARD is deprecated; configure kt_activation_policy through the training frontend instead
+CPUInfer[0x56134aaa4de0]: Hello
+WorkerPool[0x56134a85c350] 2 subpools, [numa:threads][0:32] [1:32] 
+===========In NumaPool============
+In Numa Worker Pool at NUMA 0, 32 threads
+===========In NumaPool============
+In Numa Worker Pool at NUMA 1, 32 threads
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 0, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=0 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=0 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 0
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 1, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=1 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=1 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 1
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 2, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=2 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=2 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 2
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 3, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=3 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating AMX_SFT_MOE_TP layer=3 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 3
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 4, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=4 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=4 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 4
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 5, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=5 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=5 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 5
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 6, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=6 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=6 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 6
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 7, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=7 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating AMX_SFT_MOE_TP layer=7 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 7
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 8, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=8 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=8 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 8
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 9, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=9 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=9 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 9
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 10, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=10 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=10 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 10
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 11, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=11 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=11 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 11
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 12, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=12 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating AMX_SFT_MOE_TP layer=12 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 12
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 13, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=13 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=13 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 13
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 14, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=14 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating AMX_SFT_MOE_TP layer=14 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 14
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 15, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=15 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=15 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 15
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 16, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=16 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=16 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 16
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 17, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=17 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating AMX_SFT_MOE_TP layer=17 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 17
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 18, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=18 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=18 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 18
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 19, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=19 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=19 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 19
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 20, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=20 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=20 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 20
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 21, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=21 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=21 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 21
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 22, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=22 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=22 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 22
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 23, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=23 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=23 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 23
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 24, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=24 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=24 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 24
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 25, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=25 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=25 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 25
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 26, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=26 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=26 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 26
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 27, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=27 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=27 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 27
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 28, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=28 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=28 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 28
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 29, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=29 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=29 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 29
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 30, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=30 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=30 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 30
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 31, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=31 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=31 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 31
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 32, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=32 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating AMX_SFT_MOE_TP layer=32 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 32
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 33, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=33 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=33 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 33
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 34, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=34 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=34 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 34
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 35, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=35 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=35 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 35
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 36, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=36 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=36 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 36
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 37, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=37 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=37 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 37
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 38, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=38 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=38 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 38
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 39, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=39 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=39 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 39
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 40, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=40 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=40 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 40
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 41, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=41 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=41 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 41
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 42, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=42 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=42 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 42
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 43, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=43 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=43 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 43
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 44, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=44 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=44 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 44
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 45, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=45 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=45 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 45
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 46, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=46 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=46 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 46
+[BF16SafeTensorLoader] Detected format: packed (Qwen3.5 MoE style)
+TP MOE layer 47, pool: 0x56134a85c350, expert num: 256, num_experts_per_tok: 8
+Created BF16_MOE_TP 0 at numa 0 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=47 tp_part=0 at numa 0 skiplora false share_backward_bb true share_cache_pool false
+Created BF16_MOE_TP 1 at numa 1 (backend=AVX512-BF16)
+Creating AMX_SFT_MOE_TP layer=47 tp_part=1 at numa 1 skiplora false share_backward_bb true share_cache_pool false
+Creating TP_MOE_SFT layer 47
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[INFO|modeling_utils.py:4236] 2026-10-10 17:18:43,709 >> [KT] Wrapped 48 MoE layers in from_pretrained
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[INFO|configuration_utils.py:978] 2026-10-10 17:18:43,713 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/generation_config.json
+[INFO|configuration_utils.py:1027] 2026-10-10 17:18:43,713 >> Generate config GenerationConfig {
+  "bos_token_id": 248044,
+  "do_sample": true,
+  "eos_token_id": [
+    248046,
+    248044
+  ],
+  "pad_token_id": 248044,
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95
+}
+
+[INFO|dynamic_module_utils.py:406] 2026-10-10 17:18:43,713 >> Could not locate the custom_generate/generate.py inside /mnt/data/models/Qwen3.5-122B-A10B.
+[WARNING|2026-10-10 17:18:43] llamafactory.model.model_utils.checkpointing:149 >> You are using fsdp2, `use_reentrant_gc` has been set to False.
+[INFO|2026-10-10 17:18:43] llamafactory.model.model_utils.checkpointing:144 >> Gradient checkpointing enabled.
+[INFO|2026-10-10 17:18:43] llamafactory.model.model_utils.attention:144 >> Using torch SDPA for faster training and inference.
+[INFO|2026-10-10 17:18:43] llamafactory.model.adapter:144 >> Pure bf16 / BAdam detected, remaining trainable params in half precision.
+[INFO|2026-10-10 17:18:43] llamafactory.model.adapter:144 >> Fine-tuning method: Full
+[INFO|2026-10-10 17:18:43] llamafactory.model.model_utils.visual:144 >> Set vision model not trainable: ['visual.pos_embed', 'visual.patch_embed', 'visual.blocks'].
+[INFO|2026-10-10 17:18:43] llamafactory.model.model_utils.visual:144 >> Set multi model projector not trainable: ['model.visual.merger'].
+[WARNING|2026-10-10 17:18:43] llamafactory.model.loader:149 >> Detected torch 2.9.x with Conv3D in Qwen3.5 vision modules. Continuing because KT text LoRA training does not exercise the vision tower.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[INFO|2026-10-10 17:18:43] llamafactory.model.loader:144 >> trainable params: 6,147,409,920 || all params: 122,562,817,776 || trainable%: 5.0157
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[INFO|trainer.py:806] 2026-10-10 17:18:43,728 >> max_steps is given, it will override any value given in num_train_epochs
+[WARNING|trainer_utils.py:1238] 2026-10-10 17:18:43,730 >> The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+/mnt/hurry-bench/src/accelerate/accelerate/utils/fsdp_utils.py:1099: UserWarning: FSDP upcast of low precision parameters to fp32 (since mixed_precision != 'no') may affect the precision of model checkpoints. This effects 783 parameters: ['model.language_model.embed_tokens.weight', 'model.language_model.layers.0.linear_attn.dt_bias', 'model.language_model.layers.0.linear_attn.A_log', 'model.language_model.layers.0.linear_attn.conv1d.weight', 'model.language_model.layers.0.linear_attn.norm.weight', 'model.language_model.layers.0.linear_attn.out_proj.weight', 'model.language_model.layers.0.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.0.linear_attn.in_proj_z.weight', 'model.language_model.layers.0.linear_attn.in_proj_b.weight', 'model.language_model.layers.0.linear_attn.in_proj_a.weight', 'model.language_model.layers.0.mlp.gate.weight', 'model.language_model.layers.0.mlp._original_router.weight', 'model.language_model.layers.0.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.0.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.0.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.0.mlp.shared_expert_gate.weight', 'model.language_model.layers.0.input_layernorm.weight', 'model.language_model.layers.0.post_attention_layernorm.weight', 'model.language_model.layers.1.linear_attn.dt_bias', 'model.language_model.layers.1.linear_attn.A_log', 'model.language_model.layers.1.linear_attn.conv1d.weight', 'model.language_model.layers.1.linear_attn.norm.weight', 'model.language_model.layers.1.linear_attn.out_proj.weight', 'model.language_model.layers.1.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.1.linear_attn.in_proj_z.weight', 'model.language_model.layers.1.linear_attn.in_proj_b.weight', 'model.language_model.layers.1.linear_attn.in_proj_a.weight', 'model.language_model.layers.1.mlp.gate.weight', 'model.language_model.layers.1.mlp._original_router.weight', 'model.language_model.layers.1.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.1.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.1.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.1.mlp.shared_expert_gate.weight', 'model.language_model.layers.1.input_layernorm.weight', 'model.language_model.layers.1.post_attention_layernorm.weight', 'model.language_model.layers.2.linear_attn.dt_bias', 'model.language_model.layers.2.linear_attn.A_log', 'model.language_model.layers.2.linear_attn.conv1d.weight', 'model.language_model.layers.2.linear_attn.norm.weight', 'model.language_model.layers.2.linear_attn.out_proj.weight', 'model.language_model.layers.2.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.2.linear_attn.in_proj_z.weight', 'model.language_model.layers.2.linear_attn.in_proj_b.weight', 'model.language_model.layers.2.linear_attn.in_proj_a.weight', 'model.language_model.layers.2.mlp.gate.weight', 'model.language_model.layers.2.mlp._original_router.weight', 'model.language_model.layers.2.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.2.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.2.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.2.mlp.shared_expert_gate.weight', 'model.language_model.layers.2.input_layernorm.weight', 'model.language_model.layers.2.post_attention_layernorm.weight', 'model.language_model.layers.3.self_attn.q_proj.weight', 'model.language_model.layers.3.self_attn.k_proj.weight', 'model.language_model.layers.3.self_attn.v_proj.weight', 'model.language_model.layers.3.self_attn.o_proj.weight', 'model.language_model.layers.3.self_attn.q_norm.weight', 'model.language_model.layers.3.self_attn.k_norm.weight', 'model.language_model.layers.3.mlp.gate.weight', 'model.language_model.layers.3.mlp._original_router.weight', 'model.language_model.layers.3.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.3.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.3.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.3.mlp.shared_expert_gate.weight', 'model.language_model.layers.3.input_layernorm.weight', 'model.language_model.layers.3.post_attention_layernorm.weight', 'model.language_model.layers.4.linear_attn.dt_bias', 'model.language_model.layers.4.linear_attn.A_log', 'model.language_model.layers.4.linear_attn.conv1d.weight', 'model.language_model.layers.4.linear_attn.norm.weight', 'model.language_model.layers.4.linear_attn.out_proj.weight', 'model.language_model.layers.4.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.4.linear_attn.in_proj_z.weight', 'model.language_model.layers.4.linear_attn.in_proj_b.weight', 'model.language_model.layers.4.linear_attn.in_proj_a.weight', 'model.language_model.layers.4.mlp.gate.weight', 'model.language_model.layers.4.mlp._original_router.weight', 'model.language_model.layers.4.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.4.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.4.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.4.mlp.shared_expert_gate.weight', 'model.language_model.layers.4.input_layernorm.weight', 'model.language_model.layers.4.post_attention_layernorm.weight', 'model.language_model.layers.5.linear_attn.dt_bias', 'model.language_model.layers.5.linear_attn.A_log', 'model.language_model.layers.5.linear_attn.conv1d.weight', 'model.language_model.layers.5.linear_attn.norm.weight', 'model.language_model.layers.5.linear_attn.out_proj.weight', 'model.language_model.layers.5.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.5.linear_attn.in_proj_z.weight', 'model.language_model.layers.5.linear_attn.in_proj_b.weight', 'model.language_model.layers.5.linear_attn.in_proj_a.weight', 'model.language_model.layers.5.mlp.gate.weight', 'model.language_model.layers.5.mlp._original_router.weight', 'model.language_model.layers.5.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.5.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.5.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.5.mlp.shared_expert_gate.weight', 'model.language_model.layers.5.input_layernorm.weight', 'model.language_model.layers.5.post_attention_layernorm.weight', 'model.language_model.layers.6.linear_attn.dt_bias', 'model.language_model.layers.6.linear_attn.A_log', 'model.language_model.layers.6.linear_attn.conv1d.weight', 'model.language_model.layers.6.linear_attn.norm.weight', 'model.language_model.layers.6.linear_attn.out_proj.weight', 'model.language_model.layers.6.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.6.linear_attn.in_proj_z.weight', 'model.language_model.layers.6.linear_attn.in_proj_b.weight', 'model.language_model.layers.6.linear_attn.in_proj_a.weight', 'model.language_model.layers.6.mlp.gate.weight', 'model.language_model.layers.6.mlp._original_router.weight', 'model.language_model.layers.6.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.6.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.6.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.6.mlp.shared_expert_gate.weight', 'model.language_model.layers.6.input_layernorm.weight', 'model.language_model.layers.6.post_attention_layernorm.weight', 'model.language_model.layers.7.self_attn.q_proj.weight', 'model.language_model.layers.7.self_attn.k_proj.weight', 'model.language_model.layers.7.self_attn.v_proj.weight', 'model.language_model.layers.7.self_attn.o_proj.weight', 'model.language_model.layers.7.self_attn.q_norm.weight', 'model.language_model.layers.7.self_attn.k_norm.weight', 'model.language_model.layers.7.mlp.gate.weight', 'model.language_model.layers.7.mlp._original_router.weight', 'model.language_model.layers.7.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.7.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.7.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.7.mlp.shared_expert_gate.weight', 'model.language_model.layers.7.input_layernorm.weight', 'model.language_model.layers.7.post_attention_layernorm.weight', 'model.language_model.layers.8.linear_attn.dt_bias', 'model.language_model.layers.8.linear_attn.A_log', 'model.language_model.layers.8.linear_attn.conv1d.weight', 'model.language_model.layers.8.linear_attn.norm.weight', 'model.language_model.layers.8.linear_attn.out_proj.weight', 'model.language_model.layers.8.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.8.linear_attn.in_proj_z.weight', 'model.language_model.layers.8.linear_attn.in_proj_b.weight', 'model.language_model.layers.8.linear_attn.in_proj_a.weight', 'model.language_model.layers.8.mlp.gate.weight', 'model.language_model.layers.8.mlp._original_router.weight', 'model.language_model.layers.8.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.8.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.8.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.8.mlp.shared_expert_gate.weight', 'model.language_model.layers.8.input_layernorm.weight', 'model.language_model.layers.8.post_attention_layernorm.weight', 'model.language_model.layers.9.linear_attn.dt_bias', 'model.language_model.layers.9.linear_attn.A_log', 'model.language_model.layers.9.linear_attn.conv1d.weight', 'model.language_model.layers.9.linear_attn.norm.weight', 'model.language_model.layers.9.linear_attn.out_proj.weight', 'model.language_model.layers.9.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.9.linear_attn.in_proj_z.weight', 'model.language_model.layers.9.linear_attn.in_proj_b.weight', 'model.language_model.layers.9.linear_attn.in_proj_a.weight', 'model.language_model.layers.9.mlp.gate.weight', 'model.language_model.layers.9.mlp._original_router.weight', 'model.language_model.layers.9.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.9.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.9.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.9.mlp.shared_expert_gate.weight', 'model.language_model.layers.9.input_layernorm.weight', 'model.language_model.layers.9.post_attention_layernorm.weight', 'model.language_model.layers.10.linear_attn.dt_bias', 'model.language_model.layers.10.linear_attn.A_log', 'model.language_model.layers.10.linear_attn.conv1d.weight', 'model.language_model.layers.10.linear_attn.norm.weight', 'model.language_model.layers.10.linear_attn.out_proj.weight', 'model.language_model.layers.10.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.10.linear_attn.in_proj_z.weight', 'model.language_model.layers.10.linear_attn.in_proj_b.weight', 'model.language_model.layers.10.linear_attn.in_proj_a.weight', 'model.language_model.layers.10.mlp.gate.weight', 'model.language_model.layers.10.mlp._original_router.weight', 'model.language_model.layers.10.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.10.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.10.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.10.mlp.shared_expert_gate.weight', 'model.language_model.layers.10.input_layernorm.weight', 'model.language_model.layers.10.post_attention_layernorm.weight', 'model.language_model.layers.11.self_attn.q_proj.weight', 'model.language_model.layers.11.self_attn.k_proj.weight', 'model.language_model.layers.11.self_attn.v_proj.weight', 'model.language_model.layers.11.self_attn.o_proj.weight', 'model.language_model.layers.11.self_attn.q_norm.weight', 'model.language_model.layers.11.self_attn.k_norm.weight', 'model.language_model.layers.11.mlp.gate.weight', 'model.language_model.layers.11.mlp._original_router.weight', 'model.language_model.layers.11.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.11.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.11.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.11.mlp.shared_expert_gate.weight', 'model.language_model.layers.11.input_layernorm.weight', 'model.language_model.layers.11.post_attention_layernorm.weight', 'model.language_model.layers.12.linear_attn.dt_bias', 'model.language_model.layers.12.linear_attn.A_log', 'model.language_model.layers.12.linear_attn.conv1d.weight', 'model.language_model.layers.12.linear_attn.norm.weight', 'model.language_model.layers.12.linear_attn.out_proj.weight', 'model.language_model.layers.12.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.12.linear_attn.in_proj_z.weight', 'model.language_model.layers.12.linear_attn.in_proj_b.weight', 'model.language_model.layers.12.linear_attn.in_proj_a.weight', 'model.language_model.layers.12.mlp.gate.weight', 'model.language_model.layers.12.mlp._original_router.weight', 'model.language_model.layers.12.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.12.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.12.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.12.mlp.shared_expert_gate.weight', 'model.language_model.layers.12.input_layernorm.weight', 'model.language_model.layers.12.post_attention_layernorm.weight', 'model.language_model.layers.13.linear_attn.dt_bias', 'model.language_model.layers.13.linear_attn.A_log', 'model.language_model.layers.13.linear_attn.conv1d.weight', 'model.language_model.layers.13.linear_attn.norm.weight', 'model.language_model.layers.13.linear_attn.out_proj.weight', 'model.language_model.layers.13.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.13.linear_attn.in_proj_z.weight', 'model.language_model.layers.13.linear_attn.in_proj_b.weight', 'model.language_model.layers.13.linear_attn.in_proj_a.weight', 'model.language_model.layers.13.mlp.gate.weight', 'model.language_model.layers.13.mlp._original_router.weight', 'model.language_model.layers.13.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.13.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.13.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.13.mlp.shared_expert_gate.weight', 'model.language_model.layers.13.input_layernorm.weight', 'model.language_model.layers.13.post_attention_layernorm.weight', 'model.language_model.layers.14.linear_attn.dt_bias', 'model.language_model.layers.14.linear_attn.A_log', 'model.language_model.layers.14.linear_attn.conv1d.weight', 'model.language_model.layers.14.linear_attn.norm.weight', 'model.language_model.layers.14.linear_attn.out_proj.weight', 'model.language_model.layers.14.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.14.linear_attn.in_proj_z.weight', 'model.language_model.layers.14.linear_attn.in_proj_b.weight', 'model.language_model.layers.14.linear_attn.in_proj_a.weight', 'model.language_model.layers.14.mlp.gate.weight', 'model.language_model.layers.14.mlp._original_router.weight', 'model.language_model.layers.14.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.14.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.14.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.14.mlp.shared_expert_gate.weight', 'model.language_model.layers.14.input_layernorm.weight', 'model.language_model.layers.14.post_attention_layernorm.weight', 'model.language_model.layers.15.self_attn.q_proj.weight', 'model.language_model.layers.15.self_attn.k_proj.weight', 'model.language_model.layers.15.self_attn.v_proj.weight', 'model.language_model.layers.15.self_attn.o_proj.weight', 'model.language_model.layers.15.self_attn.q_norm.weight', 'model.language_model.layers.15.self_attn.k_norm.weight', 'model.language_model.layers.15.mlp.gate.weight', 'model.language_model.layers.15.mlp._original_router.weight', 'model.language_model.layers.15.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.15.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.15.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.15.mlp.shared_expert_gate.weight', 'model.language_model.layers.15.input_layernorm.weight', 'model.language_model.layers.15.post_attention_layernorm.weight', 'model.language_model.layers.16.linear_attn.dt_bias', 'model.language_model.layers.16.linear_attn.A_log', 'model.language_model.layers.16.linear_attn.conv1d.weight', 'model.language_model.layers.16.linear_attn.norm.weight', 'model.language_model.layers.16.linear_attn.out_proj.weight', 'model.language_model.layers.16.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.16.linear_attn.in_proj_z.weight', 'model.language_model.layers.16.linear_attn.in_proj_b.weight', 'model.language_model.layers.16.linear_attn.in_proj_a.weight', 'model.language_model.layers.16.mlp.gate.weight', 'model.language_model.layers.16.mlp._original_router.weight', 'model.language_model.layers.16.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.16.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.16.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.16.mlp.shared_expert_gate.weight', 'model.language_model.layers.16.input_layernorm.weight', 'model.language_model.layers.16.post_attention_layernorm.weight', 'model.language_model.layers.17.linear_attn.dt_bias', 'model.language_model.layers.17.linear_attn.A_log', 'model.language_model.layers.17.linear_attn.conv1d.weight', 'model.language_model.layers.17.linear_attn.norm.weight', 'model.language_model.layers.17.linear_attn.out_proj.weight', 'model.language_model.layers.17.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.17.linear_attn.in_proj_z.weight', 'model.language_model.layers.17.linear_attn.in_proj_b.weight', 'model.language_model.layers.17.linear_attn.in_proj_a.weight', 'model.language_model.layers.17.mlp.gate.weight', 'model.language_model.layers.17.mlp._original_router.weight', 'model.language_model.layers.17.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.17.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.17.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.17.mlp.shared_expert_gate.weight', 'model.language_model.layers.17.input_layernorm.weight', 'model.language_model.layers.17.post_attention_layernorm.weight', 'model.language_model.layers.18.linear_attn.dt_bias', 'model.language_model.layers.18.linear_attn.A_log', 'model.language_model.layers.18.linear_attn.conv1d.weight', 'model.language_model.layers.18.linear_attn.norm.weight', 'model.language_model.layers.18.linear_attn.out_proj.weight', 'model.language_model.layers.18.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.18.linear_attn.in_proj_z.weight', 'model.language_model.layers.18.linear_attn.in_proj_b.weight', 'model.language_model.layers.18.linear_attn.in_proj_a.weight', 'model.language_model.layers.18.mlp.gate.weight', 'model.language_model.layers.18.mlp._original_router.weight', 'model.language_model.layers.18.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.18.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.18.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.18.mlp.shared_expert_gate.weight', 'model.language_model.layers.18.input_layernorm.weight', 'model.language_model.layers.18.post_attention_layernorm.weight', 'model.language_model.layers.19.self_attn.q_proj.weight', 'model.language_model.layers.19.self_attn.k_proj.weight', 'model.language_model.layers.19.self_attn.v_proj.weight', 'model.language_model.layers.19.self_attn.o_proj.weight', 'model.language_model.layers.19.self_attn.q_norm.weight', 'model.language_model.layers.19.self_attn.k_norm.weight', 'model.language_model.layers.19.mlp.gate.weight', 'model.language_model.layers.19.mlp._original_router.weight', 'model.language_model.layers.19.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.19.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.19.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.19.mlp.shared_expert_gate.weight', 'model.language_model.layers.19.input_layernorm.weight', 'model.language_model.layers.19.post_attention_layernorm.weight', 'model.language_model.layers.20.linear_attn.dt_bias', 'model.language_model.layers.20.linear_attn.A_log', 'model.language_model.layers.20.linear_attn.conv1d.weight', 'model.language_model.layers.20.linear_attn.norm.weight', 'model.language_model.layers.20.linear_attn.out_proj.weight', 'model.language_model.layers.20.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.20.linear_attn.in_proj_z.weight', 'model.language_model.layers.20.linear_attn.in_proj_b.weight', 'model.language_model.layers.20.linear_attn.in_proj_a.weight', 'model.language_model.layers.20.mlp.gate.weight', 'model.language_model.layers.20.mlp._original_router.weight', 'model.language_model.layers.20.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.20.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.20.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.20.mlp.shared_expert_gate.weight', 'model.language_model.layers.20.input_layernorm.weight', 'model.language_model.layers.20.post_attention_layernorm.weight', 'model.language_model.layers.21.linear_attn.dt_bias', 'model.language_model.layers.21.linear_attn.A_log', 'model.language_model.layers.21.linear_attn.conv1d.weight', 'model.language_model.layers.21.linear_attn.norm.weight', 'model.language_model.layers.21.linear_attn.out_proj.weight', 'model.language_model.layers.21.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.21.linear_attn.in_proj_z.weight', 'model.language_model.layers.21.linear_attn.in_proj_b.weight', 'model.language_model.layers.21.linear_attn.in_proj_a.weight', 'model.language_model.layers.21.mlp.gate.weight', 'model.language_model.layers.21.mlp._original_router.weight', 'model.language_model.layers.21.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.21.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.21.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.21.mlp.shared_expert_gate.weight', 'model.language_model.layers.21.input_layernorm.weight', 'model.language_model.layers.21.post_attention_layernorm.weight', 'model.language_model.layers.22.linear_attn.dt_bias', 'model.language_model.layers.22.linear_attn.A_log', 'model.language_model.layers.22.linear_attn.conv1d.weight', 'model.language_model.layers.22.linear_attn.norm.weight', 'model.language_model.layers.22.linear_attn.out_proj.weight', 'model.language_model.layers.22.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.22.linear_attn.in_proj_z.weight', 'model.language_model.layers.22.linear_attn.in_proj_b.weight', 'model.language_model.layers.22.linear_attn.in_proj_a.weight', 'model.language_model.layers.22.mlp.gate.weight', 'model.language_model.layers.22.mlp._original_router.weight', 'model.language_model.layers.22.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.22.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.22.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.22.mlp.shared_expert_gate.weight', 'model.language_model.layers.22.input_layernorm.weight', 'model.language_model.layers.22.post_attention_layernorm.weight', 'model.language_model.layers.23.self_attn.q_proj.weight', 'model.language_model.layers.23.self_attn.k_proj.weight', 'model.language_model.layers.23.self_attn.v_proj.weight', 'model.language_model.layers.23.self_attn.o_proj.weight', 'model.language_model.layers.23.self_attn.q_norm.weight', 'model.language_model.layers.23.self_attn.k_norm.weight', 'model.language_model.layers.23.mlp.gate.weight', 'model.language_model.layers.23.mlp._original_router.weight', 'model.language_model.layers.23.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.23.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.23.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.23.mlp.shared_expert_gate.weight', 'model.language_model.layers.23.input_layernorm.weight', 'model.language_model.layers.23.post_attention_layernorm.weight', 'model.language_model.layers.24.linear_attn.dt_bias', 'model.language_model.layers.24.linear_attn.A_log', 'model.language_model.layers.24.linear_attn.conv1d.weight', 'model.language_model.layers.24.linear_attn.norm.weight', 'model.language_model.layers.24.linear_attn.out_proj.weight', 'model.language_model.layers.24.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.24.linear_attn.in_proj_z.weight', 'model.language_model.layers.24.linear_attn.in_proj_b.weight', 'model.language_model.layers.24.linear_attn.in_proj_a.weight', 'model.language_model.layers.24.mlp.gate.weight', 'model.language_model.layers.24.mlp._original_router.weight', 'model.language_model.layers.24.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.24.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.24.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.24.mlp.shared_expert_gate.weight', 'model.language_model.layers.24.input_layernorm.weight', 'model.language_model.layers.24.post_attention_layernorm.weight', 'model.language_model.layers.25.linear_attn.dt_bias', 'model.language_model.layers.25.linear_attn.A_log', 'model.language_model.layers.25.linear_attn.conv1d.weight', 'model.language_model.layers.25.linear_attn.norm.weight', 'model.language_model.layers.25.linear_attn.out_proj.weight', 'model.language_model.layers.25.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.25.linear_attn.in_proj_z.weight', 'model.language_model.layers.25.linear_attn.in_proj_b.weight', 'model.language_model.layers.25.linear_attn.in_proj_a.weight', 'model.language_model.layers.25.mlp.gate.weight', 'model.language_model.layers.25.mlp._original_router.weight', 'model.language_model.layers.25.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.25.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.25.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.25.mlp.shared_expert_gate.weight', 'model.language_model.layers.25.input_layernorm.weight', 'model.language_model.layers.25.post_attention_layernorm.weight', 'model.language_model.layers.26.linear_attn.dt_bias', 'model.language_model.layers.26.linear_attn.A_log', 'model.language_model.layers.26.linear_attn.conv1d.weight', 'model.language_model.layers.26.linear_attn.norm.weight', 'model.language_model.layers.26.linear_attn.out_proj.weight', 'model.language_model.layers.26.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.26.linear_attn.in_proj_z.weight', 'model.language_model.layers.26.linear_attn.in_proj_b.weight', 'model.language_model.layers.26.linear_attn.in_proj_a.weight', 'model.language_model.layers.26.mlp.gate.weight', 'model.language_model.layers.26.mlp._original_router.weight', 'model.language_model.layers.26.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.26.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.26.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.26.mlp.shared_expert_gate.weight', 'model.language_model.layers.26.input_layernorm.weight', 'model.language_model.layers.26.post_attention_layernorm.weight', 'model.language_model.layers.27.self_attn.q_proj.weight', 'model.language_model.layers.27.self_attn.k_proj.weight', 'model.language_model.layers.27.self_attn.v_proj.weight', 'model.language_model.layers.27.self_attn.o_proj.weight', 'model.language_model.layers.27.self_attn.q_norm.weight', 'model.language_model.layers.27.self_attn.k_norm.weight', 'model.language_model.layers.27.mlp.gate.weight', 'model.language_model.layers.27.mlp._original_router.weight', 'model.language_model.layers.27.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.27.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.27.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.27.mlp.shared_expert_gate.weight', 'model.language_model.layers.27.input_layernorm.weight', 'model.language_model.layers.27.post_attention_layernorm.weight', 'model.language_model.layers.28.linear_attn.dt_bias', 'model.language_model.layers.28.linear_attn.A_log', 'model.language_model.layers.28.linear_attn.conv1d.weight', 'model.language_model.layers.28.linear_attn.norm.weight', 'model.language_model.layers.28.linear_attn.out_proj.weight', 'model.language_model.layers.28.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.28.linear_attn.in_proj_z.weight', 'model.language_model.layers.28.linear_attn.in_proj_b.weight', 'model.language_model.layers.28.linear_attn.in_proj_a.weight', 'model.language_model.layers.28.mlp.gate.weight', 'model.language_model.layers.28.mlp._original_router.weight', 'model.language_model.layers.28.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.28.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.28.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.28.mlp.shared_expert_gate.weight', 'model.language_model.layers.28.input_layernorm.weight', 'model.language_model.layers.28.post_attention_layernorm.weight', 'model.language_model.layers.29.linear_attn.dt_bias', 'model.language_model.layers.29.linear_attn.A_log', 'model.language_model.layers.29.linear_attn.conv1d.weight', 'model.language_model.layers.29.linear_attn.norm.weight', 'model.language_model.layers.29.linear_attn.out_proj.weight', 'model.language_model.layers.29.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.29.linear_attn.in_proj_z.weight', 'model.language_model.layers.29.linear_attn.in_proj_b.weight', 'model.language_model.layers.29.linear_attn.in_proj_a.weight', 'model.language_model.layers.29.mlp.gate.weight', 'model.language_model.layers.29.mlp._original_router.weight', 'model.language_model.layers.29.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.29.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.29.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.29.mlp.shared_expert_gate.weight', 'model.language_model.layers.29.input_layernorm.weight', 'model.language_model.layers.29.post_attention_layernorm.weight', 'model.language_model.layers.30.linear_attn.dt_bias', 'model.language_model.layers.30.linear_attn.A_log', 'model.language_model.layers.30.linear_attn.conv1d.weight', 'model.language_model.layers.30.linear_attn.norm.weight', 'model.language_model.layers.30.linear_attn.out_proj.weight', 'model.language_model.layers.30.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.30.linear_attn.in_proj_z.weight', 'model.language_model.layers.30.linear_attn.in_proj_b.weight', 'model.language_model.layers.30.linear_attn.in_proj_a.weight', 'model.language_model.layers.30.mlp.gate.weight', 'model.language_model.layers.30.mlp._original_router.weight', 'model.language_model.layers.30.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.30.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.30.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.30.mlp.shared_expert_gate.weight', 'model.language_model.layers.30.input_layernorm.weight', 'model.language_model.layers.30.post_attention_layernorm.weight', 'model.language_model.layers.31.self_attn.q_proj.weight', 'model.language_model.layers.31.self_attn.k_proj.weight', 'model.language_model.layers.31.self_attn.v_proj.weight', 'model.language_model.layers.31.self_attn.o_proj.weight', 'model.language_model.layers.31.self_attn.q_norm.weight', 'model.language_model.layers.31.self_attn.k_norm.weight', 'model.language_model.layers.31.mlp.gate.weight', 'model.language_model.layers.31.mlp._original_router.weight', 'model.language_model.layers.31.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.31.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.31.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.31.mlp.shared_expert_gate.weight', 'model.language_model.layers.31.input_layernorm.weight', 'model.language_model.layers.31.post_attention_layernorm.weight', 'model.language_model.layers.32.linear_attn.dt_bias', 'model.language_model.layers.32.linear_attn.A_log', 'model.language_model.layers.32.linear_attn.conv1d.weight', 'model.language_model.layers.32.linear_attn.norm.weight', 'model.language_model.layers.32.linear_attn.out_proj.weight', 'model.language_model.layers.32.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.32.linear_attn.in_proj_z.weight', 'model.language_model.layers.32.linear_attn.in_proj_b.weight', 'model.language_model.layers.32.linear_attn.in_proj_a.weight', 'model.language_model.layers.32.mlp.gate.weight', 'model.language_model.layers.32.mlp._original_router.weight', 'model.language_model.layers.32.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.32.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.32.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.32.mlp.shared_expert_gate.weight', 'model.language_model.layers.32.input_layernorm.weight', 'model.language_model.layers.32.post_attention_layernorm.weight', 'model.language_model.layers.33.linear_attn.dt_bias', 'model.language_model.layers.33.linear_attn.A_log', 'model.language_model.layers.33.linear_attn.conv1d.weight', 'model.language_model.layers.33.linear_attn.norm.weight', 'model.language_model.layers.33.linear_attn.out_proj.weight', 'model.language_model.layers.33.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.33.linear_attn.in_proj_z.weight', 'model.language_model.layers.33.linear_attn.in_proj_b.weight', 'model.language_model.layers.33.linear_attn.in_proj_a.weight', 'model.language_model.layers.33.mlp.gate.weight', 'model.language_model.layers.33.mlp._original_router.weight', 'model.language_model.layers.33.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.33.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.33.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.33.mlp.shared_expert_gate.weight', 'model.language_model.layers.33.input_layernorm.weight', 'model.language_model.layers.33.post_attention_layernorm.weight', 'model.language_model.layers.34.linear_attn.dt_bias', 'model.language_model.layers.34.linear_attn.A_log', 'model.language_model.layers.34.linear_attn.conv1d.weight', 'model.language_model.layers.34.linear_attn.norm.weight', 'model.language_model.layers.34.linear_attn.out_proj.weight', 'model.language_model.layers.34.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.34.linear_attn.in_proj_z.weight', 'model.language_model.layers.34.linear_attn.in_proj_b.weight', 'model.language_model.layers.34.linear_attn.in_proj_a.weight', 'model.language_model.layers.34.mlp.gate.weight', 'model.language_model.layers.34.mlp._original_router.weight', 'model.language_model.layers.34.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.34.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.34.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.34.mlp.shared_expert_gate.weight', 'model.language_model.layers.34.input_layernorm.weight', 'model.language_model.layers.34.post_attention_layernorm.weight', 'model.language_model.layers.35.self_attn.q_proj.weight', 'model.language_model.layers.35.self_attn.k_proj.weight', 'model.language_model.layers.35.self_attn.v_proj.weight', 'model.language_model.layers.35.self_attn.o_proj.weight', 'model.language_model.layers.35.self_attn.q_norm.weight', 'model.language_model.layers.35.self_attn.k_norm.weight', 'model.language_model.layers.35.mlp.gate.weight', 'model.language_model.layers.35.mlp._original_router.weight', 'model.language_model.layers.35.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.35.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.35.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.35.mlp.shared_expert_gate.weight', 'model.language_model.layers.35.input_layernorm.weight', 'model.language_model.layers.35.post_attention_layernorm.weight', 'model.language_model.layers.36.linear_attn.dt_bias', 'model.language_model.layers.36.linear_attn.A_log', 'model.language_model.layers.36.linear_attn.conv1d.weight', 'model.language_model.layers.36.linear_attn.norm.weight', 'model.language_model.layers.36.linear_attn.out_proj.weight', 'model.language_model.layers.36.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.36.linear_attn.in_proj_z.weight', 'model.language_model.layers.36.linear_attn.in_proj_b.weight', 'model.language_model.layers.36.linear_attn.in_proj_a.weight', 'model.language_model.layers.36.mlp.gate.weight', 'model.language_model.layers.36.mlp._original_router.weight', 'model.language_model.layers.36.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.36.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.36.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.36.mlp.shared_expert_gate.weight', 'model.language_model.layers.36.input_layernorm.weight', 'model.language_model.layers.36.post_attention_layernorm.weight', 'model.language_model.layers.37.linear_attn.dt_bias', 'model.language_model.layers.37.linear_attn.A_log', 'model.language_model.layers.37.linear_attn.conv1d.weight', 'model.language_model.layers.37.linear_attn.norm.weight', 'model.language_model.layers.37.linear_attn.out_proj.weight', 'model.language_model.layers.37.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.37.linear_attn.in_proj_z.weight', 'model.language_model.layers.37.linear_attn.in_proj_b.weight', 'model.language_model.layers.37.linear_attn.in_proj_a.weight', 'model.language_model.layers.37.mlp.gate.weight', 'model.language_model.layers.37.mlp._original_router.weight', 'model.language_model.layers.37.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.37.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.37.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.37.mlp.shared_expert_gate.weight', 'model.language_model.layers.37.input_layernorm.weight', 'model.language_model.layers.37.post_attention_layernorm.weight', 'model.language_model.layers.38.linear_attn.dt_bias', 'model.language_model.layers.38.linear_attn.A_log', 'model.language_model.layers.38.linear_attn.conv1d.weight', 'model.language_model.layers.38.linear_attn.norm.weight', 'model.language_model.layers.38.linear_attn.out_proj.weight', 'model.language_model.layers.38.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.38.linear_attn.in_proj_z.weight', 'model.language_model.layers.38.linear_attn.in_proj_b.weight', 'model.language_model.layers.38.linear_attn.in_proj_a.weight', 'model.language_model.layers.38.mlp.gate.weight', 'model.language_model.layers.38.mlp._original_router.weight', 'model.language_model.layers.38.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.38.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.38.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.38.mlp.shared_expert_gate.weight', 'model.language_model.layers.38.input_layernorm.weight', 'model.language_model.layers.38.post_attention_layernorm.weight', 'model.language_model.layers.39.self_attn.q_proj.weight', 'model.language_model.layers.39.self_attn.k_proj.weight', 'model.language_model.layers.39.self_attn.v_proj.weight', 'model.language_model.layers.39.self_attn.o_proj.weight', 'model.language_model.layers.39.self_attn.q_norm.weight', 'model.language_model.layers.39.self_attn.k_norm.weight', 'model.language_model.layers.39.mlp.gate.weight', 'model.language_model.layers.39.mlp._original_router.weight', 'model.language_model.layers.39.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.39.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.39.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.39.mlp.shared_expert_gate.weight', 'model.language_model.layers.39.input_layernorm.weight', 'model.language_model.layers.39.post_attention_layernorm.weight', 'model.language_model.layers.40.linear_attn.dt_bias', 'model.language_model.layers.40.linear_attn.A_log', 'model.language_model.layers.40.linear_attn.conv1d.weight', 'model.language_model.layers.40.linear_attn.norm.weight', 'model.language_model.layers.40.linear_attn.out_proj.weight', 'model.language_model.layers.40.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.40.linear_attn.in_proj_z.weight', 'model.language_model.layers.40.linear_attn.in_proj_b.weight', 'model.language_model.layers.40.linear_attn.in_proj_a.weight', 'model.language_model.layers.40.mlp.gate.weight', 'model.language_model.layers.40.mlp._original_router.weight', 'model.language_model.layers.40.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.40.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.40.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.40.mlp.shared_expert_gate.weight', 'model.language_model.layers.40.input_layernorm.weight', 'model.language_model.layers.40.post_attention_layernorm.weight', 'model.language_model.layers.41.linear_attn.dt_bias', 'model.language_model.layers.41.linear_attn.A_log', 'model.language_model.layers.41.linear_attn.conv1d.weight', 'model.language_model.layers.41.linear_attn.norm.weight', 'model.language_model.layers.41.linear_attn.out_proj.weight', 'model.language_model.layers.41.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.41.linear_attn.in_proj_z.weight', 'model.language_model.layers.41.linear_attn.in_proj_b.weight', 'model.language_model.layers.41.linear_attn.in_proj_a.weight', 'model.language_model.layers.41.mlp.gate.weight', 'model.language_model.layers.41.mlp._original_router.weight', 'model.language_model.layers.41.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.41.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.41.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.41.mlp.shared_expert_gate.weight', 'model.language_model.layers.41.input_layernorm.weight', 'model.language_model.layers.41.post_attention_layernorm.weight', 'model.language_model.layers.42.linear_attn.dt_bias', 'model.language_model.layers.42.linear_attn.A_log', 'model.language_model.layers.42.linear_attn.conv1d.weight', 'model.language_model.layers.42.linear_attn.norm.weight', 'model.language_model.layers.42.linear_attn.out_proj.weight', 'model.language_model.layers.42.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.42.linear_attn.in_proj_z.weight', 'model.language_model.layers.42.linear_attn.in_proj_b.weight', 'model.language_model.layers.42.linear_attn.in_proj_a.weight', 'model.language_model.layers.42.mlp.gate.weight', 'model.language_model.layers.42.mlp._original_router.weight', 'model.language_model.layers.42.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.42.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.42.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.42.mlp.shared_expert_gate.weight', 'model.language_model.layers.42.input_layernorm.weight', 'model.language_model.layers.42.post_attention_layernorm.weight', 'model.language_model.layers.43.self_attn.q_proj.weight', 'model.language_model.layers.43.self_attn.k_proj.weight', 'model.language_model.layers.43.self_attn.v_proj.weight', 'model.language_model.layers.43.self_attn.o_proj.weight', 'model.language_model.layers.43.self_attn.q_norm.weight', 'model.language_model.layers.43.self_attn.k_norm.weight', 'model.language_model.layers.43.mlp.gate.weight', 'model.language_model.layers.43.mlp._original_router.weight', 'model.language_model.layers.43.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.43.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.43.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.43.mlp.shared_expert_gate.weight', 'model.language_model.layers.43.input_layernorm.weight', 'model.language_model.layers.43.post_attention_layernorm.weight', 'model.language_model.layers.44.linear_attn.dt_bias', 'model.language_model.layers.44.linear_attn.A_log', 'model.language_model.layers.44.linear_attn.conv1d.weight', 'model.language_model.layers.44.linear_attn.norm.weight', 'model.language_model.layers.44.linear_attn.out_proj.weight', 'model.language_model.layers.44.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.44.linear_attn.in_proj_z.weight', 'model.language_model.layers.44.linear_attn.in_proj_b.weight', 'model.language_model.layers.44.linear_attn.in_proj_a.weight', 'model.language_model.layers.44.mlp.gate.weight', 'model.language_model.layers.44.mlp._original_router.weight', 'model.language_model.layers.44.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.44.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.44.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.44.mlp.shared_expert_gate.weight', 'model.language_model.layers.44.input_layernorm.weight', 'model.language_model.layers.44.post_attention_layernorm.weight', 'model.language_model.layers.45.linear_attn.dt_bias', 'model.language_model.layers.45.linear_attn.A_log', 'model.language_model.layers.45.linear_attn.conv1d.weight', 'model.language_model.layers.45.linear_attn.norm.weight', 'model.language_model.layers.45.linear_attn.out_proj.weight', 'model.language_model.layers.45.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.45.linear_attn.in_proj_z.weight', 'model.language_model.layers.45.linear_attn.in_proj_b.weight', 'model.language_model.layers.45.linear_attn.in_proj_a.weight', 'model.language_model.layers.45.mlp.gate.weight', 'model.language_model.layers.45.mlp._original_router.weight', 'model.language_model.layers.45.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.45.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.45.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.45.mlp.shared_expert_gate.weight', 'model.language_model.layers.45.input_layernorm.weight', 'model.language_model.layers.45.post_attention_layernorm.weight', 'model.language_model.layers.46.linear_attn.dt_bias', 'model.language_model.layers.46.linear_attn.A_log', 'model.language_model.layers.46.linear_attn.conv1d.weight', 'model.language_model.layers.46.linear_attn.norm.weight', 'model.language_model.layers.46.linear_attn.out_proj.weight', 'model.language_model.layers.46.linear_attn.in_proj_qkv.weight', 'model.language_model.layers.46.linear_attn.in_proj_z.weight', 'model.language_model.layers.46.linear_attn.in_proj_b.weight', 'model.language_model.layers.46.linear_attn.in_proj_a.weight', 'model.language_model.layers.46.mlp.gate.weight', 'model.language_model.layers.46.mlp._original_router.weight', 'model.language_model.layers.46.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.46.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.46.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.46.mlp.shared_expert_gate.weight', 'model.language_model.layers.46.input_layernorm.weight', 'model.language_model.layers.46.post_attention_layernorm.weight', 'model.language_model.layers.47.self_attn.q_proj.weight', 'model.language_model.layers.47.self_attn.k_proj.weight', 'model.language_model.layers.47.self_attn.v_proj.weight', 'model.language_model.layers.47.self_attn.o_proj.weight', 'model.language_model.layers.47.self_attn.q_norm.weight', 'model.language_model.layers.47.self_attn.k_norm.weight', 'model.language_model.layers.47.mlp.gate.weight', 'model.language_model.layers.47.mlp._original_router.weight', 'model.language_model.layers.47.mlp.shared_expert.gate_proj.weight', 'model.language_model.layers.47.mlp.shared_expert.up_proj.weight', 'model.language_model.layers.47.mlp.shared_expert.down_proj.weight', 'model.language_model.layers.47.mlp.shared_expert_gate.weight', 'model.language_model.layers.47.input_layernorm.weight', 'model.language_model.layers.47.post_attention_layernorm.weight', 'model.language_model.norm.weight', 'lm_head.weight']...
+  warnings.warn(
+[INFO|trainer.py:1650] 2026-10-10 17:18:46,681 >> ***** Running training *****
+[INFO|trainer.py:1651] 2026-10-10 17:18:46,681 >>   Num examples = 100
+[INFO|trainer.py:1652] 2026-10-10 17:18:46,681 >>   Num Epochs = 2
+[INFO|trainer.py:1653] 2026-10-10 17:18:46,681 >>   Num update steps per epoch = 13
+[INFO|trainer.py:1654] 2026-10-10 17:18:46,681 >>   Instantaneous batch size per device = 1
+[INFO|trainer.py:1657] 2026-10-10 17:18:46,681 >>   Total train batch size (w. parallel, distributed & accumulation) = 8
+[INFO|trainer.py:1658] 2026-10-10 17:18:46,681 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:1659] 2026-10-10 17:18:46,681 >>   Total optimization steps = 15
+[INFO|trainer.py:1660] 2026-10-10 17:18:46,682 >>   Number of trainable parameters = 6,185,158,656
+[INFO|trainer.py:2169] 2026-10-10 17:28:04,242 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+{'train_runtime': '557.6', 'train_samples_per_second': '0.215', 'train_steps_per_second': '0.027', 'train_loss': '0.1947', 'epoch': '1.154'}
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[INFO|tokenization_utils_base.py:3280] 2026-10-10 17:28:04,256 >> chat template saved in /mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/model_output/chat_template.jinja
+[INFO|tokenization_utils_base.py:2113] 2026-10-10 17:28:04,256 >> tokenizer config file saved in /mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/model_output/tokenizer_config.json
+[INFO|processing_utils.py:881] 2026-10-10 17:28:04,390 >> chat template saved in /mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/model_output/chat_template.jinja
+[INFO|processing_utils.py:899] 2026-10-10 17:28:04,393 >> processor saved in /mnt/hurry-bench/runs/qwen_kt_seq1024_8gpu_20261010_171740/model_output/processor_config.json
+[kt_bench] final model save skipped
+***** train metrics *****
+  epoch                    =     1.1538
+  train_loss               =     0.1947
+  train_runtime            = 0:09:17.57
+  train_samples_per_second =      0.215
+  train_steps_per_second   =      0.027
+[INFO|modelcard.py:263] 2026-10-10 17:28:04,393 >> Dropping the following result as it does not have all the necessary fields:
+{'task': {'name': 'Causal Language Modeling', 'type': 'text-generation'}}
+[W1010 17:28:05.590545434 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+[W1010 17:28:05.653703433 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+[W1010 17:28:05.663199298 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+[W1010 17:28:05.692590965 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+[W1010 17:28:05.696374622 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+[W1010 17:28:05.706183779 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+[W1010 17:28:05.724234121 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+CPUInfer[0x56134aaa4de0]: Goodbye
+[W1010 17:28:34.993985790 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+[W1010 17:28:41.117860241 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())

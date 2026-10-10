@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "kt",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 5,
+  "tokens_per_step": 256,
+  "num_steps": 15,
+  "num_stable_steps": 10,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 4.274200655519962,
+      "backward_sec": 17.024454969912767,
+      "optimizer_sec": 0.5809243880212307,
+      "step_total_sec": 25.979171454906464,
+      "step_tps": 9.854047903119385
+    },
+    {
+      "global_step": 2,
+      "microbatches": 1,
+      "forward_sec": 33.021053947508335,
+      "backward_sec": 6.518032968044281,
+      "optimizer_sec": 0.01900830864906311,
+      "step_total_sec": 41.53414010256529,
+      "step_tps": 6.163604190861498
+    },
+    {
+      "global_step": 3,
+      "microbatches": 1,
+      "forward_sec": 9.661909524351358,
+      "backward_sec": 5.374960519373417,
+      "optimizer_sec": 0.01126200333237648,
+      "step_total_sec": 16.829571582376957,
+      "step_tps": 15.211320071157946
+    },
+    {
+      "global_step": 4,
+      "microbatches": 1,
+      "forward_sec": 9.312764342874289,
+      "backward_sec": 5.4236469604074955,
+      "optimizer_sec": 0.009632367640733719,
+      "step_total_sec": 16.583331868052483,
+      "step_tps": 15.437187293657182
+    },
+    {
+      "global_step": 5,
+      "microbatches": 1,
+      "forward_sec": 9.365297619253397,
+      "backward_sec": 5.349583670496941,
+      "optimizer_sec": 0.010325275361537933,
+      "step_total_sec": 16.56822942942381,
+      "step_tps": 15.451258753416651
+    },
+    {
+      "global_step": 6,
+      "microbatches": 1,
+      "forward_sec": 10.386010810732841,
+      "backward_sec": 5.3831649124622345,
+      "optimizer_sec": 0.010287050157785416,
+      "step_total_sec": 17.571059074252844,
+      "step_tps": 14.5694120609452
+    },
+    {
+      "global_step": 7,
+      "microbatches": 1,
+      "forward_sec": 9.357340950518847,
+      "backward_sec": 5.351619221270084,
+      "optimizer_sec": 0.009321112185716629,
+      "step_total_sec": 16.557112492620945,
+      "step_tps": 15.461633187193252
+    },
+    {
+      "global_step": 8,
+      "microbatches": 1,
+      "forward_sec": 9.520904824137688,
+      "backward_sec": 5.286058958619833,
+      "optimizer_sec": 0.009596295654773712,
+      "step_total_sec": 16.648216526955366,
+      "step_tps": 15.377022492800158
+    },
+    {
+      "global_step": 9,
+      "microbatches": 1,
+      "forward_sec": 9.41330923885107,
+      "backward_sec": 5.831063065677881,
+      "optimizer_sec": 0.00924576073884964,
+      "step_total_sec": 17.009881246834993,
+      "step_tps": 15.050075675727225
+    },
+    {
+      "global_step": 10,
+      "microbatches": 1,
+      "forward_sec": 9.988757207989693,
+      "backward_sec": 5.326929561793804,
+      "optimizer_sec": 0.012241370975971222,
+      "step_total_sec": 17.19494477286935,
+      "step_tps": 14.888096669198017
+    },
+    {
+      "global_step": 11,
+      "microbatches": 1,
+      "forward_sec": 9.624302480369806,
+      "backward_sec": 5.363328468054533,
+      "optimizer_sec": 0.010235179215669632,
+      "step_total_sec": 16.866397462785244,
+      "step_tps": 15.17810786594171
+    },
+    {
+      "global_step": 12,
+      "microbatches": 1,
+      "forward_sec": 9.67548955604434,
+      "backward_sec": 5.365658216178417,
+      "optimizer_sec": 0.008628718554973602,
+      "step_total_sec": 16.83360017836094,
+      "step_tps": 15.207679717205112
+    },
+    {
+      "global_step": 13,
+      "microbatches": 1,
+      "forward_sec": 10.393196906894445,
+      "backward_sec": 5.365791127085686,
+      "optimizer_sec": 0.00985068827867508,
+      "step_total_sec": 17.541827462613583,
+      "step_tps": 14.593690454749131
+    },
+    {
+      "global_step": 14,
+      "microbatches": 1,
+      "forward_sec": 10.024384181946516,
+      "backward_sec": 5.340115915983915,
+      "optimizer_sec": 0.009007170796394348,
+      "step_total_sec": 17.203319877386093,
+      "step_tps": 14.880848686451161
+    },
+    {
+      "global_step": 15,
+      "microbatches": 1,
+      "forward_sec": 9.87093136832118,
+      "backward_sec": 5.348835583776236,
+      "optimizer_sec": 0.009933102875947952,
+      "step_total_sec": 17.109649620950222,
+      "step_tps": 14.962316918900322
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 15,
+      "mean_sec": 10.925990241020918,
+      "min_sec": 4.274200655519962,
+      "max_sec": 33.021053947508335
+    },
+    "backward_sec": {
+      "count": 15,
+      "mean_sec": 6.2435496079425015,
+      "min_sec": 5.286058958619833,
+      "max_sec": 17.024454969912767
+    },
+    "optimizer_sec": {
+      "count": 15,
+      "mean_sec": 0.04863325282931328,
+      "min_sec": 0.008628718554973602,
+      "max_sec": 0.5809243880212307
+    },
+    "step_total_sec": {
+      "count": 15,
+      "mean_sec": 19.202030210196973,
+      "min_sec": 16.557112492620945,
+      "max_sec": 41.53414010256529
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 10,
+      "mean_sec": 9.825462752580643,
+      "min_sec": 9.357340950518847,
+      "max_sec": 10.393196906894445
+    },
+    "backward_sec": {
+      "count": 10,
+      "mean_sec": 5.396256503090262,
+      "min_sec": 5.286058958619833,
+      "max_sec": 5.831063065677881
+    },
+    "optimizer_sec": {
+      "count": 10,
+      "mean_sec": 0.009834644943475723,
+      "min_sec": 0.008628718554973602,
+      "max_sec": 0.012241370975971222
+    },
+    "step_total_sec": {
+      "count": 10,
+      "mean_sec": 17.053600871562956,
+      "min_sec": 16.557112492620945,
+      "max_sec": 17.571059074252844
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 256,
+    "mean_stable_step_sec": 17.053600871562956,
+    "stable_tps": 15.011492407265287
+  }
+}

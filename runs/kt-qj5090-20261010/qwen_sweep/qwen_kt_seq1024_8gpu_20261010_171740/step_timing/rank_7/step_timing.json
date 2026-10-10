@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "kt",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 5,
+  "tokens_per_step": 8192,
+  "num_steps": 15,
+  "num_stable_steps": 10,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 19.819899398833513,
+      "backward_sec": 27.979082096368074,
+      "optimizer_sec": 0.9995758347213268,
+      "step_total_sec": 52.6085484623909,
+      "step_tps": 155.71613814542602
+    },
+    {
+      "global_step": 2,
+      "microbatches": 1,
+      "forward_sec": 38.93424279615283,
+      "backward_sec": 18.1385453119874,
+      "optimizer_sec": 0.0090603306889534,
+      "step_total_sec": 59.12515411898494,
+      "step_tps": 138.55355004257942
+    },
+    {
+      "global_step": 3,
+      "microbatches": 1,
+      "forward_sec": 17.072463739663363,
+      "backward_sec": 17.000768829137087,
+      "optimizer_sec": 0.023478537797927856,
+      "step_total_sec": 35.96221278980374,
+      "step_tps": 227.79465901838645
+    },
+    {
+      "global_step": 4,
+      "microbatches": 1,
+      "forward_sec": 16.163796946406364,
+      "backward_sec": 17.802140779793262,
+      "optimizer_sec": 0.008591338992118835,
+      "step_total_sec": 36.00949069485068,
+      "step_tps": 227.49558080174253
+    },
+    {
+      "global_step": 5,
+      "microbatches": 1,
+      "forward_sec": 15.772506926208735,
+      "backward_sec": 15.926283858716488,
+      "optimizer_sec": 0.012478053569793701,
+      "step_total_sec": 33.62271182611585,
+      "step_tps": 243.64483276560128
+    },
+    {
+      "global_step": 6,
+      "microbatches": 1,
+      "forward_sec": 15.652380596846342,
+      "backward_sec": 15.919959649443626,
+      "optimizer_sec": 0.009986724704504013,
+      "step_total_sec": 33.493552673608065,
+      "step_tps": 244.58438553325087
+    },
+    {
+      "global_step": 7,
+      "microbatches": 1,
+      "forward_sec": 15.16777404397726,
+      "backward_sec": 15.954481702297926,
+      "optimizer_sec": 0.013779610395431519,
+      "step_total_sec": 32.975076746195555,
+      "step_tps": 248.43005106713326
+    },
+    {
+      "global_step": 8,
+      "microbatches": 1,
+      "forward_sec": 15.729190189391375,
+      "backward_sec": 15.974172543734312,
+      "optimizer_sec": 0.008508339524269104,
+      "step_total_sec": 33.58983116224408,
+      "step_tps": 243.88333363247264
+    },
+    {
+      "global_step": 9,
+      "microbatches": 1,
+      "forward_sec": 15.116920541971922,
+      "backward_sec": 15.851898051798344,
+      "optimizer_sec": 0.014523383229970932,
+      "step_total_sec": 32.83877855166793,
+      "step_tps": 249.46116638019464
+    },
+    {
+      "global_step": 10,
+      "microbatches": 1,
+      "forward_sec": 15.595349330455065,
+      "backward_sec": 15.84707983955741,
+      "optimizer_sec": 0.011133331805467606,
+      "step_total_sec": 33.32530230656266,
+      "step_tps": 245.81922542340362
+    },
+    {
+      "global_step": 11,
+      "microbatches": 1,
+      "forward_sec": 15.932829700410366,
+      "backward_sec": 15.892913404852152,
+      "optimizer_sec": 0.009728427976369858,
+      "step_total_sec": 33.68574232235551,
+      "step_tps": 243.18894093550634
+    },
+    {
+      "global_step": 12,
+      "microbatches": 1,
+      "forward_sec": 15.361880172044039,
+      "backward_sec": 15.912498202174902,
+      "optimizer_sec": 0.00878112018108368,
+      "step_total_sec": 33.13242736086249,
+      "step_tps": 247.2502213851303
+    },
+    {
+      "global_step": 13,
+      "microbatches": 1,
+      "forward_sec": 15.6974988989532,
+      "backward_sec": 15.857554871588945,
+      "optimizer_sec": 0.010231364518404007,
+      "step_total_sec": 33.413153778761625,
+      "step_tps": 245.172905683841
+    },
+    {
+      "global_step": 14,
+      "microbatches": 1,
+      "forward_sec": 15.10512924194336,
+      "backward_sec": 16.011577177792788,
+      "optimizer_sec": 0.008587896823883057,
+      "step_total_sec": 33.02437663078308,
+      "step_tps": 248.05918644847256
+    },
+    {
+      "global_step": 15,
+      "microbatches": 1,
+      "forward_sec": 15.909445501863956,
+      "backward_sec": 15.955527771264315,
+      "optimizer_sec": 0.011663205921649933,
+      "step_total_sec": 33.78534185513854,
+      "step_tps": 242.47201745434012
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 15,
+      "mean_sec": 17.53542053500811,
+      "min_sec": 15.10512924194336,
+      "max_sec": 38.93424279615283
+    },
+    "backward_sec": {
+      "count": 15,
+      "mean_sec": 17.068298939367136,
+      "min_sec": 15.84707983955741,
+      "max_sec": 27.979082096368074
+    },
+    "optimizer_sec": {
+      "count": 15,
+      "mean_sec": 0.07734050005674362,
+      "min_sec": 0.008508339524269104,
+      "max_sec": 0.9995758347213268
+    },
+    "step_total_sec": {
+      "count": 15,
+      "mean_sec": 36.706113418688375,
+      "min_sec": 32.83877855166793,
+      "max_sec": 59.12515411898494
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 10,
+      "mean_sec": 15.526839821785689,
+      "min_sec": 15.10512924194336,
+      "max_sec": 15.932829700410366
+    },
+    "backward_sec": {
+      "count": 10,
+      "mean_sec": 15.917766321450472,
+      "min_sec": 15.84707983955741,
+      "max_sec": 16.011577177792788
+    },
+    "optimizer_sec": {
+      "count": 10,
+      "mean_sec": 0.01069234050810337,
+      "min_sec": 0.008508339524269104,
+      "max_sec": 0.014523383229970932
+    },
+    "step_total_sec": {
+      "count": 10,
+      "mean_sec": 33.326358338817954,
+      "min_sec": 32.83877855166793,
+      "max_sec": 33.78534185513854
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 8192,
+    "mean_stable_step_sec": 33.326358338817954,
+    "stable_tps": 245.81143600253804
+  }
+}

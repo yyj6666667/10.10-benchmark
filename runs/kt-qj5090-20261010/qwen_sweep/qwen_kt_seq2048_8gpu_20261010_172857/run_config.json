@@ -1,0 +1,27 @@
+{
+  "model": "Qwen3.5-122B-A10B",
+  "mode": "benchmark",
+  "checkpoint": "/mnt/data/models/Qwen3.5-122B-A10B",
+  "sequence_length": 2048,
+  "steps": 15,
+  "warmup_steps": 5,
+  "global_batch": 8,
+  "tokens_per_step": 16384,
+  "host": "qj5090",
+  "gpu_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "precision": "bf16",
+  "template": "qwen3",
+  "gradient_clipping": 1.0,
+  "stops_after_clip_without_optimizer_update": false,
+  "owner_omp_threads": 64,
+  "dataloader_num_workers": 0
+}

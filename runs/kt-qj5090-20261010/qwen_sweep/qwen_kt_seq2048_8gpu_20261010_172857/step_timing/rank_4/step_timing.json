@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "kt",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 5,
+  "tokens_per_step": 16384,
+  "num_steps": 15,
+  "num_stable_steps": 10,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 34.932939663529396,
+      "backward_sec": 37.718507401645184,
+      "optimizer_sec": 0.3448841758072376,
+      "step_total_sec": 76.89963498339057,
+      "step_tps": 213.0569280795514
+    },
+    {
+      "global_step": 2,
+      "microbatches": 1,
+      "forward_sec": 45.40031652152538,
+      "backward_sec": 27.672415804117918,
+      "optimizer_sec": 0.049585890024900436,
+      "step_total_sec": 74.98296363279223,
+      "step_tps": 218.50296662367182
+    },
+    {
+      "global_step": 3,
+      "microbatches": 1,
+      "forward_sec": 19.12673133984208,
+      "backward_sec": 26.271482706069946,
+      "optimizer_sec": 0.011014461517333984,
+      "step_total_sec": 47.230764109641314,
+      "step_tps": 346.8925457561145
+    },
+    {
+      "global_step": 4,
+      "microbatches": 1,
+      "forward_sec": 19.46852906420827,
+      "backward_sec": 26.155045442283154,
+      "optimizer_sec": 0.015980955213308334,
+      "step_total_sec": 47.51094748824835,
+      "step_tps": 344.84683775360446
+    },
+    {
+      "global_step": 5,
+      "microbatches": 1,
+      "forward_sec": 19.33418544381857,
+      "backward_sec": 26.189845219254494,
+      "optimizer_sec": 0.012480668723583221,
+      "step_total_sec": 47.418212544173,
+      "step_tps": 345.5212485020874
+    },
+    {
+      "global_step": 6,
+      "microbatches": 1,
+      "forward_sec": 19.417157512158155,
+      "backward_sec": 26.168121188879013,
+      "optimizer_sec": 0.012203309684991837,
+      "step_total_sec": 47.46477998793125,
+      "step_tps": 345.1822594388074
+    },
+    {
+      "global_step": 7,
+      "microbatches": 1,
+      "forward_sec": 19.468963250517845,
+      "backward_sec": 26.253996830433607,
+      "optimizer_sec": 0.010432947427034378,
+      "step_total_sec": 47.61332027614117,
+      "step_tps": 344.1053870004935
+    },
+    {
+      "global_step": 8,
+      "microbatches": 1,
+      "forward_sec": 19.5265294611454,
+      "backward_sec": 26.088857870548964,
+      "optimizer_sec": 0.010630764067173004,
+      "step_total_sec": 47.44224329292774,
+      "step_tps": 345.34623286758404
+    },
+    {
+      "global_step": 9,
+      "microbatches": 1,
+      "forward_sec": 20.09530420228839,
+      "backward_sec": 26.304005939513445,
+      "optimizer_sec": 0.009587813168764114,
+      "step_total_sec": 48.2956832870841,
+      "step_tps": 339.24356971219487
+    },
+    {
+      "global_step": 10,
+      "microbatches": 1,
+      "forward_sec": 20.118946451693773,
+      "backward_sec": 26.274412781000137,
+      "optimizer_sec": 0.012329153716564178,
+      "step_total_sec": 48.28029965981841,
+      "step_tps": 339.3516634205087
+    },
+    {
+      "global_step": 11,
+      "microbatches": 1,
+      "forward_sec": 20.014043778181076,
+      "backward_sec": 26.363838840276003,
+      "optimizer_sec": 0.00851752981543541,
+      "step_total_sec": 48.209613014012575,
+      "step_tps": 339.8492328747347
+    },
+    {
+      "global_step": 12,
+      "microbatches": 1,
+      "forward_sec": 19.576459497213364,
+      "backward_sec": 27.08840587735176,
+      "optimizer_sec": 0.008233364671468735,
+      "step_total_sec": 48.56737693399191,
+      "step_tps": 337.34578711688613
+    },
+    {
+      "global_step": 13,
+      "microbatches": 1,
+      "forward_sec": 19.50772774592042,
+      "backward_sec": 26.507024336606264,
+      "optimizer_sec": 0.009462077170610428,
+      "step_total_sec": 47.898039758205414,
+      "step_tps": 342.0599273521054
+    },
+    {
+      "global_step": 14,
+      "microbatches": 1,
+      "forward_sec": 19.6669218018651,
+      "backward_sec": 26.371274810284376,
+      "optimizer_sec": 0.01045384630560875,
+      "step_total_sec": 47.862928349524736,
+      "step_tps": 342.31085654337505
+    },
+    {
+      "global_step": 15,
+      "microbatches": 1,
+      "forward_sec": 20.213785089552402,
+      "backward_sec": 26.316026777029037,
+      "optimizer_sec": 0.008852660655975342,
+      "step_total_sec": 48.39974519610405,
+      "step_tps": 338.51417881676855
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 15,
+      "mean_sec": 22.39123605489731,
+      "min_sec": 19.12673133984208,
+      "max_sec": 45.40031652152538
+    },
+    "backward_sec": {
+      "count": 15,
+      "mean_sec": 27.18288412168622,
+      "min_sec": 26.088857870548964,
+      "max_sec": 37.718507401645184
+    },
+    "optimizer_sec": {
+      "count": 15,
+      "mean_sec": 0.035643307864665984,
+      "min_sec": 0.008233364671468735,
+      "max_sec": 0.3448841758072376
+    },
+    "step_total_sec": {
+      "count": 15,
+      "mean_sec": 51.60510350093246,
+      "min_sec": 47.230764109641314,
+      "max_sec": 76.89963498339057
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 10,
+      "mean_sec": 19.76058387905359,
+      "min_sec": 19.417157512158155,
+      "max_sec": 20.213785089552402
+    },
+    "backward_sec": {
+      "count": 10,
+      "mean_sec": 26.373596525192262,
+      "min_sec": 26.088857870548964,
+      "max_sec": 27.08840587735176
+    },
+    "optimizer_sec": {
+      "count": 10,
+      "mean_sec": 0.010070346668362618,
+      "min_sec": 0.008233364671468735,
+      "max_sec": 0.012329153716564178
+    },
+    "step_total_sec": {
+      "count": 10,
+      "mean_sec": 48.00340297557413,
+      "min_sec": 47.44224329292774,
+      "max_sec": 48.56737693399191
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 16384,
+    "mean_stable_step_sec": 48.00340297557413,
+    "stable_tps": 341.3091361113872
+  }
+}

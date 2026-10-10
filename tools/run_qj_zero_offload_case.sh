@@ -112,7 +112,7 @@ import json, math, re, sys
 from pathlib import Path
 run = Path(sys.argv[1])
 text = (run / 'launcher.log').read_text(errors='replace')
-losses = [float(value) for value in re.findall(r"'loss':\s*'([0-9.eE+-]+)'", text)]
+losses = [float(value) for value in re.findall(r"'loss':\s*'?([0-9.eE+-]+)'?", text)]
 passed = len(losses) >= 2 and all(map(math.isfinite, losses)) and losses[-1] < losses[0]
 (run / 'loss_check.json').write_text(json.dumps({
     'losses': losses, 'initial_loss': losses[0] if losses else None,

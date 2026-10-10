@@ -137,6 +137,28 @@ env CUDA_VISIBLE_DEVICES="$gpu_ids" OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 \
 status=$?
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
+if [[ $status -eq 0 && ${FSDP2_REPEAT_BATCH:-0} == 1 ]]; then
+    if ! "$python" - "$run_dir" <<'PY'
+import json, math, sys
+from pathlib import Path
+run = Path(sys.argv[1])
+timing = json.loads((run / 'case/step_timing.json').read_text())
+losses = [row['loss'] for row in timing['rows']]
+passed = (len(losses) == timing['steps_requested']
+          and all(map(math.isfinite, losses)) and losses[-1] < losses[0])
+(run / 'loss_check.json').write_text(json.dumps({
+    'losses': losses, 'initial_loss': losses[0], 'final_loss': losses[-1],
+    'passed': passed, 'repeat_batch': True,
+}, indent=2) + '\n')
+print(f'semantic loss: {losses[0]:.6f} -> {losses[-1]:.6f}; passed={passed}')
+if not passed:
+    raise SystemExit('fixed-batch loss did not decrease')
+PY
+    then
+        status=4
+        printf '%s\n' "$status" > "$run_dir/exit_code.txt"
+    fi
+fi
 if [[ $status -eq 0 && ${FSDP2_REPEAT_BATCH:-0} != 1 && $profile != 1 ]]; then
     "$python" "$tools_dir/collect_qj_fsdp2_onednn_result.py" "$run_dir" > "$run_dir/performance.csv"
     mkdir -p "$root/results"

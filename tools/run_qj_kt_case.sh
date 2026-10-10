@@ -142,6 +142,10 @@ hash_files=(
     "$overlay"/kt_kernel/kt_kernel_ext*.so
     "$root/src/accelerate/accelerate/accelerator.py"
     "$root/src/transformers/transformers/trainer.py"
+    "$tools_dir/run_qj_kt_case.sh"
+    "$tools_dir/kt_bench_entry.py"
+    "$tools_dir/kt_case_monitor.py"
+    "$tools_dir/collect_qj_kt_result.py"
     "$tools_dir/step_phase_timer.py"
     "$root/data/fft_real_100.json"
     "$checkpoint/config.json"
@@ -196,5 +200,15 @@ env \
 status=$?
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
+if [[ $status -eq 0 ]]; then
+    "$python" "$tools_dir/collect_qj_kt_result.py" "$run_dir" > "$run_dir/performance.csv"
+    mkdir -p "$root/results"
+    result_table=$root/results/${model}_kt_performance.csv
+    if [[ ! -e $result_table ]]; then
+        cp "$run_dir/performance.csv" "$result_table"
+    else
+        tail -n +2 "$run_dir/performance.csv" >> "$result_table"
+    fi
+fi
 echo "$run_dir status=$status"
 exit "$status"

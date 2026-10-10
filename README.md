@@ -70,7 +70,9 @@ KT host-wall phase timer, with no forced CUDA synchronization. The GPU peak is
 the largest `nvidia-smi` used-memory sample over the eight cards. CPU RSS is
 the peak sum of the benchmark process tree's RSS, so shared pages can be
 counted more than once. Both resource measurements are sampled every two
-seconds. No model or optimizer checkpoint is retained.
+seconds. Each successful case writes `performance.csv` with the requested
+eight columns and appends its row to `/mnt/hurry-bench/results/{model}_kt_performance.csv`.
+No model or optimizer checkpoint is retained.
 
 The official ModelScope `Qwen/Qwen3.5-122B-A10B` checkpoint downloads to
 `/mnt/data/models/Qwen3.5-122B-A10B` with

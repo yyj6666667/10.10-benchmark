@@ -31,7 +31,7 @@ Qwen3.5-122B-A10B,ktransformers,512,SUCCESS,18.79,1234.96,25.134,162.97,6.707,10
 Qwen3.5-122B-A10B,ktransformers,1024,SUCCESS,21.07,1272.55,33.341,245.70,9.162,15.922,4.871,qj5090,results/qj5090_qwen_kt_performance.csv,
 Qwen3.5-122B-A10B,ktransformers,2048,SUCCESS,22.32,1349.70,48.055,340.94,13.506,26.373,4.817,qj5090,results/qj5090_qwen_kt_performance.csv,
 Qwen3.5-122B-A10B,ktransformers,4096,SUCCESS,29.85,1501.75,82.495,397.21,22.443,51.763,4.842,qj5090,results/qj5090_qwen_kt_performance.csv,
-GLM-4.5-Air-106B,zero_offload,32,FAILED,,,,,,,,qj5090,qj5090:/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261010_200238_3621924_semantic/launcher.log,exit=143; rank received SIGKILL during checkpoint load
+GLM-4.5-Air-106B,zero_offload,32,FAILED,,,,,,,,qj5090,qj5090:/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261010_202101_3633552_semantic/launcher.log,exit=126; training exited without a complete timed result; min MemAvailable=12.4 GiB
 GLM-4.5-Air-106B,zero_offload,64,NOT_MEASURED,,,,,,,,qj5090,,
 GLM-4.5-Air-106B,zero_offload,128,NOT_MEASURED,,,,,,,,qj5090,,
 GLM-4.5-Air-106B,zero_offload,256,NOT_MEASURED,,,,,,,,qj5090,,

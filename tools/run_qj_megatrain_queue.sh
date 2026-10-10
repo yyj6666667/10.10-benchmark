@@ -16,23 +16,32 @@ if [[ -z $first_run || ! -f $first_run/exit_code.txt ]]; then
     echo 'first GLM MegaTrain run did not reach a recorded result' >&2
     exit 1
 fi
-if [[ $(cat "$first_run/exit_code.txt") != 0 ]]; then
+if [[ $(cat "$first_run/exit_code.txt") != 0 || ! -f $first_run/loss_check.json ]]; then
     /mnt/data/venvs/sft-yyj-pro/bin/python \
         "$root/tools/record_qj_case_status.py" glm megatrain 32 \
         "$first_run" "$(cat "$first_run/exit_code.txt")" || true
-    echo "first GLM MegaTrain case failed: $first_run" >&2
+    echo "first GLM MegaTrain semantic check failed: $first_run" >&2
     exit 1
 fi
 
 for model in glm45_air qwen35_122b; do
     if [[ $model == glm45_air ]]; then
-        lengths=(64 128 256 512 1024 2048 4096)
+        lengths=(32 64 128 256 512 1024 2048 4096)
         short=glm
     else
         lengths=(32 64 128 256 512 1024 2048 4096)
         short=qwen
     fi
     for seq_len in "${lengths[@]}"; do
+        if [[ $model == qwen35_122b && $seq_len == 32 ]]; then
+            echo "BEGIN MegaTrain Qwen fixed-batch loss check at $(date -Is)"
+            if MEGATRAIN_REPEAT_BATCH=1 bash "$root/tools/run_qj_megatrain_case.sh" "$model" 32 8 2; then
+                echo "PASS MegaTrain Qwen fixed-batch loss check at $(date -Is)"
+            else
+                echo "FAIL MegaTrain Qwen fixed-batch loss check at $(date -Is)" >&2
+                exit 1
+            fi
+        fi
         while [[ -n $(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits) ]]; do
             sleep 15
         done

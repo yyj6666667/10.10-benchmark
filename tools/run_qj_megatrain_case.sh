@@ -46,16 +46,19 @@ print('[preflight] BF16 CPUAdam update OK')
 PY
 
 stamp=$(date +%Y%m%d_%H%M%S)
-run_dir=$root/runs/${model_kind}_megatrain_seq${seq_len}_8gpu_${stamp}_$$
+mode=benchmark
+[[ ${MEGATRAIN_REPEAT_BATCH:-0} == 1 ]] && mode=semantic
+run_dir=$root/runs/${model_kind}_megatrain_seq${seq_len}_8gpu_${stamp}_$$_${mode}
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" <<'PY'
+"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" <<'PY'
 import json, sys
 from pathlib import Path
-run, model, seq, steps, warmup = sys.argv[1:]
+run, model, seq, steps, warmup, mode = sys.argv[1:]
 Path(run, 'run_config.json').write_text(json.dumps({
     'host': 'qj5090', 'backend': 'megatrain', 'model_kind': model,
     'sequence_length': int(seq), 'global_batch': 8, 'precision': 'bf16',
     'steps': int(steps), 'warmup_steps': int(warmup),
+    'mode': mode,
     'checkpoint_interval': 1, 'num_grad_slabs': 2,
     'dataset': 'fft_real_100', 'gradient_clipping': 1.0,
 }, indent=2) + '\n')
@@ -103,6 +106,27 @@ if [[ $status -eq 0 && ${MEGATRAIN_REPEAT_BATCH:-0} != 1 ]]; then
         cp "$run_dir/performance.csv" "$table"
     else
         tail -n +2 "$run_dir/performance.csv" >> "$table"
+    fi
+fi
+if [[ $status -eq 0 && ${MEGATRAIN_REPEAT_BATCH:-0} == 1 ]]; then
+    if ! "$python" - "$run_dir" <<'PY'
+import json, math, sys
+from pathlib import Path
+run = Path(sys.argv[1])
+timing = json.loads((run / 'case/step_timing.json').read_text())
+losses = [row['loss'] for row in timing['rows']]
+passed = len(losses) == timing['steps_requested'] and all(map(math.isfinite, losses)) and losses[-1] < losses[0]
+(run / 'loss_check.json').write_text(json.dumps({
+    'losses': losses, 'initial_loss': losses[0], 'final_loss': losses[-1],
+    'passed': passed, 'repeat_batch': True,
+}, indent=2) + '\n')
+print(f'semantic loss: {losses[0]:.6f} -> {losses[-1]:.6f}; passed={passed}')
+if not passed:
+    raise SystemExit('fixed-batch loss did not decrease')
+PY
+    then
+        status=4
+        printf '%s\n' "$status" > "$run_dir/exit_code.txt"
     fi
 fi
 echo "$run_dir status=$status"

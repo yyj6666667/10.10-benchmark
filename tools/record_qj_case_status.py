@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import os
 import re
 import tempfile
@@ -23,7 +24,7 @@ ROOT_CAUSES = (
     (re.compile(r"Too many open files"),
      "process file descriptor limit reached"),
     (re.compile(r"Signal 9 \(SIGKILL\) received by PID"),
-     "rank received SIGKILL during checkpoint load; host memory exhausted"),
+     "rank received SIGKILL during checkpoint load"),
 )
 
 
@@ -68,6 +69,19 @@ def main() -> None:
                                ("Error", "SIGKILL", "Killed", "Traceback"))]
             if relevant:
                 diagnostic = relevant[-1][:160]
+    samples = args.run_dir / "resource_samples.jsonl"
+    if samples.exists():
+        available = []
+        with samples.open() as stream:
+            for line in stream:
+                try:
+                    value = json.loads(line).get("host_available_bytes")
+                except json.JSONDecodeError:
+                    continue
+                if value is not None:
+                    available.append(value)
+        if available:
+            diagnostic += f"; min MemAvailable={min(available) / 2**30:.1f} GiB"
     row = {
         "model": MODELS[args.model], "backend": args.backend,
         "sequence_length": str(args.sequence_length), "status": status,

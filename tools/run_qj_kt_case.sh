@@ -9,7 +9,9 @@ fi
 seq_len=$1
 steps=$2
 model=${3:-glm}
+mode=${KT_BENCH_MODE:-benchmark}
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ ]] || exit 2
+[[ $mode == benchmark || $mode == semantic ]] || { echo "unknown mode: $mode" >&2; exit 2; }
 
 root=/mnt/hurry-bench
 tools_dir=$root/tools
@@ -59,6 +61,9 @@ if missing:
 print(f"model checkpoint: {len(shards)} shards present")
 PY
 fi
+if [[ $model == qwen && ${KT_BENCH_DRY_RUN:-0} != 1 ]]; then
+    "$python" "$tools_dir/verify_qwen_bf16_checkpoint.py" "$checkpoint"
+fi
 
 gpu_state=$(nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader,nounits)
 for gpu in {0..7}; do
@@ -73,19 +78,21 @@ available_kib=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
 [[ $available_kib -ge 500000000 ]] || { echo "insufficient RAM: $available_kib KiB" >&2; exit 3; }
 
 stamp=$(date +%Y%m%d_%H%M%S)
-run_dir=$root/runs/${model}_kt_seq${seq_len}_8gpu_${stamp}
+run_kind=kt
+if [[ $mode == semantic ]]; then run_kind=semantic; fi
+run_dir=$root/runs/${model}_${run_kind}_seq${seq_len}_8gpu_${stamp}
 mkdir -p "$run_dir"
 printf '%s\n' "$gpu_state" > "$run_dir/gpu_before.csv"
 free -h > "$run_dir/memory_before.txt"
 
-"$python" - "$tools_dir" "$run_dir" "$checkpoint" "$root/data" "$seq_len" "$steps" "$model" "$template" "$model_name" <<'PY'
+"$python" - "$tools_dir" "$run_dir" "$checkpoint" "$root/data" "$seq_len" "$steps" "$model" "$template" "$model_name" "$mode" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 import yaml
 
-tools, run, checkpoint, data, seq_len, steps, model, template, model_name = sys.argv[1:]
+tools, run, checkpoint, data, seq_len, steps, model, template, model_name, mode = sys.argv[1:]
 tools, run = Path(tools), Path(run)
 train = yaml.safe_load((tools / "kt_glm_train_base.yaml").read_text())
 train.update(
@@ -110,6 +117,14 @@ train.update(
 )
 train["kt_config"].update(kt_backend="AMXBF16", kt_num_threads=64)
 accel = yaml.safe_load((tools / "kt_glm_accelerate_base.yaml").read_text())
+if mode == "semantic":
+    train["max_samples"] = 8
+    train["logging_strategy"] = "steps"
+    train["logging_steps"] = 1
+    train["logging_nan_inf_filter"] = False
+    train["dataloader_num_workers"] = 0
+    train["dataloader_persistent_workers"] = False
+    train.pop("dataloader_prefetch_factor", None)
 if model == "qwen":
     # The multimodal checkpoint trains its text decoder in this benchmark.
     train["dataloader_num_workers"] = 0
@@ -121,6 +136,7 @@ if model == "qwen":
 (run / "accelerate_config.yaml").write_text(yaml.safe_dump(accel, sort_keys=False))
 (run / "run_config.json").write_text(json.dumps({
     "model": model_name,
+    "mode": mode,
     "checkpoint": checkpoint,
     "sequence_length": int(seq_len),
     "steps": int(steps),
@@ -146,6 +162,7 @@ hash_files=(
     "$tools_dir/kt_bench_entry.py"
     "$tools_dir/kt_case_monitor.py"
     "$tools_dir/collect_qj_kt_result.py"
+    "$tools_dir/check_semantic_loss.py"
     "$tools_dir/step_phase_timer.py"
     "$root/data/fft_real_100.json"
     "$checkpoint/config.json"
@@ -157,6 +174,7 @@ if [[ -f $checkpoint/model.safetensors.index.json ]]; then
 fi
 if [[ $model == qwen ]]; then
     hash_files+=("$tools_dir/qwen_text_path_contract.patch")
+    hash_files+=("$tools_dir/verify_qwen_bf16_checkpoint.py")
 fi
 sha256sum "${hash_files[@]}" > "$run_dir/checksums.txt"
 cp "$tools_dir/kt_qj_source_revisions.md" "$run_dir/source_revisions.md"
@@ -200,7 +218,9 @@ env \
 status=$?
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
-if [[ $status -eq 0 ]]; then
+if [[ $status -eq 0 && $mode == semantic ]]; then
+    "$python" "$tools_dir/check_semantic_loss.py" "$run_dir/train.log" "$run_dir/loss_check.json" "$steps"
+elif [[ $status -eq 0 ]]; then
     "$python" "$tools_dir/collect_qj_kt_result.py" "$run_dir" > "$run_dir/performance.csv"
     mkdir -p "$root/results"
     result_table=$root/results/${model}_kt_performance.csv

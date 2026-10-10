@@ -82,6 +82,11 @@ isolated in `/mnt/hurry-bench/py-overlay-qwen` and recorded as
 `tools/run_qj_kt_case.sh SEQ 15 qwen`; the no-training preflight is under
 `runs/kt-qj5090-20261010/preflight/`. The queued GLM sweep waits for both
 concurrent model downloads to finish so download I/O does not affect timing.
+After GLM, `tools/wait_qj_glm_then_run_qwen.sh` runs a fixed-batch Qwen loss
+check, then the eight Qwen sequence lengths in order. The loss check must
+finish with finite gradients and a lower final loss before Qwen throughput
+measurements begin. `tools/verify_qwen_bf16_checkpoint.py` inspects shard
+headers and rejects FP8 tensors before training.
 
 qj5090 has an archived MegaTrain source and a prior 397B single-GPU routed
 LoRA run, but the current benchmark venv has no installed MegaTrain module or

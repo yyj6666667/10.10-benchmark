@@ -62,6 +62,12 @@ and the AdamW computation are unchanged. GLM seq4096 reached the 20 GiB host
 memory reserve during step 2, so it has no valid throughput measurement.
 The earlier GLM seq1024 memory failure was resolved by BF16 gradient storage;
 the revised 1024 and 2048 cases both finished all eight steps.
+After GLM seq4096 reached the host-memory guard, later long-sequence cases
+recompute only the CPU expert linear block in backward. This block contains no
+collective; a two-rank Gloo check matched outputs and input/weight gradients
+exactly with and without recomputation. The per-run configuration records
+whether CPU expert checkpointing was enabled. It applies to Qwen seq512 and
+above, and to any later GLM seq4096 retry; earlier completed rows are unchanged.
 CPU expert weights are unbound once per group before the expert loop. This
 lets autograd assemble each full weight gradient once rather than zeroing a
 full parent gradient for every expert selection. The seq2048 one-step profiler

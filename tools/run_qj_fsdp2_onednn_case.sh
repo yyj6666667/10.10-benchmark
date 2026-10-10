@@ -13,12 +13,21 @@ warmup=${4:-2}
 profile=${FSDP2_PROFILE:-0}
 gpu_state_offload=${FSDP2_GPU_STATE_OFFLOAD:-}
 compress_cpu_gradients=${FSDP2_COMPRESS_CPU_GRADIENTS:-0}
-checkpoint_cpu_experts=${FSDP2_CHECKPOINT_CPU_EXPERTS:-0}
+checkpoint_cpu_experts=${FSDP2_CHECKPOINT_CPU_EXPERTS:-}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
 [[ $compress_cpu_gradients == 0 || $compress_cpu_gradients == 1 ]] || exit 2
-[[ $checkpoint_cpu_experts == 0 || $checkpoint_cpu_experts == 1 ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
 [[ $profile == 0 || $profile == 1 ]] || { echo "FSDP2_PROFILE must be 0 or 1" >&2; exit 2; }
+if [[ -z $checkpoint_cpu_experts ]]; then
+    # Qwen's 122B CPU experts need recomputation from seq512; GLM needs it
+    # only at seq4096. The checkpoint contains no distributed collective.
+    checkpoint_cpu_experts=0
+    if (( seq_len >= 4096 )) || \
+        [[ $model_kind == qwen35_122b && $seq_len -ge 512 ]]; then
+        checkpoint_cpu_experts=1
+    fi
+fi
+[[ $checkpoint_cpu_experts == 0 || $checkpoint_cpu_experts == 1 ]] || exit 2
 if [[ -z $gpu_state_offload ]]; then
     if (( seq_len >= 4096 )); then gpu_state_offload=1; else gpu_state_offload=0; fi
 fi

@@ -1,0 +1,3 @@
+model,backend,sequence_length,status,source,note
+GLM-4.5-Air-106B,megatrain,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_180930_3588308_semantic/launcher.log,exit=1; OSError: [Errno 24] Too many open files: '/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/tabulate/__init__.py'
+GLM-4.5-Air-106B,zero_offload,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261010_181409_3590529_semantic/launcher.log,exit=1; torch.distributed.elastic.multiprocessing.errors.ChildFailedError:

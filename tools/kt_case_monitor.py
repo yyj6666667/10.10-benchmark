@@ -50,6 +50,14 @@ def process_tree_rss_bytes(pid: int) -> tuple[int, int]:
     return total, count
 
 
+def host_available_bytes() -> int:
+    with Path("/proc/meminfo").open() as stream:
+        for line in stream:
+            if line.startswith("MemAvailable:"):
+                return int(line.split()[1]) * 1024
+    raise RuntimeError("MemAvailable missing from /proc/meminfo")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True, type=Path)
@@ -67,6 +75,7 @@ def main() -> int:
     baseline = gpu_used_mib()
     peak_gpu = {gpu: baseline[gpu] for gpu in ids}
     peak_rss = 0
+    minimum_host_available = host_available_bytes()
     start = time.monotonic()
     child = subprocess.Popen(args.command, start_new_session=True)
 
@@ -86,6 +95,8 @@ def main() -> int:
                 except (subprocess.SubprocessError, ValueError):
                     gpu = {}
                 peak_rss = max(peak_rss, rss)
+                available = host_available_bytes()
+                minimum_host_available = min(minimum_host_available, available)
                 for gpu_id in ids:
                     peak_gpu[gpu_id] = max(peak_gpu[gpu_id], gpu.get(gpu_id, 0))
                 handle.write(
@@ -94,6 +105,7 @@ def main() -> int:
                             "elapsed_sec": round(time.monotonic() - start, 3),
                             "process_count": process_count,
                             "process_tree_rss_bytes": rss,
+                            "host_available_bytes": available,
                             "gpu_used_mib": gpu,
                         }
                     )
@@ -114,6 +126,7 @@ def main() -> int:
                     "peak_gpu_used_mib": peak_gpu,
                     "peak_single_gpu_used_gib": max(peak_gpu.values()) / 1024,
                     "peak_process_tree_rss_gb": peak_rss / 1e9,
+                    "minimum_host_available_gb": minimum_host_available / 1e9,
                     "elapsed_sec": time.monotonic() - start,
                     "exit_code": status,
                 },

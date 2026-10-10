@@ -52,3 +52,22 @@ versions, step timings, resource measurements, and final status.
 
 Model checkpoints, adapter weights, optimizer state, and regenerable training
 checkpoints are excluded from this data repository.
+
+## qj5090 KT rerun
+
+The qj5090 rerun uses `/mnt/hurry-bench` on the remote host. The base KT
+training source is the clean `bfe3e57c` snapshot with the exact BF16 gradient
+norm patch from KT `fa04bb2` applied. Updated Accelerate `9a0d243` and
+Transformers `e04dcff` are loaded through an isolated `PYTHONPATH` overlay.
+The built KT wheel is also installed only in that overlay. Source revisions
+and the patch are in `tools/kt_qj_source_revisions.md` and
+`tools/kt_grad_norm.patch`.
+
+Run one GLM case on qj5090 with `tools/run_qj_kt_case.sh SEQ 15`. Each case
+uses eight GPUs, BF16 full fine-tuning, global batch 8, gradient clipping at
+1.0, and 15 steps with the first five excluded. Timing follows the earlier
+KT host-wall phase timer, with no forced CUDA synchronization. The GPU peak is
+the largest `nvidia-smi` used-memory sample over the eight cards. CPU RSS is
+the peak sum of the benchmark process tree's RSS, so shared pages can be
+counted more than once. Both resource measurements are sampled every two
+seconds. No model or optimizer checkpoint is retained.

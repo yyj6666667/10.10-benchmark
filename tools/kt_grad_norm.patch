@@ -1,0 +1,100 @@
+diff --git a/kt-kernel/CMakeLists.txt b/kt-kernel/CMakeLists.txt
+index e8d4458..07c72d5 100644
+--- a/kt-kernel/CMakeLists.txt
++++ b/kt-kernel/CMakeLists.txt
+@@ -599,6 +599,9 @@ message(STATUS "SOURCE_DIR7: ${SOURCE_DIR7}")
+ 
+ set(ALL_SOURCES ${SOURCE_DIR1} ${SOURCE_DIR2} ${SOURCE_DIR3} ${SOURCE_DIR4} ${SOURCE_DIR5} ${SOURCE_DIR6} ${SOURCE_DIR7})
+ 
++# Gradient clipping must propagate NaN/Inf even though the other KT kernels use fast-math.
++set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/bf16_sumsq.cpp PROPERTIES COMPILE_OPTIONS "-fno-fast-math")
++
+ file(GLOB_RECURSE FMT_SOURCES
+     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+     "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp"
+diff --git a/kt-kernel/bf16_sumsq.cpp b/kt-kernel/bf16_sumsq.cpp
+new file mode 100644
+index 0000000..5bafd82
+--- /dev/null
++++ b/kt-kernel/bf16_sumsq.cpp
+@@ -0,0 +1,21 @@
++#include "bf16_sumsq.h"
++
++#include <bit>
++#include <cstdint>
++#include <stdexcept>
++
++double bf16_sumsq_ptr(std::uintptr_t data_ptr, std::int64_t numel) {
++  if (numel < 0 || (numel != 0 && data_ptr == 0)) {
++    throw std::invalid_argument("BF16 sum of squares requires a valid pointer and non-negative length");
++  }
++
++  const auto* values = reinterpret_cast<const std::uint16_t*>(data_ptr);
++  double total = 0.0;
++#pragma omp parallel for schedule(static) reduction(+ : total)
++  for (std::int64_t index = 0; index < numel; ++index) {
++    const auto bits = static_cast<std::uint32_t>(values[index]) << 16;
++    const float value = std::bit_cast<float>(bits);
++    total += static_cast<double>(value) * static_cast<double>(value);
++  }
++  return total;
++}
+diff --git a/kt-kernel/bf16_sumsq.h b/kt-kernel/bf16_sumsq.h
+new file mode 100644
+index 0000000..c1b4cb5
+--- /dev/null
++++ b/kt-kernel/bf16_sumsq.h
+@@ -0,0 +1,6 @@
++#pragma once
++
++#include <cstdint>
++
++// The caller must keep the contiguous CPU BF16 tensor alive for this call.
++double bf16_sumsq_ptr(std::uintptr_t data_ptr, std::int64_t numel);
+diff --git a/kt-kernel/ext_bindings.cpp b/kt-kernel/ext_bindings.cpp
+index 80bc2b2..880b8e0 100644
+--- a/kt-kernel/ext_bindings.cpp
++++ b/kt-kernel/ext_bindings.cpp
+@@ -19,6 +19,7 @@
+ #include <cstddef>
+ #include <cstring>
+ 
++#include "bf16_sumsq.h"
+ #include "cpu_backend/cpuinfer.h"
+ #include "cpu_backend/worker_pool.h"
+ #include "operators/common.hpp"
+@@ -517,6 +518,8 @@ void bind_moe_module(py::module_& moe_module, const char* name) {
+ }
+ 
+ PYBIND11_MODULE(kt_kernel_ext, m) {
++  m.def("_bf16_sumsq_ptr", &bf16_sumsq_ptr, py::arg("data_ptr"), py::arg("numel"),
++        py::call_guard<py::gil_scoped_release>());
+ #if defined(HAVE_AMX)
+   m.attr("__cpu_variant__") = "amx";
+   m.attr("__int8_kernel__") = "amx-int8";
+diff --git a/kt-kernel/python/grad_norm.py b/kt-kernel/python/grad_norm.py
+new file mode 100644
+index 0000000..5291938
+--- /dev/null
++++ b/kt-kernel/python/grad_norm.py
+@@ -0,0 +1,20 @@
++"""Memory-efficient norm reduction for KT-owned CPU BF16 gradients."""
++
++from __future__ import annotations
++
++import torch
++
++from . import kt_kernel_ext
++
++
++if not hasattr(kt_kernel_ext, "_bf16_sumsq_ptr"):
++    raise ImportError("The loaded kt-kernel extension does not support CPU BF16 gradient norm reduction")
++
++
++def bf16_sumsq(tensor: torch.Tensor) -> float:
++    """Return sum(float(value) ** 2) without materializing a float tensor."""
++    if tensor.device.type != "cpu" or tensor.dtype != torch.bfloat16 or tensor.layout != torch.strided:
++        raise TypeError("bf16_sumsq requires a strided CPU BF16 tensor")
++    if not tensor.is_contiguous():
++        raise ValueError("bf16_sumsq requires a contiguous tensor")
++    return kt_kernel_ext._bf16_sumsq_ptr(tensor.data_ptr(), tensor.numel())

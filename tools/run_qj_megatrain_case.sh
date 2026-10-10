@@ -15,7 +15,9 @@ warmup=${4:-2}
 (( steps > warmup )) || exit 2
 
 root=/mnt/hurry-bench
-python=/mnt/data/venvs/sft-yyj-pro/bin/python
+python=/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/bin/python
+export TORCH_EXTENSIONS_DIR=$root/torch_extensions
+mkdir -p "$TORCH_EXTENSIONS_DIR"
 checkpoint=/mnt/data/models/GLM-4.5-Air
 [[ $model_kind == qwen35_122b ]] && checkpoint=/mnt/data/models/Qwen3.5-122B-A10B
 for path in "$checkpoint/model.safetensors.index.json" \
@@ -29,6 +31,19 @@ compute_apps=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits
 [[ -z $compute_apps ]] || { echo "GPU compute process active: $compute_apps" >&2; exit 3; }
 available_kib=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
 [[ $available_kib -ge 1100000000 ]] || { echo "host RAM too low: $available_kib KiB" >&2; exit 3; }
+
+# Build and validate the CPUAdam kernel before allocating hundreds of GB.
+"$python" - <<'PY'
+import torch
+from deepspeed.ops.adam import DeepSpeedCPUAdam
+p = torch.nn.Parameter(torch.tensor([0.1], dtype=torch.bfloat16))
+o = DeepSpeedCPUAdam([p], lr=0.01, fp32_optimizer_states=False)
+p.grad = torch.ones_like(p)
+o.step()
+if not p.item() < 0.1:
+    raise RuntimeError('BF16 CPUAdam update did not change the weight')
+print('[preflight] BF16 CPUAdam update OK')
+PY
 
 stamp=$(date +%Y%m%d_%H%M%S)
 run_dir=$root/runs/${model_kind}_megatrain_seq${seq_len}_8gpu_${stamp}_$$
@@ -66,6 +81,7 @@ printf '\n' >> "$run_dir/command.txt"
 set +e
 env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 \
+    TORCH_EXTENSIONS_DIR="$root/torch_extensions" \
     TOKENIZERS_PARALLELISM=false HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
     PYTHONPATH="$root/tools:$root/src/megatrain:$root/src/transformers:$root/src/llamafactory-overlay" \
     PYTORCH_ALLOC_CONF=expandable_segments:True \
@@ -78,9 +94,11 @@ printf '%s\n' "$status" > "$run_dir/exit_code.txt"
 if [[ $status -eq 0 && ${MEGATRAIN_REPEAT_BATCH:-0} != 1 ]]; then
     "$python" "$root/tools/collect_qj_fsdp2_onednn_result.py" "$run_dir" \
         > "$run_dir/performance.csv"
-    table=$root/results/${model_kind/45_air/}_megatrain_performance.csv
-    if [[ $model_kind == glm45_air ]]; then table=$root/results/glm_megatrain_performance.csv; fi
-    if [[ $model_kind == qwen35_122b ]]; then table=$root/results/qwen_megatrain_performance.csv; fi
+    if [[ $model_kind == glm45_air ]]; then
+        table=$root/results/glm_megatrain_performance.csv
+    else
+        table=$root/results/qwen_megatrain_performance.csv
+    fi
     if [[ ! -e $table ]]; then
         cp "$run_dir/performance.csv" "$table"
     else

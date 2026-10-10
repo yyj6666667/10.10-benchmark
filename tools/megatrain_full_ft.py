@@ -156,10 +156,12 @@ def main() -> None:
     parameters = engine.get_parameters()
     if sum(p.numel() for p in parameters) != contract["parameters"]:
         raise RuntimeError("MegaTrain optimizer does not own the full text model")
-    # CPU master parameters and AdamW moments use BF16, matching MegaTrain's
-    # normal dtype setting; foreach=False bounds peak host memory.
-    optimizer = torch.optim.AdamW(parameters, lr=1e-5, weight_decay=0.01,
-                                   foreach=False)
+    from deepspeed.ops.adam import DeepSpeedCPUAdam
+
+    # MegaTrain's normal fast CPU optimizer. BF16 moments keep the 100B+
+    # model within this host's memory budget.
+    optimizer = DeepSpeedCPUAdam(parameters, lr=1e-5, weight_decay=0.01,
+                                 adamw_mode=True, fp32_optimizer_states=False)
     rows = []
     try:
         for step in range(args.steps):
@@ -198,6 +200,7 @@ def main() -> None:
         "steps_requested": args.steps, "steps_completed": len(rows),
         "warmup_steps": args.warmup_steps,
         "contract": contract, "repeat_batch": args.repeat_batch,
+        "optimizer": "DeepSpeedCPUAdam(BF16 states)",
         "timing_method": "MegaTrain CUDA event forward/backward; host optimizer/step",
         "rows": rows,
         "stable": {field: mean(field) for field in

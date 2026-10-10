@@ -13,13 +13,15 @@ from __future__ import annotations
 import argparse
 import copy
 import csv
+import gzip
 import json
 import math
 import os
+import shutil
 import statistics
 import sys
 import time
-from contextlib import ExitStack
+from contextlib import ExitStack, nullcontext
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterator
@@ -66,13 +68,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset-name", default="fft_real_100")
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--sequence-length", type=int, required=True)
-    parser.add_argument("--steps", type=int, default=15)
-    parser.add_argument("--warmup-steps", type=int, default=5)
+    parser.add_argument("--steps", type=int, default=8)
+    parser.add_argument("--warmup-steps", type=int, default=2)
     parser.add_argument("--learning-rate", type=float, default=1e-5)
     parser.add_argument("--max-grad-norm", type=float, default=1.0)
     parser.add_argument("--threads-per-rank", type=int, default=8)
     parser.add_argument("--repeat-batch", action="store_true")
     parser.add_argument("--release-cache-each-step", action="store_true")
+    parser.add_argument(
+        "--profile", action="store_true", help="trace rank 0 training steps"
+    )
     # Whole-layer checkpointing would replay CPU all-to-all during backward.
     # It is intentionally unsupported until a GPU-only policy is validated.
     parser.add_argument(
@@ -822,6 +827,28 @@ def run_training(
         (args.output_dir / "exit_code.txt").write_text("0\n", encoding="utf-8")
 
 
+def save_profile(profiler: Any, output_dir: Path) -> None:
+    """Save a rank-0 Chrome trace and a small CPU/CUDA summary."""
+    trace = output_dir / "pytorch_trace_rank0.json"
+    profiler.export_chrome_trace(str(trace))
+    compressed = trace.with_suffix(".json.gz")
+    with (
+        trace.open("rb") as source,
+        gzip.open(compressed, "wb", compresslevel=1) as target,
+    ):
+        shutil.copyfileobj(source, target, length=1024 * 1024)
+    trace.unlink()
+    tables = [
+        profiler.key_averages().table(sort_by="self_cpu_time_total", row_limit=35),
+        profiler.key_averages().table(sort_by="self_cuda_time_total", row_limit=35),
+    ]
+    (output_dir / "pytorch_profile_summary.txt").write_text(
+        "CPU self time\n" + tables[0] + "\n\nCUDA self time\n" + tables[1] + "\n",
+        encoding="utf-8",
+    )
+    print(f"[profile] saved {compressed}", flush=True)
+
+
 def main() -> int:
     args = parse_args()
     rank = int(os.environ["RANK"])
@@ -873,16 +900,40 @@ def main() -> int:
                 flush=True,
             )
         dist.barrier(device_ids=[local_rank])
-        run_training(
-            args,
-            model,
-            samples,
-            model_stats,
-            rank,
-            local_rank,
-            world_size,
-            device,
+        context = (
+            torch.profiler.profile(
+                activities=[
+                    torch.profiler.ProfilerActivity.CPU,
+                    torch.profiler.ProfilerActivity.CUDA,
+                ],
+                record_shapes=False,
+                profile_memory=False,
+                with_stack=False,
+            )
+            if args.profile and rank == 0
+            else nullcontext()
         )
+        active_profiler = None
+        try:
+            with context as active_profiler:
+                run_training(
+                    args,
+                    model,
+                    samples,
+                    model_stats,
+                    rank,
+                    local_rank,
+                    world_size,
+                    device,
+                )
+        finally:
+            if active_profiler is not None:
+                try:
+                    save_profile(active_profiler, args.output_dir)
+                except Exception as exc:
+                    print(
+                        f"[profile] export failed: {exc}", file=sys.stderr, flush=True
+                    )
     finally:
         dist.destroy_process_group(cpu_group)
         dist.destroy_process_group()

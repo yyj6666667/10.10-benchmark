@@ -8,10 +8,12 @@ if (( $# < 2 || $# > 4 )); then
 fi
 model_kind=$1
 seq_len=$2
-steps=${3:-15}
-warmup=${4:-5}
+steps=${3:-8}
+warmup=${4:-2}
+profile=${FSDP2_PROFILE:-0}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
+[[ $profile == 0 || $profile == 1 ]] || { echo "FSDP2_PROFILE must be 0 or 1" >&2; exit 2; }
 (( steps > warmup )) || { echo "steps must exceed warmup" >&2; exit 2; }
 
 root=/mnt/hurry-bench
@@ -48,11 +50,11 @@ PY
 stamp=$(date +%Y%m%d_%H%M%S)
 run_dir=$root/runs/${model_kind}_fsdp2_onednn_seq${seq_len}_8gpu_${stamp}_$$
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" <<'PY'
+"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" "$profile" <<'PY'
 import json
 import sys
 from pathlib import Path
-run, seq, steps, warmup, checkpoint, model_label, model_kind = sys.argv[1:]
+run, seq, steps, warmup, checkpoint, model_label, model_kind, profile = sys.argv[1:]
 Path(run, "run_config.json").write_text(json.dumps({
     "host": "qj5090",
     "model": model_label,
@@ -62,6 +64,7 @@ Path(run, "run_config.json").write_text(json.dumps({
     "sequence_length": int(seq),
     "steps": int(steps),
     "warmup_steps": int(warmup),
+    "profile": profile == "1",
     "dp": 8, "tp": 1,
     "global_batch": 8,
     "precision": "bf16_compute_fp32_master",
@@ -86,6 +89,7 @@ cmd=("$torchrun" --standalone --nproc_per_node=8 "$tools_dir/fsdp2_onednn_full_f
     --steps "$steps" --warmup-steps "$warmup" --threads-per-rank 8
     --learning-rate 1e-5 --max-grad-norm 1.0 --no-gradient-checkpointing)
 if [[ ${FSDP2_REPEAT_BATCH:-0} == 1 ]]; then cmd+=(--repeat-batch); fi
+if [[ $profile == 1 ]]; then cmd+=(--profile); fi
 {
     printf '%q' "${cmd[0]}"
     printf ' %q' "${cmd[@]:1}"
@@ -126,7 +130,7 @@ env CUDA_VISIBLE_DEVICES="$gpu_ids" OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 \
 status=$?
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
-if [[ $status -eq 0 && ${FSDP2_REPEAT_BATCH:-0} != 1 ]]; then
+if [[ $status -eq 0 && ${FSDP2_REPEAT_BATCH:-0} != 1 && $profile != 1 ]]; then
     "$python" "$tools_dir/collect_qj_fsdp2_onednn_result.py" "$run_dir" > "$run_dir/performance.csv"
     mkdir -p "$root/results"
     table=$root/results/${model_kind}_fsdp2_onednn_performance.csv

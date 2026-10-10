@@ -23,9 +23,10 @@ Results and small run evidence are kept in the private GitHub repository
 
 ## Measurement convention
 
-For eight-GPU server throughput, global batch size is 8. Each case has 15
-optimizer steps, with the first 5 excluded. TPS is `8 * sequence_length /
-mean_step_seconds` over the remaining 10 steps. KT semantic checks repeat a
+For eight-GPU server throughput, global batch size is 8. Completed KT cases
+used 15 optimizer steps, with the first 5 excluded. New runs use 8 steps,
+with the first 2 excluded. TPS is `8 * sequence_length / mean_step_seconds`
+over the measured steps. KT semantic checks repeat a
 fixed four-example batch on four GPUs; the FSDP2 check repeats a fixed
 eight-example batch on eight GPUs. Semantic checks must not be plotted as
 throughput.

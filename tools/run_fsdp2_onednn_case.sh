@@ -9,8 +9,8 @@ fi
 model_kind=$1
 sequence_length=$2
 output_dir=$3
-steps=${4:-15}
-warmup=${5:-5}
+steps=${4:-8}
+warmup=${5:-2}
 [[ "$model_kind" == qwen35_122b || "$model_kind" == glm45_air ]] || exit 2
 [[ "$sequence_length" =~ ^[0-9]+$ && "$steps" =~ ^[0-9]+$ && "$warmup" =~ ^[0-9]+$ ]] || exit 2
 [[ "$output_dir" == /* ]] || { echo 'OUTPUT_DIR must be absolute' >&2; exit 2; }

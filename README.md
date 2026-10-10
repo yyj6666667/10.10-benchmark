@@ -71,3 +71,17 @@ the largest `nvidia-smi` used-memory sample over the eight cards. CPU RSS is
 the peak sum of the benchmark process tree's RSS, so shared pages can be
 counted more than once. Both resource measurements are sampled every two
 seconds. No model or optimizer checkpoint is retained.
+
+The official ModelScope `Qwen/Qwen3.5-122B-A10B` checkpoint downloads to
+`/mnt/data/models/Qwen3.5-122B-A10B` with
+`tools/download_qwen_bf16.py`. Its Qwen text-decoder path correction is
+isolated in `/mnt/hurry-bench/py-overlay-qwen` and recorded as
+`tools/qwen_text_path_contract.patch`. A Qwen case uses
+`tools/run_qj_kt_case.sh SEQ 15 qwen`; the no-training preflight is under
+`runs/kt-qj5090-20261010/preflight/`. The queued GLM sweep waits for both
+concurrent model downloads to finish so download I/O does not affect timing.
+
+qj5090 has an archived MegaTrain source and a prior 397B single-GPU routed
+LoRA run, but the current benchmark venv has no installed MegaTrain module or
+verified eight-GPU BF16 full-finetuning setup for the figure's 122B and GLM
+models.

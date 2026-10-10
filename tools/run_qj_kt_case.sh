@@ -2,22 +2,36 @@
 # qj5090: one isolated 8-GPU KT full fine-tuning benchmark case.
 set -Eeuo pipefail
 
-if [[ $# -ne 2 ]]; then
-    echo "usage: $0 SEQ STEPS" >&2
+if [[ $# -lt 2 || $# -gt 3 ]]; then
+    echo "usage: $0 SEQ STEPS [glm|qwen]" >&2
     exit 2
 fi
 seq_len=$1
 steps=$2
+model=${3:-glm}
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ ]] || exit 2
 
 root=/mnt/hurry-bench
 tools_dir=$root/tools
-checkpoint=/mnt/data/models/GLM-4.5-Air
 python=/mnt/data/venvs/sft-yyj-pro/bin/python
 accelerate=/mnt/data/venvs/sft-yyj-pro/bin/accelerate
 llamafactory=/mnt/sft_yyj_yyj/kt-v2-final/LLaMA-Factory/src
-overlay=$root/py-overlay-contract
 gpu_ids=0,1,2,3,4,5,6,7
+case "$model" in
+    glm)
+        checkpoint=/mnt/data/models/GLM-4.5-Air
+        overlay=$root/py-overlay-contract
+        template=glm4_moe
+        model_name=GLM-4.5-Air
+        ;;
+    qwen)
+        checkpoint=/mnt/data/models/Qwen3.5-122B-A10B
+        overlay=$root/py-overlay-qwen
+        template=qwen3
+        model_name=Qwen3.5-122B-A10B
+        ;;
+    *) echo "unknown model: $model" >&2; exit 2 ;;
+esac
 
 for path in "$checkpoint/config.json" \
     "$root/data/fft_real_100.json" "$root/data/dataset_info.json" \
@@ -59,19 +73,19 @@ available_kib=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
 [[ $available_kib -ge 500000000 ]] || { echo "insufficient RAM: $available_kib KiB" >&2; exit 3; }
 
 stamp=$(date +%Y%m%d_%H%M%S)
-run_dir=$root/runs/glm_kt_seq${seq_len}_8gpu_${stamp}
+run_dir=$root/runs/${model}_kt_seq${seq_len}_8gpu_${stamp}
 mkdir -p "$run_dir"
 printf '%s\n' "$gpu_state" > "$run_dir/gpu_before.csv"
 free -h > "$run_dir/memory_before.txt"
 
-"$python" - "$tools_dir" "$run_dir" "$checkpoint" "$root/data" "$seq_len" "$steps" <<'PY'
+"$python" - "$tools_dir" "$run_dir" "$checkpoint" "$root/data" "$seq_len" "$steps" "$model" "$template" "$model_name" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 import yaml
 
-tools, run, checkpoint, data, seq_len, steps = sys.argv[1:]
+tools, run, checkpoint, data, seq_len, steps, model, template, model_name = sys.argv[1:]
 tools, run = Path(tools), Path(run)
 train = yaml.safe_load((tools / "kt_glm_train_base.yaml").read_text())
 train.update(
@@ -79,7 +93,7 @@ train.update(
     kt_weight_path=checkpoint,
     dataset="fft_real_100",
     dataset_dir=data,
-    template="glm4_moe",
+    template=template,
     cutoff_len=int(seq_len),
     output_dir=str(run / "model_output"),
     max_samples=100,
@@ -96,10 +110,17 @@ train.update(
 )
 train["kt_config"].update(kt_backend="AMXBF16", kt_num_threads=64)
 accel = yaml.safe_load((tools / "kt_glm_accelerate_base.yaml").read_text())
+if model == "qwen":
+    # The multimodal checkpoint trains its text decoder in this benchmark.
+    train["dataloader_num_workers"] = 0
+    train["dataloader_persistent_workers"] = False
+    train.pop("dataloader_prefetch_factor", None)
+    accel["fsdp_config"]["fsdp_cpu_ram_efficient_loading"] = True
+    accel["fsdp_config"]["fsdp_transformer_layer_cls_to_wrap"] = "Qwen3_5MoeDecoderLayer"
 (run / "train_config.yaml").write_text(yaml.safe_dump(train, sort_keys=False))
 (run / "accelerate_config.yaml").write_text(yaml.safe_dump(accel, sort_keys=False))
 (run / "run_config.json").write_text(json.dumps({
-    "model": "GLM-4.5-Air",
+    "model": model_name,
     "checkpoint": checkpoint,
     "sequence_length": int(seq_len),
     "steps": int(steps),
@@ -109,21 +130,31 @@ accel = yaml.safe_load((tools / "kt_glm_accelerate_base.yaml").read_text())
     "host": "qj5090",
     "gpu_ids": list(range(8)),
     "precision": "bf16",
+    "template": template,
     "gradient_clipping": 1.0,
 }, indent=2) + "\n")
 PY
 
-sha256sum "$root/src/kt-kernel-contract/bf16_sumsq.cpp" \
-    "$overlay/kt_kernel/grad_norm.py" \
-    "$overlay"/kt_kernel/kt_kernel_ext*.so \
-    "$root/src/accelerate/accelerate/accelerator.py" \
-    "$root/src/transformers/transformers/trainer.py" \
-    "$tools_dir/step_phase_timer.py" \
-    "$root/data/fft_real_100.json" \
-    "$checkpoint/config.json" \
-    "$checkpoint/model.safetensors.index.json" \
-    "$run_dir/train_config.yaml" "$run_dir/accelerate_config.yaml" \
-    > "$run_dir/checksums.txt"
+hash_files=(
+    "$root/src/kt-kernel-contract/bf16_sumsq.cpp"
+    "$overlay/kt_kernel/grad_norm.py"
+    "$overlay/kt_kernel/sft/arch.py"
+    "$overlay"/kt_kernel/kt_kernel_ext*.so
+    "$root/src/accelerate/accelerate/accelerator.py"
+    "$root/src/transformers/transformers/trainer.py"
+    "$tools_dir/step_phase_timer.py"
+    "$root/data/fft_real_100.json"
+    "$checkpoint/config.json"
+    "$run_dir/train_config.yaml"
+    "$run_dir/accelerate_config.yaml"
+)
+if [[ -f $checkpoint/model.safetensors.index.json ]]; then
+    hash_files+=("$checkpoint/model.safetensors.index.json")
+fi
+if [[ $model == qwen ]]; then
+    hash_files+=("$tools_dir/qwen_text_path_contract.patch")
+fi
+sha256sum "${hash_files[@]}" > "$run_dir/checksums.txt"
 cp "$tools_dir/kt_qj_source_revisions.md" "$run_dir/source_revisions.md"
 PYTHONPATH="$overlay:$root/src/accelerate:$root/src/transformers:$tools_dir:$llamafactory${PYTHONPATH:+:$PYTHONPATH}" \
     "$python" -c 'import inspect, torch, kt_kernel, accelerate, transformers; from kt_kernel.grad_norm import bf16_sumsq; print("torch",torch.__version__); print("kt_kernel",inspect.getfile(kt_kernel)); print("accelerate",inspect.getfile(accelerate)); print("transformers",inspect.getfile(transformers)); print("bf16_sumsq",inspect.getfile(bf16_sumsq))' \

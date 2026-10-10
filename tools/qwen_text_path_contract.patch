@@ -1,0 +1,11 @@
+--- a/kt_kernel/sft/arch.py
++++ b/kt_kernel/sft/arch.py
+@@ -168,6 +168,8 @@
+ 
+ def _get_layers_prefix(config) -> str:
+     arch = config.architectures[0] if getattr(config, "architectures", None) else ""
++    if getattr(config, "model_type", None) == "qwen3_5_moe_text":
++        return "model.layers"
+     if "Qwen3_5Moe" in arch:
+         return "model.language_model.layers"
+     return "model.layers"

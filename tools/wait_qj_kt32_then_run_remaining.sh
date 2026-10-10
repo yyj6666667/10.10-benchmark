@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 
 first_log=/mnt/hurry-bench/logs/first-case-watcher.log
-first_pid=3405699
+first_pid=$(cat /mnt/hurry-bench/logs/first-case-watcher.pid)
 while ! rg -q '/mnt/hurry-bench/runs/glm_kt_seq32_8gpu_.* status=0$' "$first_log"; do
     if ! kill -0 "$first_pid" 2>/dev/null; then
         echo "first KT case exited without a successful result" >&2

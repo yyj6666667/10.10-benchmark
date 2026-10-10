@@ -1,0 +1,12 @@
+8c6f65ff75512cccbe6a8b970bcb76b1c673e7b1974dd4db9b3e2fe0ddfc4350  /mnt/hurry-bench/src/kt-kernel-contract/bf16_sumsq.cpp
+d04f5c61e6affb2795c95a253c01bf3502f4ada0a20ec7c1a98a9a273afe1bc5  /mnt/hurry-bench/py-overlay-qwen/kt_kernel/grad_norm.py
+8984217c4c9b4874f061b4ac99bf017408cedcad3e7c173621a46faeef219a25  /mnt/hurry-bench/py-overlay-qwen/kt_kernel/sft/arch.py
+1ea68ac52adfb3a6cdb7a4bbb0815ee8949cd120f1e3e98b886df9bc8a2f9f2c  /mnt/hurry-bench/py-overlay-qwen/kt_kernel/kt_kernel_ext.cpython-311-x86_64-linux-gnu.so
+d732fbf1e4d4a27e6f447d1cfe7e77ee6b8490c1fca2efaaf50225949ed14730  /mnt/hurry-bench/src/accelerate/accelerate/accelerator.py
+c2042bf6430b6186bfb2f69998806bd88907495a91eca1e5bacdd7d15216a99b  /mnt/hurry-bench/src/transformers/transformers/trainer.py
+d7e426655920bfb2503490acbf0bd57f7ab7d0ed429207b857d02d1d240a81a1  /mnt/hurry-bench/tools/step_phase_timer.py
+b2519683f7bbc9f96c996779808fc2eef7412d666ce6fbc2f284e8d4b58de886  /mnt/hurry-bench/data/fft_real_100.json
+af07d0423658865afb52bd0d6fd3c2cc45d988425b76193467fd19129655cecd  /mnt/data/models/Qwen3.5-122B-A10B/config.json
+f769d011714f0732aab810ae28e37724cd2036fbed9b94714066414d9e4c9a0d  /mnt/hurry-bench/runs/qwen_kt_seq32_8gpu_20261010_101422/train_config.yaml
+044d563ab75baf13ed080d98ba1cb6229e59ef1f28b3324bbad9abcae0d92d88  /mnt/hurry-bench/runs/qwen_kt_seq32_8gpu_20261010_101422/accelerate_config.yaml
+4190ed261146928cf5e531c3781c90ca79004db3e49fe09ff14c71cc831ca70e  /mnt/hurry-bench/tools/qwen_text_path_contract.patch

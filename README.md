@@ -1,9 +1,8 @@
 # 10.10 benchmark
 
-Local Git repository for the sap4 single-node, full-parameter fine-tuning
-benchmark. The intended GitHub destination is the private repository
-`yyj6666667/10.10-benchmark`, once that account's authentication is restored.
-No GitHub remote is configured yet.
+Single-node, full-parameter fine-tuning benchmark for sap4 and qj5090.
+Results and small run evidence are kept in the private GitHub repository
+`yyj6666667/10.10-benchmark`.
 
 ## Contents
 
@@ -31,15 +30,16 @@ fixed four-example batch on four GPUs; the FSDP2 check repeats a fixed
 eight-example batch on eight GPUs. Semantic checks must not be plotted as
 throughput.
 
-The FSDP2 + oneDNN baseline has data parallel size 8, pipeline size 1, and
-tensor parallel size 1. FSDP2 owns the GPU trunk while each rank owns a
-disjoint set of CPU experts. Expert assignments use differentiable Gloo
-all-to-all; groups of four experts use CPU oneDNN AMX BF16 batched matmul.
+The FSDP2 + oneDNN baseline uses eight data-parallel ranks. FSDP2 shards the
+GPU trunk while each rank owns a disjoint set of CPU experts. Expert
+assignments use differentiable Gloo all-to-all; each owned expert uses
+oneDNN-backed BF16 CPU linear layers.
 GPU and CPU master parameters are FP32, compute is BF16, CPU AdamW moments
 are BF16, GPU AdamW moments are FP32, and the global gradient norm is clipped
-to 1.0. The learning rate is a constant 1e-5. Its forward, backward, and
-optimizer host-wall timers synchronize CUDA at each boundary, so phase times
-have a different boundary from the historical coarse-host-wall KT runs.
+to 1.0. The learning rate starts at 1e-5 and follows a cosine schedule. Its
+forward, backward, and optimizer host-wall timers synchronize CUDA at each
+boundary, so phase times have a different boundary from the historical
+coarse-host-wall KT runs.
 Whole-decoder gradient checkpointing is disabled because recomputing a decoder
 also reentered its Gloo expert collectives in different orders across ranks
 in a smoke test. Any later checkpointing must cover GPU-only submodules.
@@ -111,3 +111,14 @@ qj5090 has an archived MegaTrain source and a prior 397B single-GPU routed
 LoRA run, but the current benchmark venv has no installed MegaTrain module or
 verified eight-GPU BF16 full-finetuning setup for the figure's 122B and GLM
 models.
+
+## qj5090 FSDP2 + oneDNN baseline
+
+`tools/run_qj_fsdp2_onednn_case.sh glm45_air 32` launches the GLM seq32 case
+after all eight GPUs are free. Use `qwen35_122b` for the Qwen model; its 39
+BF16 checkpoint shards have been verified. The runner checks every shard,
+records source checksums and environment versions, and refuses to start when
+a GPU is occupied. It imports the same isolated Transformers and LLaMA Factory sources
+used by the KT benchmark. A no-GPU launch preflight is recorded under
+`runs/pytorch-fsdp2-onednn-qj-20261010/preflight/`; it is not a throughput
+measurement.

@@ -11,3 +11,9 @@ optimizer.pt
 scheduler.pt
 trainer_state.pt
 wandb/
+
+# Runtime files from the background qj5090 result copier.
+runs/kt-qj5090-20261010/glm_sweep/sync.lock
+runs/kt-qj5090-20261010/glm_sweep/sync.pid
+runs/kt-qj5090-20261010/glm_sweep/sync.log
+*.pending

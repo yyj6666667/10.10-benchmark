@@ -37,6 +37,12 @@ four GPUs. Qwen KT, MegaTrain, ZeRO, and FSDP2 semantic checks repeat eight
 examples on eight GPUs. Semantic checks must not be plotted as
 throughput.
 
+The CPU RSS column sums the RSS of the benchmark process and its children.
+MegaTrain maps the same shared CPU parameters into eight workers, so this
+sum counts shared pages repeatedly and can exceed physical RAM. Each run also
+records `host_available_bytes` to show the actual host-memory headroom; do
+not read the summed RSS as unique physical memory for MegaTrain.
+
 The FSDP2 + oneDNN baseline uses eight data-parallel ranks. FSDP2 shards the
 GPU trunk while each rank owns a disjoint set of CPU experts. Expert
 assignments use differentiable Gloo all-to-all; each owned expert uses

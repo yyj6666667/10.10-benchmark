@@ -115,11 +115,16 @@ PY
 
 sha256sum "$root/src/kt-kernel-contract/bf16_sumsq.cpp" \
     "$overlay/kt_kernel/grad_norm.py" \
+    "$overlay"/kt_kernel/kt_kernel_ext*.so \
     "$root/src/accelerate/accelerate/accelerator.py" \
     "$root/src/transformers/transformers/trainer.py" \
     "$tools_dir/step_phase_timer.py" \
+    "$root/data/fft_real_100.json" \
+    "$checkpoint/config.json" \
+    "$checkpoint/model.safetensors.index.json" \
     "$run_dir/train_config.yaml" "$run_dir/accelerate_config.yaml" \
     > "$run_dir/checksums.txt"
+cp "$tools_dir/kt_qj_source_revisions.md" "$run_dir/source_revisions.md"
 PYTHONPATH="$overlay:$root/src/accelerate:$root/src/transformers:$tools_dir:$llamafactory${PYTHONPATH:+:$PYTHONPATH}" \
     "$python" -c 'import inspect, torch, kt_kernel, accelerate, transformers; from kt_kernel.grad_norm import bf16_sumsq; print("torch",torch.__version__); print("kt_kernel",inspect.getfile(kt_kernel)); print("accelerate",inspect.getfile(accelerate)); print("transformers",inspect.getfile(transformers)); print("bf16_sumsq",inspect.getfile(bf16_sumsq))' \
     > "$run_dir/versions.txt"

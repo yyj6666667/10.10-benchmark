@@ -183,6 +183,8 @@ def main() -> None:
                      for key in ("input_ids", "attention_mask", "labels")}
             started = time.perf_counter()
             loss, tokens, timing = engine.forward_and_backward(**batch)
+            if not math.isfinite(loss):
+                raise RuntimeError(f"non-finite loss before optimizer at step {step + 1}")
             optimizer_started = time.perf_counter()
             grad_norm = torch.nn.utils.clip_grad_norm_(parameters, 1.0)
             optimizer.step()

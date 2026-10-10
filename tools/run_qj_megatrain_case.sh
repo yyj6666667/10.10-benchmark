@@ -28,7 +28,8 @@ for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/megatrain_full_ft.py" "$root/tools/kt_case_monitor.py" \
     "$root/tools/record_qj_semantic_check.py" \
     "$root/tools/collect_qj_fsdp2_onednn_result.py" \
-    "$root/src/megatrain/infinity/model/cpu_master.py"; do
+    "$root/src/megatrain/infinity/model/cpu_master.py" \
+    "$root/src/megatrain/infinity/model/mp_worker.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
 done
 
@@ -70,6 +71,7 @@ Path(run, 'run_config.json').write_text(json.dumps({
 PY
 sha256sum "$root/tools/megatrain_full_ft.py" \
     "$root/src/megatrain/infinity/model/cpu_master.py" \
+    "$root/src/megatrain/infinity/model/mp_worker.py" \
     "$root/src/megatrain/infinity/model/mp_state.py" \
     "$root/data/fft_real_100.json" "$checkpoint/config.json" \
     "$checkpoint/model.safetensors.index.json" > "$run_dir/checksums.txt"

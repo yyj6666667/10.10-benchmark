@@ -14,10 +14,16 @@ flock -n 9 || { echo "FSDP2 oneDNN queue already active" >&2; exit 3; }
 while [[ -n $(ps -p "$zero_pid" -o stat= 2>/dev/null | grep -v '^Z' || true) ]]; do
     sleep 30
 done
-while [[ -n $(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits) ]]; do
-    sleep 15
-done
-sleep 20
+wait_for_resources() {
+    while true; do
+        compute_apps=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits)
+        available_kib=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
+        [[ -z $compute_apps && $available_kib -ge 1400000000 ]] && break
+        sleep 15
+    done
+    sleep 20
+}
+wait_for_resources
 
 for model_kind in glm45_air qwen35_122b; do
     echo "BEGIN oneDNN fixed-batch loss check model=$model_kind at $(date -Is)"
@@ -57,10 +63,7 @@ for model_kind in glm45_air qwen35_122b; do
             fi
             echo "FAIL oneDNN model=$model_kind seq=$seq_len exit=$status at $(date -Is)" >&2
         fi
-        while [[ -n $(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits) ]]; do
-            sleep 15
-        done
-        sleep 20
+        wait_for_resources
     done
 done
 echo "COMPLETE FSDP2 oneDNN sweep at $(date -Is)"

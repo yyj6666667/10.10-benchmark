@@ -22,6 +22,8 @@ ROOT_CAUSES = (
      "nested torchrun launch failed"),
     (re.compile(r"Too many open files"),
      "process file descriptor limit reached"),
+    (re.compile(r"Signal 9 \(SIGKILL\) received by PID"),
+     "rank received SIGKILL during checkpoint load; host memory exhausted"),
 )
 
 

@@ -77,6 +77,15 @@ seconds. Each successful case writes `performance.csv` with the requested
 eight columns and appends its row to `/mnt/hurry-bench/results/{model}_kt_performance.csv`.
 No model or optimizer checkpoint is retained.
 
+`tools/run_qj_glm_kt_sweep.sh` queues GLM lengths 32, 64, 128, 256, 512,
+1024, 2048, and 4096 on qj5090, stopping at the first failed case. After
+seq32 it runs a fixed-batch seq512 loss check before continuing. The sweep
+sets 64 OpenMP threads on rank 0 for KT gradient clipping and zero data-loader
+workers to avoid forking processes that hold the CPU model. Its background
+log is `/mnt/hurry-bench/logs/glm-kt-sweep-20261010.log`; each case retains
+its configuration, timing, resource summary, and training log under
+`/mnt/hurry-bench/runs/`.
+
 The GLM seq4096 gradient-clipping PyTorch profiler comparison and both local
 Chrome traces are under `runs/kt-qj5090-20261010/profiles/`. The fused BF16
 path removed the long `aten::item`, while raising rank 0's OpenMP threads from

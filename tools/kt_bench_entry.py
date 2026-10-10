@@ -10,12 +10,15 @@ from pathlib import Path
 
 
 def main() -> None:
-    owner_omp_threads = os.environ.get("KT_CLIP_PROFILE_OWNER_OMP_THREADS")
+    owner_omp_threads = os.environ.get("KT_BENCH_OWNER_OMP_THREADS") or os.environ.get(
+        "KT_CLIP_PROFILE_OWNER_OMP_THREADS"
+    )
     if owner_omp_threads and int(os.environ.get("RANK", "0")) == 0:
         if int(owner_omp_threads) < 1:
             raise ValueError("KT_CLIP_PROFILE_OWNER_OMP_THREADS must be positive")
         os.environ["ACCELERATE_KT_OMP_NUM_THREADS"] = owner_omp_threads
         os.environ["OMP_NUM_THREADS"] = owner_omp_threads
+        os.environ["MKL_NUM_THREADS"] = owner_omp_threads
 
     from transformers import Trainer
 

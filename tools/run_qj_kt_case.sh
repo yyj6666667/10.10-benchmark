@@ -10,7 +10,10 @@ seq_len=$1
 steps=$2
 model=${3:-glm}
 mode=${KT_BENCH_MODE:-benchmark}
+owner_omp_threads=${KT_BENCH_OWNER_OMP_THREADS:-${KT_CLIP_PROFILE_OWNER_OMP_THREADS:-64}}
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ ]] || exit 2
+[[ $owner_omp_threads =~ ^[1-9][0-9]*$ ]] || { echo "invalid owner OpenMP thread count: $owner_omp_threads" >&2; exit 2; }
+export KT_BENCH_OWNER_OMP_THREADS=$owner_omp_threads
 [[ $mode == benchmark || $mode == semantic || $mode == profile || $mode == clip_profile ]] || { echo "unknown mode: $mode" >&2; exit 2; }
 
 root=/mnt/hurry-bench
@@ -121,24 +124,17 @@ train.update(
 )
 train["kt_config"].update(kt_backend="AMXBF16", kt_num_threads=64)
 accel = yaml.safe_load((tools / "kt_glm_accelerate_base.yaml").read_text())
+# Forking data-loader workers duplicates parts of this large CPU model.
+train["dataloader_num_workers"] = 0
+train["dataloader_persistent_workers"] = False
+train.pop("dataloader_prefetch_factor", None)
 if mode == "semantic":
     train["max_samples"] = 8
     train["logging_strategy"] = "steps"
     train["logging_steps"] = 1
     train["logging_nan_inf_filter"] = False
-    train["dataloader_num_workers"] = 0
-    train["dataloader_persistent_workers"] = False
-    train.pop("dataloader_prefetch_factor", None)
-if mode == "clip_profile":
-    # Avoid forking workers from a process holding the full CPU model.
-    train["dataloader_num_workers"] = 0
-    train["dataloader_persistent_workers"] = False
-    train.pop("dataloader_prefetch_factor", None)
 if model == "qwen":
     # The multimodal checkpoint trains its text decoder in this benchmark.
-    train["dataloader_num_workers"] = 0
-    train["dataloader_persistent_workers"] = False
-    train.pop("dataloader_prefetch_factor", None)
     accel["fsdp_config"]["fsdp_cpu_ram_efficient_loading"] = True
     accel["fsdp_config"]["fsdp_transformer_layer_cls_to_wrap"] = "Qwen3_5MoeDecoderLayer"
 (run / "train_config.yaml").write_text(yaml.safe_dump(train, sort_keys=False))
@@ -158,7 +154,8 @@ if model == "qwen":
     "template": template,
     "gradient_clipping": 1.0,
     "stops_after_clip_without_optimizer_update": mode == "clip_profile",
-    "owner_omp_threads": int(os.environ.get("KT_CLIP_PROFILE_OWNER_OMP_THREADS", "2")),
+    "owner_omp_threads": int(os.environ["KT_BENCH_OWNER_OMP_THREADS"]),
+    "dataloader_num_workers": train["dataloader_num_workers"],
 }, indent=2) + "\n")
 PY
 
@@ -252,6 +249,16 @@ elif [[ $status -eq 0 && $mode == benchmark ]]; then
         cp "$run_dir/performance.csv" "$result_table"
     else
         tail -n +2 "$run_dir/performance.csv" >> "$result_table"
+    fi
+fi
+cache_dir=$run_dir/datasets_cache
+if [[ -d $cache_dir && ! -L $cache_dir ]]; then
+    if [[ -z $(find "$cache_dir" -type l -print -quit) ]]; then
+        cache_bytes=$(du -sB1 "$cache_dir" | awk '{print $1}')
+        rm -r -- "$cache_dir"
+        echo "[kt_bench] removed generated dataset cache: $cache_bytes allocated bytes"
+    else
+        echo "[kt_bench] dataset cache contains a symlink; retained $cache_dir" >&2
     fi
 fi
 echo "$run_dir status=$status"

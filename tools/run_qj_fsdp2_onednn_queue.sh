@@ -8,7 +8,7 @@ zero_pid_file=$root/logs/zero-offload-queue-20261011.pid
 zero_pid=$(cat "$zero_pid_file")
 [[ $zero_pid =~ ^[1-9][0-9]*$ ]] || exit 2
 
-exec 9>"$root/logs/fsdp2-onednn-queue.lock"
+exec 9>"$root/logs/fsdp2-onednn-compressed-queue.lock"
 flock -n 9 || { echo "FSDP2 oneDNN queue already active" >&2; exit 3; }
 
 while [[ -n $(ps -p "$zero_pid" -o stat= 2>/dev/null | grep -v '^Z' || true) ]]; do

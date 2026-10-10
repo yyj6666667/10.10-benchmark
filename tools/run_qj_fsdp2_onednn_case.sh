@@ -97,11 +97,15 @@ if [[ ${FSDP2_DRY_RUN:-0} == 1 ]]; then
 fi
 
 gpu_state=$(nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader,nounits)
+compute_apps=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits)
+[[ -z $compute_apps ]] || {
+    echo "another GPU compute process is active: $compute_apps" >&2
+    exit 3
+}
 for gpu in {0..7}; do
     used=$(awk -F, -v gpu="$gpu" '$1 + 0 == gpu {gsub(/ /, "", $2); print $2}' <<< "$gpu_state")
-    util=$(awk -F, -v gpu="$gpu" '$1 + 0 == gpu {gsub(/ /, "", $3); print $3}' <<< "$gpu_state")
-    [[ -n $used && $used -lt 512 && ${util:-100} -le 5 ]] || {
-        echo "GPU $gpu occupied: ${used:-unknown} MiB, ${util:-unknown}%" >&2
+    [[ -n $used && $used -lt 512 ]] || {
+        echo "GPU $gpu occupied: ${used:-unknown} MiB" >&2
         exit 3
     }
 done

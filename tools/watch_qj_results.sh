@@ -30,6 +30,21 @@ PY
             fi
             paths+=("$target")
         done
+        if [[ -f $scratch/case_status.csv ]]; then
+            source=$scratch/case_status.csv
+            target=results/qj5090_case_status.csv
+            normalized=$scratch/case_status_normalized.csv
+            python - "$source" "$normalized" <<'PY'
+import sys
+from pathlib import Path
+Path(sys.argv[2]).write_text(Path(sys.argv[1]).read_text().replace("\r\n", "\n"))
+PY
+            if [[ ! -f $target ]] || ! cmp -s "$normalized" "$target"; then
+                cp "$normalized" "$target"
+                changed=1
+            fi
+            paths+=("$target")
+        fi
         if (( changed )); then
             if python tools/render_qj_figure9.py; then
                 git add -- "${paths[@]}" results/qj5090_figure9.csv \
@@ -42,7 +57,9 @@ PY
             fi
         fi
         if [[ $(git rev-list --count origin/main..HEAD) -gt 0 ]]; then
-            git -c credential.helper='!gh auth git-credential' push origin main
+            if ! git -c credential.helper='!gh auth git-credential' push origin main; then
+                echo "result push failed at $(date -Is); retrying" >&2
+            fi
         fi
     else
         echo "remote result sync failed at $(date -Is); retrying" >&2

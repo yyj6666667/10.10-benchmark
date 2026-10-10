@@ -2,6 +2,10 @@
 # One isolated eight-GPU MegaTrain full fine-tuning case on qj5090.
 set -Eeuo pipefail
 
+# PyTorch's file-descriptor sharing keeps one handle per shared tensor.
+# GLM has more than 17,000 tensors, plus shared gradients and layer flats.
+ulimit -n 131072
+
 if (( $# < 2 || $# > 4 )); then
     echo "usage: $0 glm45_air|qwen35_122b SEQ [STEPS [WARMUP]]" >&2
     exit 2

@@ -86,7 +86,7 @@ env PYTHONPATH="$root/tools:$root/src/transformers:$root/src/llamafactory-overla
     > "$run_dir/versions.txt"
 nvidia-smi -L >> "$run_dir/versions.txt"
 
-cmd=("$torchrun" --standalone --nproc_per_node=8 -m kt_bench_entry train "$run_dir/train_config.yaml")
+cmd=("$torchrun" --standalone --nproc_per_node=8 -m kt_bench_entry "$run_dir/train_config.yaml")
 printf '%q ' "${cmd[@]}" > "$run_dir/command.txt"
 printf '\n' >> "$run_dir/command.txt"
 set +e

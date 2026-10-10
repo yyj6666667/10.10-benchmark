@@ -100,9 +100,16 @@ def main() -> None:
 
     Trainer.save_model = skip_model_save
 
-    from llamafactory.cli import main as llamafactory_main
+    if os.environ.get("FFT_TRAINING_BACKEND") == "deepspeed":
+        # torchrun has already created the eight ranks. Calling the CLI here
+        # would launch a second torchrun from every rank.
+        from llamafactory.train.tuner import run_exp
 
-    llamafactory_main()
+        run_exp()
+    else:
+        from llamafactory.cli import main as llamafactory_main
+
+        llamafactory_main()
 
 
 if __name__ == "__main__":

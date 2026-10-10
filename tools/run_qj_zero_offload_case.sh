@@ -35,13 +35,15 @@ available_kib=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
 [[ $available_kib -ge 1050000000 ]] || { echo "host RAM too low: $available_kib KiB" >&2; exit 3; }
 
 stamp=$(date +%Y%m%d_%H%M%S)
-run_dir=$root/runs/${model}_zero_offload_seq${seq_len}_8gpu_${stamp}_$$
+mode=${ZERO_BENCH_MODE:-benchmark}
+[[ $mode == benchmark || $mode == semantic ]] || exit 2
+run_dir=$root/runs/${model}_zero_offload_seq${seq_len}_8gpu_${stamp}_$$_${mode}
 mkdir -p "$run_dir"
-"$python" - "$root" "$run_dir" "$checkpoint" "$template" "$model" "$seq_len" "$steps" "$warmup" <<'PY'
+"$python" - "$root" "$run_dir" "$checkpoint" "$template" "$model" "$seq_len" "$steps" "$warmup" "$mode" <<'PY'
 import json, sys
 from pathlib import Path
 import yaml
-root, run, checkpoint, template, model, seq, steps, warmup = sys.argv[1:]
+root, run, checkpoint, template, model, seq, steps, warmup, mode = sys.argv[1:]
 root, run = Path(root), Path(run)
 train = yaml.safe_load((root / 'tools/kt_glm_train_base.yaml').read_text())
 for key in ('use_kt', 'kt_weight_path', 'kt_config'):
@@ -49,7 +51,8 @@ for key in ('use_kt', 'kt_weight_path', 'kt_config'):
 train.update(
     model_name_or_path=checkpoint, dataset='fft_real_100',
     dataset_dir=str(root / 'data'), template=template,
-    cutoff_len=int(seq), max_samples=100, output_dir=str(run / 'model_output'),
+    cutoff_len=int(seq), max_samples=8 if mode == 'semantic' else 100,
+    output_dir=str(run / 'model_output'),
     per_device_train_batch_size=1, gradient_accumulation_steps=1,
     max_steps=int(steps), logging_strategy='steps', logging_steps=1,
     save_strategy='no', report_to='none', max_grad_norm=1.0,
@@ -59,6 +62,7 @@ train.update(
     deepspeed=str(root / 'tools/zero3_cpu_offload.json'),
     freeze_vision_tower=True, freeze_multi_modal_projector=True,
     freeze_language_model=False,
+    logging_nan_inf_filter=False,
 )
 train.pop('dataloader_prefetch_factor', None)
 (run / 'train_config.yaml').write_text(yaml.safe_dump(train, sort_keys=False))
@@ -69,6 +73,7 @@ train.pop('dataloader_prefetch_factor', None)
     'warmup_steps': int(warmup), 'tokens_per_step': 8 * int(seq),
     'global_batch': 8, 'precision': 'bf16', 'dataset': 'fft_real_100',
     'gradient_clipping': 1.0,
+    'mode': mode,
 }, indent=2) + '\n')
 PY
 sha256sum "$root/tools/zero3_cpu_offload.json" "$root/tools/kt_bench_entry.py" \
@@ -99,7 +104,30 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
 status=$?
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
-if [[ $status -eq 0 ]]; then
+if [[ $status -eq 0 && $mode == semantic ]]; then
+    if ! "$python" - "$run_dir" <<'PY'
+import json, math, re, sys
+from pathlib import Path
+run = Path(sys.argv[1])
+text = (run / 'launcher.log').read_text(errors='replace')
+losses = [float(value) for value in re.findall(r"'loss':\s*'([0-9.eE+-]+)'", text)]
+passed = len(losses) >= 2 and all(map(math.isfinite, losses)) and losses[-1] < losses[0]
+(run / 'loss_check.json').write_text(json.dumps({
+    'losses': losses, 'initial_loss': losses[0] if losses else None,
+    'final_loss': losses[-1] if losses else None, 'passed': passed,
+    'fixed_batch': True,
+}, indent=2) + '\n')
+print(f'semantic loss: {losses[0] if losses else None} -> '
+      f'{losses[-1] if losses else None}; passed={passed}')
+if not passed:
+    raise SystemExit('fixed-batch loss did not decrease')
+PY
+    then
+        status=4
+        printf '%s\n' "$status" > "$run_dir/exit_code.txt"
+    fi
+fi
+if [[ $status -eq 0 && $mode == benchmark ]]; then
     "$python" "$root/tools/collect_qj_kt_result.py" "$run_dir" \
         > "$run_dir/performance.csv"
     table=$root/results/${model}_zero_offload_performance.csv

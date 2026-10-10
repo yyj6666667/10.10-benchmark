@@ -67,7 +67,8 @@ fi
 
 wait_for_resources
 echo "BEGIN MegaTrain GLM fixed-batch loss check at $(date -Is)"
-if MEGATRAIN_REPEAT_BATCH=1 bash "$root/tools/run_qj_megatrain_case.sh" \
+if MEGATRAIN_FINITE_PROBE=1 MEGATRAIN_REPEAT_BATCH=1 \
+    bash "$root/tools/run_qj_megatrain_case.sh" \
     glm45_air 32 8 2; then
     echo "PASS MegaTrain GLM fixed-batch loss check at $(date -Is)"
     for seq_len in 32 64 128 256 512 1024 2048 4096; do

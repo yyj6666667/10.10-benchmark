@@ -54,7 +54,7 @@ GLM-4.5-Air-106B,pytorch_onednn,256,SUCCESS,30.45,1321.04,45.577,44.94,5.372,17.
 GLM-4.5-Air-106B,pytorch_onednn,512,SUCCESS,30.29,1349.62,57.226,71.58,9.616,22.680,24.957,qj5090,results/qj5090_glm45_air_fsdp2_onednn_performance.csv,
 GLM-4.5-Air-106B,pytorch_onednn,1024,SUCCESS,28.13,1377.77,76.800,106.67,16.458,37.203,23.171,qj5090,results/qj5090_glm45_air_fsdp2_onednn_performance.csv,
 GLM-4.5-Air-106B,pytorch_onednn,2048,SUCCESS,30.98,1429.65,152.508,107.43,32.455,92.888,27.205,qj5090,results/qj5090_glm45_air_fsdp2_onednn_performance.csv,
-GLM-4.5-Air-106B,pytorch_onednn,4096,NOT_MEASURED,,,,,,,,qj5090,,
+GLM-4.5-Air-106B,pytorch_onednn,4096,BLOCKED,,,,,,,,qj5090,qj5090:/mnt/hurry-bench/runs/glm45_air_fsdp2_onednn_seq4096_8gpu_20261010_214449_3671512/host_memory_guard.txt,exit=1; host_memory_guard: MemAvailable=20880856 KiB at 2026-10-10T21:54:01+00:00; reserve=20 GiB; runner=3671512; torchrun=3671622; min MemAvailable=19.6 GiB
 GLM-4.5-Air-106B,ktransformers,32,SUCCESS,21.12,1028.76,11.988,21.35,2.154,3.448,3.470,qj5090,results/qj5090_glm_kt_performance.csv,
 GLM-4.5-Air-106B,ktransformers,64,SUCCESS,21.13,1031.95,13.156,38.92,2.527,4.312,3.406,qj5090,results/qj5090_glm_kt_performance.csv,
 GLM-4.5-Air-106B,ktransformers,128,SUCCESS,21.16,1038.14,14.563,70.31,2.998,5.184,3.573,qj5090,results/qj5090_glm_kt_performance.csv,

@@ -53,7 +53,7 @@ train.update(
     per_device_train_batch_size=1, gradient_accumulation_steps=1,
     max_steps=int(steps), logging_strategy='steps', logging_steps=1,
     save_strategy='no', report_to='none', max_grad_norm=1.0,
-    pure_bf16=True, bf16=True, gradient_checkpointing=True,
+    pure_bf16=False, bf16=True, gradient_checkpointing=True,
     dataloader_num_workers=0, dataloader_persistent_workers=False,
     preprocessing_num_workers=1,
     deepspeed=str(root / 'tools/zero3_cpu_offload.json'),

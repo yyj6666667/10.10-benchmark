@@ -1,0 +1,32 @@
+{
+  "model_kind": "glm45_air",
+  "model_path": "/mnt/data/models/GLM-4.5-Air",
+  "dataset_dir": "/mnt/hurry-bench/data",
+  "dataset_name": "fft_real_100",
+  "output_dir": "/mnt/hurry-bench/runs/glm45_air_fsdp2_onednn_seq2048_8gpu_20261010_154549_3518448/case",
+  "sequence_length": 2048,
+  "steps": 1,
+  "warmup_steps": 0,
+  "learning_rate": 1e-05,
+  "max_grad_norm": 1.0,
+  "threads_per_rank": 8,
+  "repeat_batch": false,
+  "release_cache_each_step": false,
+  "offload_gpu_optimizer_state": false,
+  "profile": true,
+  "gradient_checkpointing": true,
+  "dp": 8,
+  "tp": 1,
+  "cpu_affinity_rank0": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "torch": "2.9.1+cu128",
+  "oneDNN_available": true
+}

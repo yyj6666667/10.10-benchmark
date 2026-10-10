@@ -1,0 +1,54 @@
+{
+  "backend": "pytorch_fsdp2_onednn_cpu",
+  "model_kind": "glm45_air",
+  "sequence_length": 2048,
+  "global_batch_size": 8,
+  "dp": 8,
+  "tp": 1,
+  "steps_requested": 1,
+  "steps_completed": 1,
+  "warmup_steps": 0,
+  "repeat_batch": false,
+  "template": "glm4_moe",
+  "compute_dtype": "bfloat16",
+  "gpu_master_dtype": "float32",
+  "cpu_master_dtype": "float32",
+  "cpu_optimizer_state_dtype": "bfloat16",
+  "gpu_optimizer_state_dtype": "float32",
+  "gpu_optimizer_state_offload": false,
+  "gradient_checkpointing": true,
+  "release_cache_each_step": false,
+  "model_stats": {
+    "model_layers": 46,
+    "moe_layers": 45,
+    "logical_parameters": 106852245504,
+    "cpu_expert_parameters_per_rank": 12457082880,
+    "gpu_parameters_before_sharding": 7195582464,
+    "loaded_checkpoint_tensors": 2805,
+    "checkpointed_gpu_submodules": 92,
+    "gpu_parameters_per_rank": 899447808,
+    "gpu_allocated_gib_after_load": 3.364276885986328
+  },
+  "stable": {
+    "step_sec": 141.3067111261189,
+    "tps": 115.94636850175482,
+    "forward_sec": 32.837204702198505,
+    "backward_sec": 81.23281368985772,
+    "optimizer_sec": 27.334223739802837
+  },
+  "rows": [
+    {
+      "step": 1,
+      "loss": 3.3351257145404816,
+      "grad_norm": 102.12441541847063,
+      "learning_rate": 1e-05,
+      "forward_sec": 32.837204702198505,
+      "backward_sec": 81.23281368985772,
+      "optimizer_sec": 27.334223739802837,
+      "step_sec": 141.3067111261189,
+      "tps": 115.94636850175482,
+      "gpu_max_reserved_gib": 28.8203125,
+      "gpu_allocated_gib_after_step": 10.096413612365723
+    }
+  ]
+}

@@ -41,3 +41,6 @@ model checkpoint: 47 shards present
 PASS GLM KT seq=2048 at 2026-10-10T14:15:11+00:00
 BEGIN GLM KT seq=4096 at 2026-10-10T14:15:31+00:00
 model checkpoint: 47 shards present
+[kt_bench] removed generated dataset cache: 14131200 allocated bytes
+/mnt/hurry-bench/runs/glm_kt_seq4096_8gpu_20261010_141532 status=1
+FAIL GLM KT seq=4096 exit=1 at 2026-10-10T14:22:37+00:00

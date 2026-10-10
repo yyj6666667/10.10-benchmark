@@ -1,0 +1,19 @@
+{
+  "host": "qj5090",
+  "model": "GLM-4.5-Air",
+  "model_kind": "glm45_air",
+  "checkpoint": "/mnt/data/models/GLM-4.5-Air",
+  "backend": "pytorch_fsdp2_onednn_cpu",
+  "sequence_length": 2048,
+  "steps": 1,
+  "warmup_steps": 0,
+  "profile": true,
+  "dp": 8,
+  "tp": 1,
+  "global_batch": 8,
+  "precision": "bf16_compute_fp32_master",
+  "threads_per_rank": 8,
+  "gradient_checkpointing": true,
+  "gpu_optimizer_state_offload": false,
+  "max_grad_norm": 1.0
+}

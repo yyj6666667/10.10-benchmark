@@ -11,9 +11,14 @@ seq_len=$2
 steps=${3:-8}
 warmup=${4:-2}
 profile=${FSDP2_PROFILE:-0}
+gpu_state_offload=${FSDP2_GPU_STATE_OFFLOAD:-}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
 [[ $profile == 0 || $profile == 1 ]] || { echo "FSDP2_PROFILE must be 0 or 1" >&2; exit 2; }
+if [[ -z $gpu_state_offload ]]; then
+    if (( seq_len >= 4096 )); then gpu_state_offload=1; else gpu_state_offload=0; fi
+fi
+[[ $gpu_state_offload == 0 || $gpu_state_offload == 1 ]] || { echo "FSDP2_GPU_STATE_OFFLOAD must be 0 or 1" >&2; exit 2; }
 (( steps > warmup )) || { echo "steps must exceed warmup" >&2; exit 2; }
 
 root=/mnt/hurry-bench
@@ -50,11 +55,11 @@ PY
 stamp=$(date +%Y%m%d_%H%M%S)
 run_dir=$root/runs/${model_kind}_fsdp2_onednn_seq${seq_len}_8gpu_${stamp}_$$
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" "$profile" <<'PY'
+"$python" - "$run_dir" "$seq_len" "$steps" "$warmup" "$checkpoint" "$model_label" "$model_kind" "$profile" "$gpu_state_offload" <<'PY'
 import json
 import sys
 from pathlib import Path
-run, seq, steps, warmup, checkpoint, model_label, model_kind, profile = sys.argv[1:]
+run, seq, steps, warmup, checkpoint, model_label, model_kind, profile, gpu_state_offload = sys.argv[1:]
 Path(run, "run_config.json").write_text(json.dumps({
     "host": "qj5090",
     "model": model_label,
@@ -69,7 +74,8 @@ Path(run, "run_config.json").write_text(json.dumps({
     "global_batch": 8,
     "precision": "bf16_compute_fp32_master",
     "threads_per_rank": 8,
-    "gradient_checkpointing": False,
+    "gradient_checkpointing": True,
+    "gpu_optimizer_state_offload": gpu_state_offload == "1",
     "max_grad_norm": 1.0,
 }, indent=2) + "\n")
 PY
@@ -87,9 +93,10 @@ cmd=("$torchrun" --standalone --nproc_per_node=8 "$tools_dir/fsdp2_onednn_full_f
     --dataset-dir "$root/data" --dataset-name fft_real_100
     --output-dir "$run_dir/case" --sequence-length "$seq_len"
     --steps "$steps" --warmup-steps "$warmup" --threads-per-rank 8
-    --learning-rate 1e-5 --max-grad-norm 1.0 --no-gradient-checkpointing)
+    --learning-rate 1e-5 --max-grad-norm 1.0 --gradient-checkpointing)
 if [[ ${FSDP2_REPEAT_BATCH:-0} == 1 ]]; then cmd+=(--repeat-batch); fi
 if [[ $profile == 1 ]]; then cmd+=(--profile); fi
+if [[ $gpu_state_offload == 1 ]]; then cmd+=(--offload-gpu-optimizer-state); fi
 {
     printf '%q' "${cmd[0]}"
     printf ' %q' "${cmd[@]:1}"

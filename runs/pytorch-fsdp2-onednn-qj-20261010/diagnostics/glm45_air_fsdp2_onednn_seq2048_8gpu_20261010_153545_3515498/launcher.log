@@ -1,0 +1,64 @@
+[Gloo] Rank 0 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank 1 is connected to 7 peer ranks. Expected number of connected peer ranks is : 7
+[Gloo] Rank [Gloo] Rank 23 is connected to  is connected to 77 peer ranks.  peer ranks. Expected number of connected peer ranks is : Expected number of connected peer ranks is : 77
+
+[Gloo] Rank [Gloo] Rank [Gloo] Rank [Gloo] Rank 4657 is connected to  is connected to  is connected to  is connected to 7777 peer ranks.  peer ranks.  peer ranks.  peer ranks. Expected number of connected peer ranks is : Expected number of connected peer ranks is : Expected number of connected peer ranks is : Expected number of connected peer ranks is : 7777
+
+
+
+[load] sharded 10/46 layers
+[load] sharded 20/46 layers
+[load] sharded 30/46 layers
+[load] sharded 40/46 layers
+[WARNING|2026-10-10 15:36:09] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-10 15:36:09] llamafactory.data.template:144 >> Add <|user|>,<|observation|> to stop words.
+[load] {'model_layers': 46, 'moe_layers': 45, 'logical_parameters': 106852245504, 'cpu_expert_parameters_per_rank': 12457082880, 'gpu_parameters_before_sharding': 7195582464, 'loaded_checkpoint_tensors': 2805, 'checkpointed_gpu_submodules': 92, 'gpu_parameters_per_rank': 899447808, 'gpu_allocated_gib_after_load': 3.364276885986328}
+[data] encoded 100 examples with glm4_moe template
+[layer 0] GPU allocated=6.30 GiB reserved=9.57 GiB
+[layer 1] GPU allocated=6.25 GiB reserved=9.57 GiB
+[layer 2] GPU allocated=6.41 GiB reserved=9.62 GiB
+[layer 3] GPU allocated=6.57 GiB reserved=9.81 GiB
+[layer 4] GPU allocated=6.73 GiB reserved=9.95 GiB
+[layer 5] GPU allocated=6.89 GiB reserved=10.12 GiB
+[layer 6] GPU allocated=7.05 GiB reserved=10.28 GiB
+[layer 7] GPU allocated=7.21 GiB reserved=10.45 GiB
+[layer 8] GPU allocated=7.37 GiB reserved=10.61 GiB
+[layer 9] GPU allocated=7.53 GiB reserved=10.78 GiB
+[layer 10] GPU allocated=7.69 GiB reserved=10.94 GiB
+[layer 11] GPU allocated=7.85 GiB reserved=11.11 GiB
+[layer 12] GPU allocated=8.01 GiB reserved=11.27 GiB
+[layer 13] GPU allocated=8.17 GiB reserved=11.44 GiB
+[layer 14] GPU allocated=8.33 GiB reserved=11.60 GiB
+[layer 15] GPU allocated=8.49 GiB reserved=11.77 GiB
+[layer 16] GPU allocated=8.65 GiB reserved=11.93 GiB
+[layer 17] GPU allocated=8.81 GiB reserved=12.10 GiB
+[layer 18] GPU allocated=8.97 GiB reserved=12.26 GiB
+[layer 19] GPU allocated=9.13 GiB reserved=12.43 GiB
+[layer 20] GPU allocated=9.28 GiB reserved=12.60 GiB
+[layer 21] GPU allocated=9.44 GiB reserved=12.76 GiB
+[layer 22] GPU allocated=9.60 GiB reserved=12.93 GiB
+[layer 23] GPU allocated=9.76 GiB reserved=13.09 GiB
+[layer 24] GPU allocated=9.92 GiB reserved=13.26 GiB
+[layer 25] GPU allocated=10.08 GiB reserved=13.42 GiB
+[layer 26] GPU allocated=10.24 GiB reserved=13.59 GiB
+[layer 27] GPU allocated=10.40 GiB reserved=13.75 GiB
+[layer 28] GPU allocated=10.56 GiB reserved=13.92 GiB
+[layer 29] GPU allocated=10.72 GiB reserved=14.08 GiB
+[layer 30] GPU allocated=10.88 GiB reserved=14.25 GiB
+[layer 31] GPU allocated=11.04 GiB reserved=14.41 GiB
+[layer 32] GPU allocated=11.20 GiB reserved=14.58 GiB
+[layer 33] GPU allocated=11.36 GiB reserved=14.74 GiB
+[layer 34] GPU allocated=11.52 GiB reserved=14.91 GiB
+[layer 35] GPU allocated=11.68 GiB reserved=15.07 GiB
+[layer 36] GPU allocated=11.83 GiB reserved=15.24 GiB
+[layer 37] GPU allocated=11.99 GiB reserved=15.40 GiB
+[layer 38] GPU allocated=12.15 GiB reserved=15.57 GiB
+[layer 39] GPU allocated=12.31 GiB reserved=15.73 GiB
+[layer 40] GPU allocated=12.47 GiB reserved=15.90 GiB
+[layer 41] GPU allocated=12.63 GiB reserved=16.06 GiB
+[layer 42] GPU allocated=12.79 GiB reserved=16.23 GiB
+[layer 43] GPU allocated=12.95 GiB reserved=16.39 GiB
+[layer 44] GPU allocated=13.11 GiB reserved=16.56 GiB
+[layer 45] GPU allocated=13.27 GiB reserved=16.73 GiB
+[train] model=glm45_air seq=2048 step=1/1 loss=3.335126 step_sec=245.214 tps=66.815
+[profile] saved /mnt/hurry-bench/runs/glm45_air_fsdp2_onednn_seq2048_8gpu_20261010_153545_3515498/case/pytorch_trace_rank0.json.gz

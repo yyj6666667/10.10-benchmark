@@ -23,6 +23,7 @@ import sys
 import time
 from contextlib import ExitStack, nullcontext
 from dataclasses import dataclass
+from functools import wraps
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -31,6 +32,8 @@ import torch.distributed as dist
 import torch.distributed.nn.functional as dist_nn
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.distributed.tensor import DTensor
+from torch.utils.checkpoint import checkpoint
 
 
 @dataclass(frozen=True)
@@ -76,12 +79,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--repeat-batch", action="store_true")
     parser.add_argument("--release-cache-each-step", action="store_true")
     parser.add_argument(
+        "--offload-gpu-optimizer-state",
+        action="store_true",
+        help="keep dense AdamW moments on CPU between steps to free VRAM",
+    )
+    parser.add_argument(
         "--profile", action="store_true", help="trace rank 0 training steps"
     )
-    # Whole-layer checkpointing would replay CPU all-to-all during backward.
-    # It is intentionally unsupported until a GPU-only policy is validated.
     parser.add_argument(
-        "--gradient-checkpointing", action=argparse.BooleanOptionalAction, default=False
+        "--gradient-checkpointing",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="checkpoint GPU attention and MLP modules, excluding CPU experts",
     )
     args = parser.parse_args()
     if (
@@ -92,8 +101,6 @@ def parse_args() -> argparse.Namespace:
         parser.error("sequence length must be >= 2 and steps must exceed warmup steps")
     if args.learning_rate <= 0 or args.max_grad_norm <= 0 or args.threads_per_rank <= 0:
         parser.error("learning rate, gradient norm, and CPU threads must be positive")
-    if args.gradient_checkpointing:
-        parser.error("whole-layer checkpointing is unsafe with CPU expert all-to-all")
     args.model_path = args.model_path or MODELS[args.model_kind].checkpoint
     return args
 
@@ -199,11 +206,22 @@ def named_tensors(module: nn.Module) -> Iterator[tuple[str, torch.Tensor]]:
     yield from module.named_buffers()
 
 
+def trace_scope(enabled: bool, name: str) -> Any:
+    """Add a named CPU timeline span only on the profiled rank."""
+    return torch.profiler.record_function(name) if enabled else nullcontext()
+
+
 class ShardedCPUExperts(nn.Module):
     """Replace only the original experts module, leaving routing untouched."""
 
     def __init__(
-        self, original: nn.Module, rank: int, world_size: int, cpu_group: Any
+        self,
+        original: nn.Module,
+        rank: int,
+        world_size: int,
+        cpu_group: Any,
+        layer_id: int,
+        profile: bool,
     ) -> None:
         super().__init__()
         if original.num_experts < world_size:
@@ -214,6 +232,8 @@ class ShardedCPUExperts(nn.Module):
         self.activation = original.act_fn
         self.cpu_group = cpu_group
         self.world_size = world_size
+        self.layer_id = layer_id
+        self.profile = profile
 
         counts = [
             self.num_experts // world_size + int(r < self.num_experts % world_size)
@@ -252,6 +272,11 @@ class ShardedCPUExperts(nn.Module):
     ) -> torch.Tensor:
         """Execute ordinary oneDNN-backed linear layers, one expert at a time."""
         output = inputs * 0
+        # One multi-output view lets autograd assemble each weight gradient
+        # once. Repeated weight[local_id] creates a full, zero-filled parent
+        # gradient for every expert's SelectBackward0.
+        gate_up_weights = self.gate_up_proj.unbind(0)
+        down_weights = self.down_proj.unbind(0)
         with torch.autocast("cpu", dtype=torch.bfloat16):
             for expert_id in range(self.first_expert, self.last_expert):
                 positions = torch.nonzero(expert_ids == expert_id, as_tuple=True)[0]
@@ -259,8 +284,8 @@ class ShardedCPUExperts(nn.Module):
                     continue
                 x = inputs.index_select(0, positions)
                 local_id = expert_id - self.first_expert
-                gate, up = F.linear(x, self.gate_up_proj[local_id]).chunk(2, dim=-1)
-                y = F.linear(self.activation(gate) * up, self.down_proj[local_id])
+                gate, up = F.linear(x, gate_up_weights[local_id]).chunk(2, dim=-1)
+                y = F.linear(self.activation(gate) * up, down_weights[local_id])
                 output.index_copy_(0, positions, y.to(output.dtype))
         return output
 
@@ -278,60 +303,64 @@ class ShardedCPUExperts(nn.Module):
         if selected_experts.shape[0] != tokens:
             raise ValueError("expert indices do not match token count")
 
-        # GPU -> CPU: hidden states and routing decisions enter the CPU experts.
-        cpu_hidden = hidden_states.to("cpu")
-        expert_ids = selected_experts.reshape(-1).to("cpu", dtype=torch.long)
-        owners = torch.bucketize(expert_ids, self.owner_boundaries, right=True)
-        order = torch.argsort(owners, stable=True)
-        send_counts = torch.bincount(owners, minlength=self.world_size)
-        send_splits = send_counts.tolist()
-        send_hidden = cpu_hidden.repeat_interleave(top_k, dim=0).index_select(0, order)
-        send_ids = expert_ids.index_select(0, order)
+        label = f"CPU experts/layer {self.layer_id}"
+        with trace_scope(self.profile, f"{label}/GPU to CPU and route"):
+            cpu_hidden = hidden_states.to("cpu")
+            expert_ids = selected_experts.reshape(-1).to("cpu", dtype=torch.long)
+            owners = torch.bucketize(expert_ids, self.owner_boundaries, right=True)
+            order = torch.argsort(owners, stable=True)
+            send_counts = torch.bincount(owners, minlength=self.world_size)
+            send_splits = send_counts.tolist()
+            send_hidden = cpu_hidden.repeat_interleave(top_k, dim=0).index_select(0, order)
+            send_ids = expert_ids.index_select(0, order)
 
-        if self.world_size > 1:
-            recv_counts = torch.empty_like(send_counts)
-            dist.all_to_all_single(recv_counts, send_counts, group=self.cpu_group)
-            recv_splits = recv_counts.tolist()
-            recv_total = sum(recv_splits)
-            recv_hidden = dist_nn.all_to_all_single(
-                torch.empty((recv_total, width), dtype=send_hidden.dtype),
-                send_hidden.contiguous(),
-                output_split_sizes=recv_splits,
-                input_split_sizes=send_splits,
-                group=self.cpu_group,
-            )
-            recv_ids = torch.empty(recv_total, dtype=torch.long)
-            dist.all_to_all_single(
-                recv_ids,
-                send_ids.contiguous(),
-                output_split_sizes=recv_splits,
-                input_split_sizes=send_splits,
-                group=self.cpu_group,
-            )
-        else:
-            recv_hidden, recv_ids = send_hidden, send_ids
-            recv_splits = send_splits
+        with trace_scope(self.profile, f"{label}/Gloo dispatch"):
+            if self.world_size > 1:
+                recv_counts = torch.empty_like(send_counts)
+                dist.all_to_all_single(recv_counts, send_counts, group=self.cpu_group)
+                recv_splits = recv_counts.tolist()
+                recv_total = sum(recv_splits)
+                recv_hidden = dist_nn.all_to_all_single(
+                    torch.empty((recv_total, width), dtype=send_hidden.dtype),
+                    send_hidden.contiguous(),
+                    output_split_sizes=recv_splits,
+                    input_split_sizes=send_splits,
+                    group=self.cpu_group,
+                )
+                recv_ids = torch.empty(recv_total, dtype=torch.long)
+                dist.all_to_all_single(
+                    recv_ids,
+                    send_ids.contiguous(),
+                    output_split_sizes=recv_splits,
+                    input_split_sizes=send_splits,
+                    group=self.cpu_group,
+                )
+            else:
+                recv_hidden, recv_ids = send_hidden, send_ids
+                recv_splits = send_splits
 
-        owned_output = self._compute_owned(recv_hidden, recv_ids)
+        with trace_scope(self.profile, f"{label}/oneDNN forward"):
+            owned_output = self._compute_owned(recv_hidden, recv_ids)
 
-        if self.world_size > 1:
-            sent_back = dist_nn.all_to_all_single(
-                torch.empty_like(send_hidden),
-                owned_output.contiguous(),
-                output_split_sizes=send_splits,
-                input_split_sizes=recv_splits,
-                group=self.cpu_group,
-            )
-        else:
-            sent_back = owned_output
+        with trace_scope(self.profile, f"{label}/Gloo return"):
+            if self.world_size > 1:
+                sent_back = dist_nn.all_to_all_single(
+                    torch.empty_like(send_hidden),
+                    owned_output.contiguous(),
+                    output_split_sizes=send_splits,
+                    input_split_sizes=recv_splits,
+                    group=self.cpu_group,
+                )
+            else:
+                sent_back = owned_output
 
-        restored = sent_back.index_select(0, torch.argsort(order))
-        weighted = (
-            restored.reshape(tokens, top_k, width)
-            * routing_weights.to("cpu").unsqueeze(-1)
-        ).sum(dim=1)
-        # CPU -> GPU: autograd propagates gradients back across device copies.
-        return weighted.to(device=device, dtype=dtype)
+        with trace_scope(self.profile, f"{label}/CPU to GPU"):
+            restored = sent_back.index_select(0, torch.argsort(order))
+            weighted = (
+                restored.reshape(tokens, top_k, width)
+                * routing_weights.to("cpu").unsqueeze(-1)
+            ).sum(dim=1)
+            return weighted.to(device=device, dtype=dtype)
 
 
 class CheckpointReader:
@@ -468,6 +497,56 @@ def materialize_meta(
                 )
 
 
+def checkpoint_gpu_module(module: nn.Module, name: str, profile: bool) -> None:
+    """Recompute a GPU-only module in backward without replaying CPU collectives."""
+    if any(parameter.device.type != "cuda" for parameter in module.parameters()):
+        raise RuntimeError("activation checkpoint includes a non-GPU parameter")
+    original_forward = module.forward
+
+    @wraps(original_forward)
+    def forward(*args: Any, **kwargs: Any) -> Any:
+        if not module.training or not torch.is_grad_enabled():
+            with trace_scope(profile, f"{name}/direct"):
+                return original_forward(*args, **kwargs)
+        if profile:
+            return checkpoint(
+                original_forward,
+                *args,
+                use_reentrant=False,
+                context_fn=lambda: (
+                    trace_scope(True, f"{name}/forward"),
+                    trace_scope(True, f"{name}/recompute"),
+                ),
+                **kwargs,
+            )
+        return checkpoint(original_forward, *args, use_reentrant=False, **kwargs)
+
+    module.forward = forward
+
+
+def checkpoint_gpu_submodules(model: nn.Module, profile: bool) -> int:
+    """Keep each MoE router and CPU expert exchange outside checkpoints."""
+    count = 0
+    for layer_id, layer in enumerate(model.model.layers):
+        for name in ("self_attn", "linear_attn"):
+            if hasattr(layer, name):
+                checkpoint_gpu_module(
+                    getattr(layer, name), f"GPU/layer {layer_id}/{name}", profile
+                )
+                count += 1
+        if hasattr(layer.mlp, "experts"):
+            shared = getattr(layer.mlp, "shared_experts", None)
+            if shared is None:
+                shared = getattr(layer.mlp, "shared_expert", None)
+            if shared is None:
+                raise RuntimeError("MoE layer has no GPU shared expert")
+            checkpoint_gpu_module(shared, f"GPU/layer {layer_id}/shared MLP", profile)
+        else:
+            checkpoint_gpu_module(layer.mlp, f"GPU/layer {layer_id}/MLP", profile)
+        count += 1
+    return count
+
+
 def make_model(
     args: argparse.Namespace,
     rank: int,
@@ -496,10 +575,15 @@ def make_model(
     model.config.use_cache = False
 
     replaced = 0
-    for layer in model.model.layers:
+    for layer_id, layer in enumerate(model.model.layers):
         if hasattr(layer.mlp, "experts"):
             layer.mlp.experts = ShardedCPUExperts(
-                layer.mlp.experts, rank, world_size, cpu_group
+                layer.mlp.experts,
+                rank,
+                world_size,
+                cpu_group,
+                layer_id,
+                args.profile and rank == 0,
             )
             replaced += 1
     if replaced != spec.moe_layers:
@@ -578,6 +662,25 @@ def make_model(
     gpu_params = [p for p in model.parameters() if p.device.type == "cuda"]
     if any(not hasattr(p, "to_local") for p in gpu_params):
         raise RuntimeError("a GPU parameter was not sharded by FSDP2")
+    stats["checkpointed_gpu_submodules"] = (
+        checkpoint_gpu_submodules(model, args.profile and rank == 0)
+        if args.gradient_checkpointing
+        else 0
+    )
+    if args.profile and rank == 0:
+        for layer_id, layer in enumerate(model.model.layers):
+            def report_memory(
+                _module: nn.Module, _inputs: tuple[Any, ...], _output: Any,
+                layer_id: int = layer_id,
+            ) -> None:
+                print(
+                    f"[layer {layer_id}] GPU allocated="
+                    f"{torch.cuda.memory_allocated(device) / 2**30:.2f} GiB "
+                    f"reserved={torch.cuda.memory_reserved(device) / 2**30:.2f} GiB",
+                    flush=True,
+                )
+
+            layer.register_forward_hook(report_memory)
     stats["gpu_parameters_per_rank"] = sum(p.to_local().numel() for p in gpu_params)
     stats["gpu_allocated_gib_after_load"] = torch.cuda.memory_allocated(device) / 2**30
     torch.cuda.empty_cache()
@@ -625,6 +728,10 @@ class CompactCPUAdamW:
                 value=-self.learning_rate / (1 - beta1**step),
             )
             self.state[param] = (step, first_bf16, second_bf16)
+            # The gradient is dead after this parameter's update. Releasing it
+            # here lets the new AdamW moments reuse the same host memory.
+            param.grad = None
+            del grad, first, second, denominator
 
     def zero_grad(self) -> None:
         for param in self.params:
@@ -672,6 +779,61 @@ def learning_rate_at_step(base_rate: float, step: int, steps: int) -> float:
     return base_rate * (1 + math.cos(math.pi * (step - 1) / steps)) / 2
 
 
+@dataclass
+class OffloadedMoment:
+    local: torch.Tensor
+    mesh: Any | None = None
+    placements: tuple[Any, ...] = ()
+    shape: torch.Size | None = None
+    stride: tuple[int, ...] | None = None
+
+
+def offload_gpu_optimizer_moments(
+    optimizer: torch.optim.Optimizer,
+) -> dict[tuple[nn.Parameter, str], OffloadedMoment]:
+    """Keep only each DTensor moment's local shard in host memory."""
+    offloaded = {}
+    for parameter, state in optimizer.state.items():
+        for name in ("exp_avg", "exp_avg_sq"):
+            if name not in state:
+                continue
+            moment = state.pop(name)
+            if isinstance(moment, DTensor):
+                offloaded[(parameter, name)] = OffloadedMoment(
+                    moment.to_local().to("cpu"),
+                    moment.device_mesh,
+                    tuple(moment.placements),
+                    moment.shape,
+                    moment.stride(),
+                )
+            else:
+                offloaded[(parameter, name)] = OffloadedMoment(moment.to("cpu"))
+    return offloaded
+
+
+def restore_gpu_optimizer_moments(
+    optimizer: torch.optim.Optimizer,
+    offloaded: dict[tuple[nn.Parameter, str], OffloadedMoment],
+    device: torch.device,
+) -> None:
+    """Restore the original sharding before fused AdamW accesses its state."""
+    while offloaded:
+        (parameter, name), saved = offloaded.popitem()
+        local = saved.local.to(device)
+        optimizer.state[parameter][name] = (
+            DTensor.from_local(
+                local,
+                saved.mesh,
+                saved.placements,
+                shape=saved.shape,
+                stride=saved.stride,
+            )
+            if saved.mesh is not None
+            else local
+        )
+        del saved
+
+
 def write_results(
     args: argparse.Namespace,
     rows: list[dict[str, float | int]],
@@ -701,7 +863,8 @@ def write_results(
         "cpu_master_dtype": "float32",
         "cpu_optimizer_state_dtype": "bfloat16",
         "gpu_optimizer_state_dtype": "float32",
-        "gradient_checkpointing": False,
+        "gpu_optimizer_state_offload": args.offload_gpu_optimizer_state,
+        "gradient_checkpointing": args.gradient_checkpointing,
         "release_cache_each_step": args.release_cache_each_step,
         "model_stats": model_stats,
         "stable": {
@@ -745,7 +908,9 @@ def run_training(
         gpu_params, lr=args.learning_rate, weight_decay=0, fused=True
     )
     cpu_optimizer = CompactCPUAdamW(cpu_params, args.learning_rate)
+    offloaded_moments: dict[tuple[nn.Parameter, str], OffloadedMoment] = {}
     rows: list[dict[str, float | int]] = []
+    profile = args.profile and rank == 0
 
     for step in range(1, args.steps + 1):
         sample_id = rank if args.repeat_batch else ((step - 1) * world_size + rank)
@@ -756,31 +921,45 @@ def run_training(
         torch.cuda.synchronize(device)
         start = time.perf_counter()
 
-        loss = model(**batch, use_cache=False).loss
-        if not torch.isfinite(loss):
-            raise RuntimeError(f"nonfinite loss on rank {rank}, step {step}")
-        torch.cuda.synchronize(device)
+        with trace_scope(profile, f"step {step}/forward"):
+            loss = model(**batch, use_cache=False).loss
+            if not torch.isfinite(loss):
+                raise RuntimeError(f"nonfinite loss on rank {rank}, step {step}")
+            torch.cuda.synchronize(device)
         forward_sec = time.perf_counter() - start
 
         backward_start = time.perf_counter()
-        loss.backward()
-        torch.cuda.synchronize(device)
+        with trace_scope(profile, f"step {step}/backward"):
+            loss.backward()
+            torch.cuda.synchronize(device)
         backward_sec = time.perf_counter() - backward_start
 
         optimizer_start = time.perf_counter()
-        rate = learning_rate_at_step(args.learning_rate, step, args.steps)
-        gpu_optimizer.param_groups[0]["lr"] = rate
-        cpu_optimizer.learning_rate = rate
-        norm = clip_global_grad_norm(
-            gpu_params, cpu_params, world_size, device, args.max_grad_norm
-        )
-        gpu_optimizer.step()
-        cpu_optimizer.step()
-        gpu_optimizer.zero_grad(set_to_none=True)
-        cpu_optimizer.zero_grad()
-        torch.cuda.synchronize(device)
-        if args.release_cache_each_step:
-            torch.cuda.empty_cache()
+        with trace_scope(profile, f"step {step}/optimizer"):
+            rate = learning_rate_at_step(args.learning_rate, step, args.steps)
+            gpu_optimizer.param_groups[0]["lr"] = rate
+            cpu_optimizer.learning_rate = rate
+            with trace_scope(profile, f"step {step}/gradient clipping"):
+                norm = clip_global_grad_norm(
+                    gpu_params, cpu_params, world_size, device, args.max_grad_norm
+                )
+            if args.offload_gpu_optimizer_state:
+                with trace_scope(profile, f"step {step}/restore GPU moments"):
+                    restore_gpu_optimizer_moments(
+                        gpu_optimizer, offloaded_moments, device
+                    )
+            with trace_scope(profile, f"step {step}/GPU AdamW"):
+                gpu_optimizer.step()
+                gpu_optimizer.zero_grad(set_to_none=True)
+            with trace_scope(profile, f"step {step}/CPU AdamW"):
+                cpu_optimizer.step()
+                cpu_optimizer.zero_grad()
+            if args.offload_gpu_optimizer_state:
+                with trace_scope(profile, f"step {step}/offload GPU moments"):
+                    offloaded_moments = offload_gpu_optimizer_moments(gpu_optimizer)
+            torch.cuda.synchronize(device)
+            if args.release_cache_each_step:
+                torch.cuda.empty_cache()
         optimizer_sec = time.perf_counter() - optimizer_start
         step_sec = time.perf_counter() - start
 
@@ -907,7 +1086,7 @@ def main() -> int:
                     torch.profiler.ProfilerActivity.CUDA,
                 ],
                 record_shapes=False,
-                profile_memory=False,
+                profile_memory=True,
                 with_stack=False,
             )
             if args.profile and rank == 0

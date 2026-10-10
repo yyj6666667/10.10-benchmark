@@ -34,7 +34,7 @@ cmd=("$torchrun" --standalone --nproc_per_node=8 "$trainer"
     --output-dir "$output_dir/case" --sequence-length "$sequence_length"
     --steps "$steps" --warmup-steps "$warmup" --threads-per-rank 12
     --learning-rate "${FSDP2_LEARNING_RATE:-1e-5}"
-    --no-gradient-checkpointing)
+    --gradient-checkpointing)
 if [[ "${FSDP2_REPEAT_BATCH:-0}" == 1 ]]; then
     cmd+=(--repeat-batch)
 fi

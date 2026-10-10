@@ -41,9 +41,18 @@ to 1.0. The learning rate starts at 1e-5 and follows a cosine schedule. Its
 forward, backward, and optimizer host-wall timers synchronize CUDA at each
 boundary, so phase times have a different boundary from the historical
 coarse-host-wall KT runs.
-Whole-decoder gradient checkpointing is disabled because recomputing a decoder
-also reentered its Gloo expert collectives in different orders across ranks
-in a smoke test. Any later checkpointing must cover GPU-only submodules.
+Activation checkpointing covers the GPU attention, linear attention, and MLP
+submodules. CPU routed experts and Gloo all-to-all remain outside the
+checkpoint, because replaying those collectives can change their order across
+ranks. The CPU optimizer releases each parameter's gradient immediately after
+updating it, so new AdamW moments do not accumulate alongside all gradients.
+On qj5090, seq4096 also moves dense GPU AdamW moments to CPU between steps.
+The moments return to GPU for each fused optimizer update; their FP32 values
+and the AdamW computation are unchanged.
+CPU expert weights are unbound once per group before the expert loop. This
+lets autograd assemble each full weight gradient once rather than zeroing a
+full parent gradient for every expert selection. The seq2048 one-step profiler
+comparison is recorded in `results/qj5090_glm_fsdp2_onednn_seq2048_profile.md`.
 
 The new GLM KT 4096 case ran while a separate service occupied about 10.5
 GiB on GPU 0. Its result is retained with that condition in the run evidence;

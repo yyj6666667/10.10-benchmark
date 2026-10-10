@@ -80,6 +80,10 @@ def parse_args() -> argparse.Namespace:
         "--compress-cpu-gradients", action="store_true",
         help="stash completed CPU expert gradients in BF16 to lower host memory",
     )
+    parser.add_argument(
+        "--checkpoint-cpu-experts", action="store_true",
+        help="recompute CPU expert linears in backward to reduce saved activations",
+    )
     parser.add_argument("--repeat-batch", action="store_true")
     parser.add_argument("--release-cache-each-step", action="store_true")
     parser.add_argument(
@@ -226,6 +230,7 @@ class ShardedCPUExperts(nn.Module):
         cpu_group: Any,
         layer_id: int,
         profile: bool,
+        checkpoint_compute: bool,
     ) -> None:
         super().__init__()
         if original.num_experts < world_size:
@@ -238,6 +243,7 @@ class ShardedCPUExperts(nn.Module):
         self.world_size = world_size
         self.layer_id = layer_id
         self.profile = profile
+        self.checkpoint_compute = checkpoint_compute
 
         counts = [
             self.num_experts // world_size + int(r < self.num_experts % world_size)
@@ -344,7 +350,14 @@ class ShardedCPUExperts(nn.Module):
                 recv_splits = send_splits
 
         with trace_scope(self.profile, f"{label}/oneDNN forward"):
-            owned_output = self._compute_owned(recv_hidden, recv_ids)
+            owned_output = (
+                checkpoint(
+                    self._compute_owned, recv_hidden, recv_ids,
+                    use_reentrant=False,
+                )
+                if self.checkpoint_compute
+                else self._compute_owned(recv_hidden, recv_ids)
+            )
 
         with trace_scope(self.profile, f"{label}/Gloo return"):
             if self.world_size > 1:
@@ -588,6 +601,7 @@ def make_model(
                 cpu_group,
                 layer_id,
                 args.profile and rank == 0,
+                args.checkpoint_cpu_experts,
             )
             replaced += 1
     if replaced != spec.moe_layers:
@@ -910,6 +924,7 @@ def write_results(
         "gpu_optimizer_state_dtype": "float32",
         "gpu_optimizer_state_offload": args.offload_gpu_optimizer_state,
         "gradient_checkpointing": args.gradient_checkpointing,
+        "cpu_expert_checkpointing": args.checkpoint_cpu_experts,
         "release_cache_each_step": args.release_cache_each_step,
         "model_stats": model_stats,
         "stable": {

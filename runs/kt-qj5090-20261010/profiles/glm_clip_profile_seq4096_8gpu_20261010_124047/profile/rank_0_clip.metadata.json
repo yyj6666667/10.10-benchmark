@@ -1,0 +1,6 @@
+{
+  "rank": 0,
+  "clip_host_wall_sec": 37.907815884798765,
+  "trace": "rank_0_clip.trace.json",
+  "stops_before_optimizer_update": true
+}

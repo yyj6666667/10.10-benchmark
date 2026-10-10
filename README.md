@@ -59,6 +59,9 @@ The qj5090 rerun uses `/mnt/hurry-bench` on the remote host. The base KT
 training source is the clean `bfe3e57c` snapshot with the exact BF16 gradient
 norm patch from KT `fa04bb2` applied. Updated Accelerate `9a0d243` and
 Transformers `e04dcff` are loaded through an isolated `PYTHONPATH` overlay.
+The existing LLaMA Factory `36b12fd0` is copied into the benchmark overlay
+with a two-line optimizer-method signature fix so its override accepts the
+model argument passed by the KT Trainer path.
 The built KT wheel is also installed only in that overlay. Source revisions
 and the patch are in `tools/kt_qj_source_revisions.md` and
 `tools/kt_grad_norm.patch`.
@@ -74,16 +77,21 @@ seconds. Each successful case writes `performance.csv` with the requested
 eight columns and appends its row to `/mnt/hurry-bench/results/{model}_kt_performance.csv`.
 No model or optimizer checkpoint is retained.
 
+The GLM seq4096 gradient-clipping PyTorch profiler comparison and both local
+Chrome traces are under `runs/kt-qj5090-20261010/profiles/`. The fused BF16
+path removed the long `aten::item`, while raising rank 0's OpenMP threads from
+2 to 64 reduced the measured clipping window from 37.9 to 4.3 seconds.
+
 The official ModelScope `Qwen/Qwen3.5-122B-A10B` checkpoint downloads to
 `/mnt/data/models/Qwen3.5-122B-A10B` with
 `tools/download_qwen_bf16.py`. Its Qwen text-decoder path correction is
 isolated in `/mnt/hurry-bench/py-overlay-qwen` and recorded as
 `tools/qwen_text_path_contract.patch`. A Qwen case uses
 `tools/run_qj_kt_case.sh SEQ 15 qwen`; the no-training preflight is under
-`runs/kt-qj5090-20261010/preflight/`. The queued GLM sweep waits for both
-model downloads to finish so download I/O does not affect timing.
-The Qwen transfer is paused while GLM finishes; `tools/resume_qwen_after_glm.sh`
-resumes its downloader when the GLM download log reports success.
+`runs/kt-qj5090-20261010/preflight/`. Both model downloads finished before
+GLM timing began, so download I/O did not affect timing. The Qwen transfer
+was paused until GLM finished; `tools/resume_qwen_after_glm.sh` resumed it
+after the GLM success marker.
 After GLM, `tools/wait_qj_glm_then_run_qwen.sh` runs a fixed-batch Qwen loss
 check, then the eight Qwen sequence lengths in order. The loss check must
 finish with finite gradients and a lower final loss before Qwen throughput

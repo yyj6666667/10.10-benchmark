@@ -11,13 +11,13 @@ steps=$2
 model=${3:-glm}
 mode=${KT_BENCH_MODE:-benchmark}
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ ]] || exit 2
-[[ $mode == benchmark || $mode == semantic ]] || { echo "unknown mode: $mode" >&2; exit 2; }
+[[ $mode == benchmark || $mode == semantic || $mode == profile || $mode == clip_profile ]] || { echo "unknown mode: $mode" >&2; exit 2; }
 
 root=/mnt/hurry-bench
 tools_dir=$root/tools
 python=/mnt/data/venvs/sft-yyj-pro/bin/python
 accelerate=/mnt/data/venvs/sft-yyj-pro/bin/accelerate
-llamafactory=/mnt/sft_yyj_yyj/kt-v2-final/LLaMA-Factory/src
+llamafactory=$root/src/llamafactory-overlay
 gpu_ids=0,1,2,3,4,5,6,7
 case "$model" in
     glm)
@@ -38,6 +38,7 @@ esac
 for path in "$checkpoint/config.json" \
     "$root/data/fft_real_100.json" "$root/data/dataset_info.json" \
     "$overlay/kt_kernel/grad_norm.py" "$tools_dir/step_phase_timer.py" \
+    "$llamafactory/llamafactory/train/sft/trainer.py" \
     "$tools_dir/kt_glm_train_base.yaml" "$tools_dir/kt_glm_accelerate_base.yaml"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
 done
@@ -80,6 +81,8 @@ available_kib=$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)
 stamp=$(date +%Y%m%d_%H%M%S)
 run_kind=kt
 if [[ $mode == semantic ]]; then run_kind=semantic; fi
+if [[ $mode == profile ]]; then run_kind=profile; fi
+if [[ $mode == clip_profile ]]; then run_kind=clip_profile; fi
 run_dir=$root/runs/${model}_${run_kind}_seq${seq_len}_8gpu_${stamp}
 mkdir -p "$run_dir"
 printf '%s\n' "$gpu_state" > "$run_dir/gpu_before.csv"
@@ -87,6 +90,7 @@ free -h > "$run_dir/memory_before.txt"
 
 "$python" - "$tools_dir" "$run_dir" "$checkpoint" "$root/data" "$seq_len" "$steps" "$model" "$template" "$model_name" "$mode" <<'PY'
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -125,6 +129,11 @@ if mode == "semantic":
     train["dataloader_num_workers"] = 0
     train["dataloader_persistent_workers"] = False
     train.pop("dataloader_prefetch_factor", None)
+if mode == "clip_profile":
+    # Avoid forking workers from a process holding the full CPU model.
+    train["dataloader_num_workers"] = 0
+    train["dataloader_persistent_workers"] = False
+    train.pop("dataloader_prefetch_factor", None)
 if model == "qwen":
     # The multimodal checkpoint trains its text decoder in this benchmark.
     train["dataloader_num_workers"] = 0
@@ -148,6 +157,8 @@ if model == "qwen":
     "precision": "bf16",
     "template": template,
     "gradient_clipping": 1.0,
+    "stops_after_clip_without_optimizer_update": mode == "clip_profile",
+    "owner_omp_threads": int(os.environ.get("KT_CLIP_PROFILE_OWNER_OMP_THREADS", "2")),
 }, indent=2) + "\n")
 PY
 
@@ -158,6 +169,8 @@ hash_files=(
     "$overlay"/kt_kernel/kt_kernel_ext*.so
     "$root/src/accelerate/accelerate/accelerator.py"
     "$root/src/transformers/transformers/trainer.py"
+    "$llamafactory/llamafactory/train/sft/trainer.py"
+    "$tools_dir/llamafactory_kt_optimizer_signature.patch"
     "$tools_dir/run_qj_kt_case.sh"
     "$tools_dir/kt_bench_entry.py"
     "$tools_dir/kt_case_monitor.py"
@@ -189,6 +202,15 @@ if [[ ${KT_BENCH_DRY_RUN:-0} == 1 ]]; then
     exit 0
 fi
 
+profile_dir=
+clip_profile_dir=
+if [[ $mode == profile ]]; then
+    profile_dir=$run_dir/profile
+fi
+if [[ $mode == clip_profile ]]; then
+    clip_profile_dir=$run_dir/profile
+fi
+
 set +e
 env \
     DISABLE_VERSION_CHECK=1 USE_KT=1 ACCELERATE_USE_KT=true \
@@ -198,6 +220,8 @@ env \
     FFT_TEXT_ONLY=1 FFT_STEP_TIMING_OUT_DIR="$run_dir/step_timing" \
     FFT_STEP_TIMING_WARMUP_STEPS=5 \
     FFT_STEP_TIMING_TOKENS_PER_STEP="$((8 * seq_len))" \
+    GLM45_PROFILE_DIR="$profile_dir" GLM45_PROFILE_RANKS=0 GLM45_PROFILE_STEP=6 \
+    KT_CLIP_PROFILE_DIR="$clip_profile_dir" KT_CLIP_PROFILE_STOP_AFTER_CLIP=1 \
     FFT_DISABLE_PERF_PROBES=1 FFT_CUDA_EMPTY_CACHE_AFTER_PREPARE=0 \
     FFT_CPU_THREADS=2 FFT_KT_OWNER_THREADS=64 FFT_KT_NON_OWNER_THREADS=2 \
     KT_BACKWARD_TIMING=off KT_SFT_PROFILE=0 \
@@ -220,7 +244,7 @@ set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
 if [[ $status -eq 0 && $mode == semantic ]]; then
     "$python" "$tools_dir/check_semantic_loss.py" "$run_dir/train.log" "$run_dir/loss_check.json" "$steps"
-elif [[ $status -eq 0 ]]; then
+elif [[ $status -eq 0 && $mode == benchmark ]]; then
     "$python" "$tools_dir/collect_qj_kt_result.py" "$run_dir" > "$run_dir/performance.csv"
     mkdir -p "$root/results"
     result_table=$root/results/${model}_kt_performance.csv

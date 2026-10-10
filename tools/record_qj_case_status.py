@@ -15,6 +15,14 @@ FIELDS = ("model", "backend", "sequence_length", "status", "source", "note")
 MODELS = {"glm": "GLM-4.5-Air-106B", "qwen": "Qwen3.5-122B-A10B"}
 BACKENDS = {"ktransformers", "pytorch_onednn", "megatrain", "zero_offload"}
 GPU_OOM = re.compile(r"CUDA out of memory|torch\.OutOfMemoryError|cudaErrorMemoryAllocation", re.I)
+ROOT_CAUSES = (
+    (re.compile(r"Watchdog caught collective operation timeout"),
+     "NCCL collective timed out after 600 s"),
+    (re.compile(r"FileNotFoundError:.*'torchrun'"),
+     "nested torchrun launch failed"),
+    (re.compile(r"Too many open files"),
+     "process file descriptor limit reached"),
+)
 
 
 def main() -> None:
@@ -47,10 +55,17 @@ def main() -> None:
         if status == "OOM":
             break
     if status == "FAILED" and logs:
-        relevant = [line.strip() for line in logs[-1].read_text(errors="replace").splitlines()
-                    if any(word in line for word in ("Error", "SIGKILL", "Killed", "Traceback"))]
-        if relevant:
-            diagnostic = relevant[-1][:160]
+        lines = logs[-1].read_text(errors="replace").splitlines()
+        for pattern, description in ROOT_CAUSES:
+            if any(pattern.search(line) for line in lines):
+                diagnostic = description
+                break
+        else:
+            relevant = [line.strip() for line in lines
+                        if any(word in line for word in
+                               ("Error", "SIGKILL", "Killed", "Traceback"))]
+            if relevant:
+                diagnostic = relevant[-1][:160]
     row = {
         "model": MODELS[args.model], "backend": args.backend,
         "sequence_length": str(args.sequence_length), "status": status,

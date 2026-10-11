@@ -1,0 +1,2 @@
+run_id,model,backend,host,sequence_length,num_gpus,steps,first_loss,last_loss,status
+glm45_air_megatrain_alias_slots_patch_seq4096_8gpu_20261011_144231_65156_semantic,GLM-4.5-Air,megatrain,qj5090,4096,8,4,4.187525039403175,0.22604042148196346,SUCCESS

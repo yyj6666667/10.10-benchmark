@@ -17,3 +17,8 @@ runs/kt-qj5090-20261010/glm_sweep/sync.lock
 runs/kt-qj5090-20261010/glm_sweep/sync.pid
 runs/kt-qj5090-20261010/glm_sweep/sync.log
 *.pending
+
+# Keep the compact, lossless profiler archive in Git; the expanded trace and
+# temporary visualization subset stay local.
+profiles/**/*.trace.json
+profiles/**/*.perfetto-focus.json

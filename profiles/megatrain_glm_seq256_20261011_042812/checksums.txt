@@ -1,0 +1,9 @@
+33e1aa84f6c26bbac2fc3da7c676b6219e5a80a5caf02f3fa9d142b988c1c177  /mnt/hurry-bench/tools/megatrain_full_ft.py
+66dca2a895abb1dcc1600d260d44626b1d2d3276fe01e1095df720cb0e1c7024  /mnt/hurry-bench/src/megatrain/infinity/model/cpu_master.py
+4709a9468e0e7135eeca6be0a4e0ba73b8aa6648008c2553e382eb58ab5524d5  /mnt/hurry-bench/src/megatrain/infinity/model/mp_worker.py
+e9a3c81dc99b18d265ec5243841451b83e8a624cb9861c2a7ca0e18da5bd86f3  /mnt/hurry-bench/src/megatrain/infinity/model/mp_state.py
+b2519683f7bbc9f96c996779808fc2eef7412d666ce6fbc2f284e8d4b58de886  /mnt/hurry-bench/data/fft_real_100.json
+e59f21d7be4b4b917d80bb3a2d1211356d29cf3aeff93372523daf7d0ffb839d  /mnt/data/models/GLM-4.5-Air/config.json
+0c18a393dd882583f840b3306cb6f8104355a871680cfe88911ff78bd9ba530c  /mnt/data/models/GLM-4.5-Air/model.safetensors.index.json
+73d5ce21cff296fdd40a661803cc0af1c2de6ac34279645aa91065b750a21687  /mnt/hurry-bench/tools/megatrain_profile_hooks.py
+8172a23400f4f6292d7deb9d41b2f972ce338ba0772966ce262a3ab73fe64a87  /mnt/hurry-bench/tools/patch_megatrain_worker_profiler.py

@@ -1,0 +1,60 @@
+[load] shard 1/46
+[load] shard 2/46
+[load] shard 3/46
+[load] shard 4/46
+[load] shard 5/46
+[load] shard 6/46
+[load] shard 7/46
+[load] shard 8/46
+[load] shard 9/46
+[load] shard 10/46
+[load] shard 11/46
+[load] shard 12/46
+[load] shard 13/46
+[load] shard 14/46
+[load] shard 15/46
+[load] shard 16/46
+[load] shard 17/46
+[load] shard 18/46
+[load] shard 19/46
+[load] shard 20/46
+[load] shard 21/46
+[load] shard 22/46
+[load] shard 23/46
+[load] shard 24/46
+[load] shard 25/46
+[load] shard 26/46
+[load] shard 27/46
+[load] shard 28/46
+[load] shard 29/46
+[load] shard 30/46
+[load] shard 31/46
+[load] shard 32/46
+[load] shard 33/46
+[load] shard 34/46
+[load] shard 35/46
+[load] shard 36/46
+[load] shard 37/46
+[load] shard 38/46
+[load] shard 39/46
+[load] shard 40/46
+[load] shard 41/46
+[load] shard 42/46
+[load] shard 43/46
+[load] shard 44/46
+[load] shard 45/46
+[load] shard 46/46
+[contract] {"parameters": 106852245504, "checkpoint_tensors": 17925}
+[WARNING|2026-10-11 04:29:01] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-11 04:29:01] llamafactory.data.template:144 >> Add <|user|>,<|observation|> to stop words.
+[step] {"step": 1, "loss": 3.2180935897426575, "grad_norm": 72.0, "tokens": 2048, "step_sec": 82.96899729222059, "forward_sec": 4.7812456665039065, "backward_sec": 26.784876464843755, "optimizer_sec": 31.563009094446898}
+[step] {"step": 2, "loss": 1.6785136796353515, "grad_norm": 11.6875, "tokens": 2048, "step_sec": 52.40219819545746, "forward_sec": 5.58686248779297, "backward_sec": 28.016338134765626, "optimizer_sec": 16.63211964815855}
+[megatrain_profiler] GPU worker starts step 3
+[megatrain_profiler] saved /mnt/hurry-bench/profiles/megatrain_glm_seq256_20261011_042812/rank0_step3.trace.json
+[step] {"step": 3, "loss": 0.8879913611314473, "grad_norm": 9.0625, "tokens": 2048, "step_sec": 97.14365923777223, "forward_sec": 5.5386853027343745, "backward_sec": 27.03341772460937, "optimizer_sec": 15.915037862956524}
+[step] {"step": 4, "loss": 0.4258211990582667, "grad_norm": 7.5625, "tokens": 2048, "step_sec": 51.35719846189022, "forward_sec": 5.579340026855469, "backward_sec": 28.126599609375, "optimizer_sec": 15.089563228189945}
+Worker 3842577 did not exit, terminating
+Worker 3842603 did not exit, terminating
+Worker 3842613 did not exit, terminating
+Worker 3842626 did not exit, terminating
+Worker 3842642 did not exit, terminating

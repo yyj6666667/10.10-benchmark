@@ -1,0 +1,86 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------
+                     MegaTrain/GPU worker complete step         0.00%       0.000us         0.00%       0.000us       0.000us       59.529s       201.95%       59.529s       29.765s             2
+                                            aten::copy_         1.76%     602.389ms        58.99%       20.193s       2.995ms       28.383s        96.29%       28.383s       4.209ms          6743
+                         Memcpy HtoD (Pinned -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       19.144s        64.94%       19.144s     138.726ms           138
+                         Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us        8.191s        27.79%        8.191s      11.820ms           693
+                                               aten::mm         0.85%     290.423ms         1.60%     548.667ms       9.295us     989.354ms         3.36%     992.607ms      16.816us         59027
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     834.040ms         2.83%     834.040ms     302.957us          2753
+    MegaTrain/PCIe H2D weights layer 44 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     590.770ms         2.00%     590.770ms     196.923ms             3
+    MegaTrain/PCIe H2D weights layer 35 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     517.303ms         1.75%     517.303ms     172.434ms             3
+    MegaTrain/PCIe H2D weights layer 40 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     508.929ms         1.73%     508.929ms     169.643ms             3
+    MegaTrain/PCIe H2D weights layer 39 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     504.960ms         1.71%     504.960ms     168.320ms             3
+    MegaTrain/PCIe H2D weights layer 37 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     496.243ms         1.68%     496.243ms     165.414ms             3
+    MegaTrain/PCIe H2D weights layer 36 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     489.540ms         1.66%     489.540ms     163.180ms             3
+    MegaTrain/PCIe H2D weights layer 38 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     488.344ms         1.66%     488.344ms     162.781ms             3
+    MegaTrain/PCIe H2D weights layer 41 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     472.729ms         1.60%     472.729ms     157.576ms             3
+    MegaTrain/PCIe H2D weights layer 45 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     468.784ms         1.59%     468.784ms     156.261ms             3
+    MegaTrain/PCIe H2D weights layer 43 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     466.960ms         1.58%     466.960ms     155.653ms             3
+    MegaTrain/PCIe H2D weights layer 42 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     452.997ms         1.54%     452.997ms     150.999ms             3
+    MegaTrain/PCIe H2D weights layer 19 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     452.898ms         1.54%     452.898ms     150.966ms             3
+    MegaTrain/PCIe H2D weights layer 32 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     449.540ms         1.53%     449.540ms     149.847ms             3
+    MegaTrain/PCIe H2D weights layer 34 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     446.938ms         1.52%     446.938ms     148.979ms             3
+    MegaTrain/PCIe H2D weights layer 31 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     425.374ms         1.44%     425.374ms     141.791ms             3
+    MegaTrain/PCIe H2D weights layer 26 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     418.000ms         1.42%     418.000ms     139.333ms             3
+    MegaTrain/PCIe H2D weights layer 30 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     416.760ms         1.41%     416.760ms     138.920ms             3
+    MegaTrain/PCIe H2D weights layer 33 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     415.157ms         1.41%     415.157ms     138.386ms             3
+    MegaTrain/PCIe H2D weights layer 16 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     413.452ms         1.40%     413.452ms     137.817ms             3
+    MegaTrain/PCIe H2D weights layer 23 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     413.291ms         1.40%     413.291ms     137.764ms             3
+    MegaTrain/PCIe H2D weights layer 14 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     412.580ms         1.40%     412.580ms     137.527ms             3
+    MegaTrain/PCIe H2D weights layer 28 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     412.118ms         1.40%     412.118ms     137.373ms             3
+    MegaTrain/PCIe H2D weights layer 10 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     407.301ms         1.38%     407.301ms     135.767ms             3
+    MegaTrain/PCIe H2D weights layer 22 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     406.316ms         1.38%     406.316ms     135.439ms             3
+     MegaTrain/PCIe H2D weights layer 7 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     404.572ms         1.37%     404.572ms     134.857ms             3
+    MegaTrain/PCIe H2D weights layer 27 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     402.944ms         1.37%     402.944ms     134.315ms             3
+     MegaTrain/PCIe H2D weights layer 4 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     401.885ms         1.36%     401.885ms     133.962ms             3
+     MegaTrain/PCIe H2D weights layer 9 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     401.515ms         1.36%     401.515ms     133.838ms             3
+    MegaTrain/PCIe H2D weights layer 21 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     400.966ms         1.36%     400.966ms     133.655ms             3
+    MegaTrain/PCIe H2D weights layer 17 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     399.756ms         1.36%     399.756ms     133.252ms             3
+    MegaTrain/PCIe H2D weights layer 20 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     398.692ms         1.35%     398.692ms     132.897ms             3
+     MegaTrain/PCIe H2D weights layer 6 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     398.119ms         1.35%     398.119ms     132.706ms             3
+    MegaTrain/PCIe H2D weights layer 29 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     398.106ms         1.35%     398.106ms     132.702ms             3
+    MegaTrain/PCIe H2D weights layer 11 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     397.845ms         1.35%     397.845ms     132.615ms             3
+    MegaTrain/PCIe H2D weights layer 24 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     397.128ms         1.35%     397.128ms     132.376ms             3
+    MegaTrain/PCIe H2D weights layer 12 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     396.622ms         1.35%     396.622ms     132.207ms             3
+    MegaTrain/PCIe H2D weights layer 15 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     394.155ms         1.34%     394.155ms     131.385ms             3
+    MegaTrain/PCIe H2D weights layer 25 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     392.304ms         1.33%     392.304ms     130.768ms             3
+    MegaTrain/PCIe H2D weights layer 13 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     391.863ms         1.33%     391.863ms     130.621ms             3
+    MegaTrain/PCIe H2D weights layer 18 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     386.061ms         1.31%     386.061ms     128.687ms             3
+     MegaTrain/PCIe H2D weights layer 8 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     382.097ms         1.30%     382.097ms     127.366ms             3
+     MegaTrain/PCIe H2D weights layer 3 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     379.900ms         1.29%     379.900ms     126.633ms             3
+     MegaTrain/PCIe H2D weights layer 5 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     378.456ms         1.28%     378.456ms     126.152ms             3
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_bf16_...         0.00%       0.000us         0.00%       0.000us       0.000us     340.811ms         1.16%     340.811ms      17.132us         19893
+     MegaTrain/PCIe H2D weights layer 2 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     331.357ms         1.12%     331.357ms     110.452ms             3
+     MegaTrain/PCIe H2D weights layer 1 [weight_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     326.119ms         1.11%     326.119ms     108.706ms             3
+    MegaTrain/PCIe D2H gradients layer 45 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     254.209ms         0.86%     254.209ms     254.209ms             1
+    MegaTrain/PCIe D2H gradients layer 41 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     205.434ms         0.70%     205.434ms     205.434ms             1
+    MegaTrain/PCIe D2H gradients layer 20 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     204.792ms         0.69%     204.792ms     204.792ms             1
+                       Memcpy HtoD (Pageable -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us     204.262ms         0.69%     204.262ms       1.438ms           142
+void cutlass::Kernel2<cutlass_80_wmma_tensorop_bf16_...         0.00%       0.000us         0.00%       0.000us       0.000us     199.766ms         0.68%     199.766ms      17.785us         11232
+    MegaTrain/PCIe D2H gradients layer 38 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     196.627ms         0.67%     196.627ms     196.627ms             1
+    MegaTrain/PCIe D2H gradients layer 40 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     195.932ms         0.66%     195.932ms     195.932ms             1
+    MegaTrain/PCIe D2H gradients layer 35 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     195.194ms         0.66%     195.194ms     195.194ms             1
+    MegaTrain/PCIe D2H gradients layer 29 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     193.731ms         0.66%     193.731ms     193.731ms             1
+    MegaTrain/PCIe D2H gradients layer 15 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     193.562ms         0.66%     193.562ms     193.562ms             1
+    MegaTrain/PCIe D2H gradients layer 36 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     193.487ms         0.66%     193.487ms     193.487ms             1
+    MegaTrain/PCIe D2H gradients layer 37 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     192.903ms         0.65%     192.903ms     192.903ms             1
+    MegaTrain/PCIe D2H gradients layer 43 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     191.267ms         0.65%     191.267ms     191.267ms             1
+     MegaTrain/PCIe D2H gradients layer 5 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     189.649ms         0.64%     189.649ms     189.649ms             1
+    MegaTrain/PCIe D2H gradients layer 27 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     189.626ms         0.64%     189.626ms     189.626ms             1
+    MegaTrain/PCIe D2H gradients layer 39 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     188.875ms         0.64%     188.875ms     188.875ms             1
+    MegaTrain/PCIe D2H gradients layer 34 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     188.171ms         0.64%     188.171ms     188.171ms             1
+    MegaTrain/PCIe D2H gradients layer 33 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     187.886ms         0.64%     187.886ms     187.886ms             1
+    MegaTrain/PCIe D2H gradients layer 25 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     187.319ms         0.64%     187.319ms     187.319ms             1
+    MegaTrain/PCIe D2H gradients layer 24 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     186.027ms         0.63%     186.027ms     186.027ms             1
+    MegaTrain/PCIe D2H gradients layer 21 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     184.797ms         0.63%     184.797ms     184.797ms             1
+    MegaTrain/PCIe D2H gradients layer 44 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     184.549ms         0.63%     184.549ms     184.549ms             1
+    MegaTrain/PCIe D2H gradients layer 31 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     184.499ms         0.63%     184.499ms     184.499ms             1
+    MegaTrain/PCIe D2H gradients layer 28 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     184.478ms         0.63%     184.478ms     184.478ms             1
+    MegaTrain/PCIe D2H gradients layer 32 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     184.325ms         0.63%     184.325ms     184.325ms             1
+    MegaTrain/PCIe D2H gradients layer 11 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     183.731ms         0.62%     183.731ms     183.731ms             1
+    MegaTrain/PCIe D2H gradients layer 23 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     183.407ms         0.62%     183.407ms     183.407ms             1
+    MegaTrain/PCIe D2H gradients layer 17 [grad_stream]         0.00%       0.000us         0.00%       0.000us       0.000us     183.111ms         0.62%     183.111ms     183.111ms             1
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------
+Self CPU time total: 34.234s
+Self CUDA time total: 29.478s

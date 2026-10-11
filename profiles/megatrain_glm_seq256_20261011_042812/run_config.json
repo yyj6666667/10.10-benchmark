@@ -1,0 +1,20 @@
+{
+  "host": "qj5090",
+  "backend": "megatrain",
+  "model_kind": "glm45_air",
+  "sequence_length": 256,
+  "global_batch": 8,
+  "precision": "bf16",
+  "steps": 4,
+  "warmup_steps": 2,
+  "mode": "semantic",
+  "offload_embedding_head_gpu": true,
+  "checkpoint_interval": 1,
+  "num_grad_slabs": 2,
+  "dataset": "fft_real_100",
+  "gradient_clipping": 1.0,
+  "host_available_guard_gib": 20,
+  "profile_dir": "/mnt/hurry-bench/profiles/megatrain_glm_seq256_20261011_042812",
+  "profile_step": 3,
+  "profile_rank": 0
+}

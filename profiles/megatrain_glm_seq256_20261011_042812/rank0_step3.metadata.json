@@ -1,0 +1,21 @@
+{
+  "rank": 0,
+  "step": 3,
+  "input_shape": [
+    1,
+    256
+  ],
+  "trace": "rank0_step3.trace.json",
+  "activities": [
+    "CPU",
+    "CUDA"
+  ],
+  "streams": {
+    "compute": 0,
+    "weights_H2D": 94388815161760,
+    "gradients_D2H": 94388815226256
+  },
+  "record_shapes": false,
+  "profile_memory": false,
+  "with_stack": false
+}

@@ -185,6 +185,31 @@ def plot(rows: list[dict[str, str]]) -> None:
     plt.close(fig)
 
 
+def write_performance_tables(rows: list[dict[str, str]]) -> None:
+    """One deduplicated eight-column table for each measured model/backend."""
+    columns = ("Seq", *METRIC_COLUMNS.values())
+    fields = ("sequence_length", *METRIC_COLUMNS.keys())
+    lines = ["# qj5090 性能数据", ""]
+    for model, _, _ in MODELS:
+        for backend, label, _, _ in BACKENDS:
+            measured = [
+                row for row in rows
+                if row["model"] == model and row["backend"] == backend
+                and row["status"] == "SUCCESS"
+            ]
+            if not measured:
+                continue
+            lines.extend((f"## {model} · {label}", "",
+                          "| " + " | ".join(columns) + " |",
+                          "|" + "---|" * len(columns)))
+            for row in measured:
+                lines.append("| " + " | ".join(row[field] for field in fields) + " |")
+            lines.append("")
+    (RESULTS / "qj5090_performance_tables.md").write_text(
+        "\n".join(lines), encoding="utf-8"
+    )
+
+
 def main() -> None:
     rows = assemble()
     with (RESULTS / "qj5090_figure9.csv").open("w", newline="") as stream:
@@ -192,6 +217,7 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(rows)
     plot(rows)
+    write_performance_tables(rows)
     measured = sum(row["status"] == "SUCCESS" for row in rows)
     print(f"Rendered {measured}/{len(rows)} measured bars")
 

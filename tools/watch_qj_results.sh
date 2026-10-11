@@ -64,7 +64,8 @@ PY
         if (( changed )); then
             if python tools/render_qj_figure9.py; then
                 git add -- "${paths[@]}" results/qj5090_figure9.csv \
-                    results/qj5090_figure9.png results/qj5090_figure9.svg
+                    results/qj5090_figure9.png results/qj5090_figure9.svg \
+                    results/qj5090_performance_tables.md
                 if ! git diff --cached --quiet; then
                     git commit -m "Update qj5090 full fine-tuning measurements"
                 fi

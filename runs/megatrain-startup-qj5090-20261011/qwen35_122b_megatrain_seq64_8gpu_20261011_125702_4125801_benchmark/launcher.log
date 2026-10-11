@@ -1,0 +1,56 @@
+[startup] {"stage": "begin", "elapsed_sec": 0.001, "torch_threads": 64}
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[load] shard 1/39
+[load] shard 2/39
+[load] shard 3/39
+[load] shard 4/39
+[load] shard 5/39
+[load] shard 6/39
+[load] shard 7/39
+[load] shard 8/39
+[load] shard 9/39
+[load] shard 10/39
+[load] shard 11/39
+[load] shard 12/39
+[load] shard 13/39
+[load] shard 14/39
+[load] shard 15/39
+[load] shard 16/39
+[load] shard 17/39
+[load] shard 18/39
+[load] shard 19/39
+[load] shard 20/39
+[load] shard 21/39
+[load] shard 22/39
+[load] shard 23/39
+[load] shard 24/39
+[load] shard 25/39
+[load] shard 26/39
+[load] shard 27/39
+[load] shard 28/39
+[load] shard 29/39
+[load] shard 30/39
+[load] shard 31/39
+[load] shard 32/39
+[load] shard 33/39
+[load] shard 34/39
+[load] shard 35/39
+[load] shard 36/39
+[load] shard 37/39
+[load] shard 38/39
+[load] shard 39/39
+[startup] {"stage": "checkpoint_loaded", "elapsed_sec": 20.556, "torch_threads": 64}
+[contract] {"parameters": 122111526912, "checkpoint_tensors": 831}
+[WARNING|2026-10-11 12:57:27] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[startup] {"stage": "examples_encoded", "elapsed_sec": 22.865, "torch_threads": 64}
+[startup] {"stage": "engine_ready", "elapsed_sec": 299.469, "torch_threads": 64}
+[startup] {"stage": "optimizer_ready", "elapsed_sec": 301.881, "torch_threads": 64}
+[step] {"step": 1, "loss": 2.9747474988301597, "grad_norm": 40.5, "tokens": 512, "step_sec": 95.866643846035, "forward_sec": 5.5844177246093745, "backward_sec": 26.051685791015622, "optimizer_sec": 37.76232571527362}
+[step] {"step": 2, "loss": 1.490646253637716, "grad_norm": 37.5, "tokens": 512, "step_sec": 57.434233635663986, "forward_sec": 6.111362365722656, "backward_sec": 28.41151953125, "optimizer_sec": 20.65448260679841}
+[step] {"step": 3, "loss": 0.675262237345422, "grad_norm": 20.0, "tokens": 512, "step_sec": 58.56318338960409, "forward_sec": 5.771017639160156, "backward_sec": 33.846543701171875, "optimizer_sec": 16.49645585566759}
+[step] {"step": 4, "loss": 0.35670732018839607, "grad_norm": 4.875, "tokens": 512, "step_sec": 59.87056386470795, "forward_sec": 5.693318786621093, "backward_sec": 35.7054140625, "optimizer_sec": 16.30865441635251}
+Worker 4132757 did not exit, terminating
+Worker 4132888 did not exit, terminating
+Worker 4132902 did not exit, terminating
+Worker 4133048 did not exit, terminating
+Worker 4133119 did not exit, terminating

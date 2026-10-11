@@ -1,0 +1,67 @@
+{
+  "backend": "megatrain",
+  "model_kind": "qwen35_122b",
+  "sequence_length": 128,
+  "global_batch": 8,
+  "steps_requested": 4,
+  "steps_completed": 4,
+  "warmup_steps": 2,
+  "contract": {
+    "parameters": 122111526912,
+    "checkpoint_tensors": 831
+  },
+  "repeat_batch": false,
+  "optimizer": "DeepSpeedCPUAdam(BF16 states)",
+  "checkpoint_interval": 1,
+  "num_grad_slabs": 2,
+  "timing_method": "MegaTrain CUDA event forward/backward; host optimizer/step",
+  "rows": [
+    {
+      "step": 1,
+      "loss": 2.2200247531178854,
+      "grad_norm": 23.875,
+      "tokens": 1024,
+      "step_sec": 91.16691882535815,
+      "forward_sec": 5.729138427734374,
+      "backward_sec": 23.315216064453125,
+      "optimizer_sec": 36.183722004294395
+    },
+    {
+      "step": 2,
+      "loss": 1.320099281909744,
+      "grad_norm": 20.5,
+      "tokens": 1024,
+      "step_sec": 53.49057687073946,
+      "forward_sec": 5.794825012207031,
+      "backward_sec": 27.439828125,
+      "optimizer_sec": 18.061873506754637
+    },
+    {
+      "step": 3,
+      "loss": 0.7528195491709506,
+      "grad_norm": 13.6875,
+      "tokens": 1024,
+      "step_sec": 60.12395181134343,
+      "forward_sec": 5.761201965332031,
+      "backward_sec": 29.8475322265625,
+      "optimizer_sec": 22.459042500704527
+    },
+    {
+      "step": 4,
+      "loss": 0.5087609442139747,
+      "grad_norm": 7.75,
+      "tokens": 1024,
+      "step_sec": 51.31236872822046,
+      "forward_sec": 5.718081176757813,
+      "backward_sec": 28.01612329101562,
+      "optimizer_sec": 15.713352363556623
+    }
+  ],
+  "stable": {
+    "step_sec": 55.71816026978195,
+    "forward_sec": 5.739641571044922,
+    "backward_sec": 28.931827758789062,
+    "optimizer_sec": 19.086197432130575,
+    "tps": 18.378209098108965
+  }
+}

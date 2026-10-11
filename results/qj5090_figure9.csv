@@ -45,7 +45,7 @@ GLM-4.5-Air-106B,megatrain,128,SUCCESS,31.26,4716.39,50.789,20.16,5.636,28.141,1
 GLM-4.5-Air-106B,megatrain,256,SUCCESS,28.89,4727.32,55.879,36.65,5.606,31.828,15.688,qj5090,results/qj5090_glm_megatrain_performance.csv,
 GLM-4.5-Air-106B,megatrain,512,SUCCESS,29.39,4720.80,56.368,72.66,5.413,32.928,15.501,qj5090,results/qj5090_glm_megatrain_performance.csv,
 GLM-4.5-Air-106B,megatrain,1024,SUCCESS,30.38,4726.37,54.745,149.64,5.484,31.334,15.093,qj5090,results/qj5090_glm_megatrain_performance.csv,
-GLM-4.5-Air-106B,megatrain,2048,BLOCKED,,,,,,,,qj5090,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq128_8gpu_20261011_002755_3742518_benchmark/launcher.log,Not run: seq128 CUDA OOM in backward on 32 GiB GPUs; longer sequences require a lower-memory MegaTrain configuration
+GLM-4.5-Air-106B,megatrain,2048,SUCCESS,30.81,4726.39,53.980,303.52,5.436,31.040,14.508,qj5090,results/qj5090_glm_megatrain_performance.csv,
 GLM-4.5-Air-106B,megatrain,4096,BLOCKED,,,,,,,,qj5090,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq128_8gpu_20261011_002755_3742518_benchmark/launcher.log,Not run: seq128 CUDA OOM in backward on 32 GiB GPUs; longer sequences require a lower-memory MegaTrain configuration
 GLM-4.5-Air-106B,pytorch_onednn,32,SUCCESS,28.53,1194.93,37.522,6.82,2.751,12.347,22.425,qj5090,results/qj5090_glm45_air_fsdp2_onednn_performance.csv,
 GLM-4.5-Air-106B,pytorch_onednn,64,SUCCESS,28.53,1246.19,38.860,13.18,3.085,13.577,22.199,qj5090,results/qj5090_glm45_air_fsdp2_onednn_performance.csv,

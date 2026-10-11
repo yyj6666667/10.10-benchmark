@@ -1,1 +1,2 @@
 run_id,model,backend,host,sequence_length,num_gpus,steps,first_loss,last_loss,status
+glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic,GLM-4.5-Air,zero_offload,qj5090,32,8,4,9.343,4.518,SUCCESS

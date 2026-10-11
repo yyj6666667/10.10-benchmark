@@ -1,7 +1,7 @@
 model,backend,sequence_length,status,source,note
 GLM-4.5-Air-106B,megatrain,32,FAILED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_232621_3714279_semantic/launcher.log,exit=1; RuntimeError: non-finite loss before optimizer at step 1; min MemAvailable=667.1 GiB
 GLM-4.5-Air-106B,megatrain,64,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_195333_3616795_semantic/launcher.log,Not run: seq32 fixed-batch loss was non-finite; training semantics require repair
-GLM-4.5-Air-106B,megatrain,128,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_195333_3616795_semantic/launcher.log,Not run: seq32 fixed-batch loss was non-finite; training semantics require repair
+GLM-4.5-Air-106B,megatrain,128,OOM,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq128_8gpu_20261011_002755_3742518_benchmark/launcher.log,exit=247; torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.75 GiB. GPU 0 has a total capacity of 31.36 GiB of which 2.67 GiB is free. Including non-PyTorch; min MemAvailable=696.9 GiB
 GLM-4.5-Air-106B,megatrain,256,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_195333_3616795_semantic/launcher.log,Not run: seq32 fixed-batch loss was non-finite; training semantics require repair
 GLM-4.5-Air-106B,megatrain,512,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_195333_3616795_semantic/launcher.log,Not run: seq32 fixed-batch loss was non-finite; training semantics require repair
 GLM-4.5-Air-106B,megatrain,1024,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq32_8gpu_20261010_195333_3616795_semantic/launcher.log,Not run: seq32 fixed-batch loss was non-finite; training semantics require repair

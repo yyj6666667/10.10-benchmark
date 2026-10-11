@@ -2258,9 +2258,9 @@ L 1117.19952 94.413896
     </g>
    </g>
    <g id="text_51">
-    <!-- · -->
-    <g style="fill: #777777" transform="translate(752.557524 450.025601) scale(0.14 -0.14)">
-     <use xlink:href="#DejaVuSans-Bold-b7"/>
+    <!-- × -->
+    <g style="fill: #d62728" transform="translate(749.350649 450.025601) scale(0.14 -0.14)">
+     <use xlink:href="#DejaVuSans-Bold-d7"/>
     </g>
    </g>
    <g id="text_52">

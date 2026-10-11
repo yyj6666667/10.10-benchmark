@@ -80,14 +80,20 @@ def read_performance(path: Path) -> dict[int, dict[str, str]]:
 
 def read_statuses() -> dict[tuple[str, str, int], dict[str, str]]:
     statuses = {}
-    for path in (RESULTS / "qj5090_case_status.csv",
-                 RESULTS / "qj5090_zero_offload_case_status.csv"):
+    combined = RESULTS / "qj5090_case_status.csv"
+    dedicated = {
+        "zero_offload": RESULTS / "qj5090_zero_offload_case_status.csv",
+        "megatrain": RESULTS / "qj5090_megatrain_case_status.csv",
+    }
+    for path in (combined, *dedicated.values()):
         if not path.exists():
             continue
         with path.open(newline="") as stream:
             for row in csv.DictReader(stream):
-                is_zero = row["backend"] == "zero_offload"
-                if is_zero != (path.name == "qj5090_zero_offload_case_status.csv"):
+                own_table = dedicated.get(row["backend"])
+                if path == combined and own_table is not None and own_table.exists():
+                    continue
+                if path != combined and path != own_table:
                     continue
                 key = row["model"], row["backend"], int(row["sequence_length"])
                 if row["status"] not in {"OOM", "FAILED", "BLOCKED"}:

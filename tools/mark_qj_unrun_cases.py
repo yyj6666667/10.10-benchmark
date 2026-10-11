@@ -23,6 +23,10 @@ def main() -> None:
     parser.add_argument("--source", required=True)
     parser.add_argument("--reason", required=True)
     parser.add_argument(
+        "--replace-existing-blocked", action="store_true",
+        help="refresh older BLOCKED rows after a new observed limiting case",
+    )
+    parser.add_argument(
         "--table", type=Path,
         default=Path("/mnt/hurry-bench/results/case_status.csv"),
     )
@@ -44,6 +48,16 @@ def main() -> None:
         (row["model"], row["backend"], row["sequence_length"])
         for row in existing
     }
+    refreshed = 0
+    if args.replace_existing_blocked:
+        for row in existing:
+            if (row["model"] == MODELS[args.model]
+                    and row["backend"] == args.backend
+                    and int(row["sequence_length"]) > args.after
+                    and row["status"] == "BLOCKED"):
+                row["source"] = args.source
+                row["note"] = args.reason
+                refreshed += 1
     added = []
     for seq in SEQUENCES:
         if seq <= args.after:
@@ -64,7 +78,7 @@ def main() -> None:
         writer.writerows(existing)
         temp = stream.name
     os.replace(temp, args.table)
-    print(f"marked {len(added)} skipped cases as BLOCKED")
+    print(f"marked {len(added)} skipped cases as BLOCKED; refreshed {refreshed}")
 
 
 if __name__ == "__main__":

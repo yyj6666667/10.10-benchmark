@@ -1,0 +1,12 @@
+{
+  "losses": [
+    4.005,
+    2.158,
+    1.289,
+    1.082
+  ],
+  "initial_loss": 4.005,
+  "final_loss": 1.082,
+  "passed": true,
+  "fixed_batch": true
+}

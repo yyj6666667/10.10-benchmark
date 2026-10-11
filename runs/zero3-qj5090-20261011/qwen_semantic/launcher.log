@@ -1,0 +1,866 @@
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_0
+[WARNING|2026-10-11 07:49:50] llamafactory.extras.misc:155 >> Version checking has been disabled, may lead to unexpected behaviors.
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_1
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_4
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_7
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_5
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_2
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_6
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/step_timing/rank_3
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 0, world size: 8, device: cuda:0, distributed training: True, compute dtype: torch.bfloat16
+[INFO|hub.py:364] 2026-10-11 07:49:51,953 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 07:49:51,954 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/config.json
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 1, world size: 8, device: cuda:1, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 3, world size: 8, device: cuda:3, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 5, world size: 8, device: cuda:5, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 4, world size: 8, device: cuda:4, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 2, world size: 8, device: cuda:2, distributed training: True, compute dtype: torch.bfloat16
+[INFO|configuration_utils.py:847] 2026-10-11 07:49:51,976 >> Model config Qwen3_5MoeConfig {
+  "architectures": [
+    "Qwen3_5MoeForConditionalGeneration"
+  ],
+  "image_token_id": 248056,
+  "model_type": "qwen3_5_moe",
+  "text_config": {
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "attn_output_gate": true,
+    "bos_token_id": null,
+    "dtype": "bfloat16",
+    "eos_token_id": 248044,
+    "full_attention_interval": 4,
+    "head_dim": 256,
+    "hidden_act": "silu",
+    "hidden_size": 3072,
+    "initializer_range": 0.02,
+    "layer_types": [
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention"
+    ],
+    "linear_conv_kernel_dim": 4,
+    "linear_key_head_dim": 128,
+    "linear_num_key_heads": 16,
+    "linear_num_value_heads": 64,
+    "linear_value_head_dim": 128,
+    "mamba_ssm_dtype": "float32",
+    "max_position_embeddings": 262144,
+    "mlp_only_layers": [],
+    "model_type": "qwen3_5_moe_text",
+    "moe_intermediate_size": 1024,
+    "mtp_num_hidden_layers": 1,
+    "mtp_use_dedicated_embeddings": false,
+    "num_attention_heads": 32,
+    "num_experts": 256,
+    "num_experts_per_tok": 8,
+    "num_hidden_layers": 48,
+    "num_key_value_heads": 2,
+    "output_router_logits": false,
+    "pad_token_id": null,
+    "partial_rotary_factor": 0.25,
+    "rms_norm_eps": 1e-06,
+    "rope_parameters": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    },
+    "router_aux_loss_coef": 0.001,
+    "shared_expert_intermediate_size": 1024,
+    "tie_word_embeddings": false,
+    "use_cache": true,
+    "vocab_size": 248320
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.6.0",
+  "video_token_id": 248057,
+  "vision_config": {
+    "deepstack_visual_indexes": [],
+    "depth": 27,
+    "hidden_act": "gelu_pytorch_tanh",
+    "hidden_size": 1152,
+    "in_channels": 3,
+    "initializer_range": 0.02,
+    "intermediate_size": 4304,
+    "model_type": "qwen3_5_moe_vision",
+    "num_heads": 16,
+    "num_position_embeddings": 2304,
+    "out_hidden_size": 3072,
+    "patch_size": 16,
+    "spatial_merge_size": 2,
+    "temporal_patch_size": 2
+  },
+  "vision_end_token_id": 248054,
+  "vision_start_token_id": 248053
+}
+
+[INFO|hub.py:364] 2026-10-11 07:49:51,976 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 07:49:51,976 >> Offline mode: forcing local_files_only=True
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 6, world size: 8, device: cuda:6, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 07:49:51] llamafactory.hparams.parser:508 >> Process rank: 7, world size: 8, device: cuda:7, distributed training: True, compute dtype: torch.bfloat16
+[INFO|hub.py:364] 2026-10-11 07:49:52,780 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 07:49:52,781 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:268] 2026-10-11 07:49:52,781 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:342] 2026-10-11 07:49:52,781 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/preprocessor_config.json
+[INFO|processing_utils.py:950] 2026-10-11 07:49:52,784 >> Offline mode: forcing local_files_only=True
+[INFO|processing_utils.py:1122] 2026-10-11 07:49:52,784 >> loading configuration file None
+[INFO|image_processing_base.py:268] 2026-10-11 07:49:52,784 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:342] 2026-10-11 07:49:52,784 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/preprocessor_config.json
+[WARNING|logging.py:340] 2026-10-11 07:49:52,784 >> The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[INFO|image_processing_base.py:268] 2026-10-11 07:49:52,789 >> Offline mode: forcing local_files_only=True
+[INFO|image_processing_base.py:342] 2026-10-11 07:49:52,789 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/preprocessor_config.json
+[INFO|image_processing_base.py:385] 2026-10-11 07:49:52,789 >> Image processor Qwen2VLImageProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "merge_size": 2,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "size": {
+    "longest_edge": 16777216,
+    "shortest_edge": 65536
+  },
+  "temporal_patch_size": 2
+}
+
+[INFO|hub.py:364] 2026-10-11 07:49:52,789 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 07:49:52,789 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 07:49:52,793 >> Model config Qwen3_5MoeConfig {
+  "architectures": [
+    "Qwen3_5MoeForConditionalGeneration"
+  ],
+  "image_token_id": 248056,
+  "model_type": "qwen3_5_moe",
+  "text_config": {
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "attn_output_gate": true,
+    "bos_token_id": null,
+    "dtype": "bfloat16",
+    "eos_token_id": 248044,
+    "full_attention_interval": 4,
+    "head_dim": 256,
+    "hidden_act": "silu",
+    "hidden_size": 3072,
+    "initializer_range": 0.02,
+    "layer_types": [
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention"
+    ],
+    "linear_conv_kernel_dim": 4,
+    "linear_key_head_dim": 128,
+    "linear_num_key_heads": 16,
+    "linear_num_value_heads": 64,
+    "linear_value_head_dim": 128,
+    "mamba_ssm_dtype": "float32",
+    "max_position_embeddings": 262144,
+    "mlp_only_layers": [],
+    "model_type": "qwen3_5_moe_text",
+    "moe_intermediate_size": 1024,
+    "mtp_num_hidden_layers": 1,
+    "mtp_use_dedicated_embeddings": false,
+    "num_attention_heads": 32,
+    "num_experts": 256,
+    "num_experts_per_tok": 8,
+    "num_hidden_layers": 48,
+    "num_key_value_heads": 2,
+    "output_router_logits": false,
+    "pad_token_id": null,
+    "partial_rotary_factor": 0.25,
+    "rms_norm_eps": 1e-06,
+    "rope_parameters": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    },
+    "router_aux_loss_coef": 0.001,
+    "shared_expert_intermediate_size": 1024,
+    "tie_word_embeddings": false,
+    "use_cache": true,
+    "vocab_size": 248320
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.6.0",
+  "video_token_id": 248057,
+  "vision_config": {
+    "deepstack_visual_indexes": [],
+    "depth": 27,
+    "hidden_act": "gelu_pytorch_tanh",
+    "hidden_size": 1152,
+    "in_channels": 3,
+    "initializer_range": 0.02,
+    "intermediate_size": 4304,
+    "model_type": "qwen3_5_moe_vision",
+    "num_heads": 16,
+    "num_position_embeddings": 2304,
+    "out_hidden_size": 3072,
+    "patch_size": 16,
+    "spatial_merge_size": 2,
+    "temporal_patch_size": 2
+  },
+  "vision_end_token_id": 248054,
+  "vision_start_token_id": 248053
+}
+
+[INFO|hub.py:364] 2026-10-11 07:49:52,793 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 07:49:52,793 >> Offline mode: forcing local_files_only=True
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[INFO|video_processing_utils.py:600] 2026-10-11 07:49:53,631 >> Offline mode: forcing local_files_only=True
+[INFO|video_processing_utils.py:684] 2026-10-11 07:49:53,634 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/video_preprocessor_config.json
+[INFO|video_processing_utils.py:600] 2026-10-11 07:49:53,638 >> Offline mode: forcing local_files_only=True
+[INFO|video_processing_utils.py:684] 2026-10-11 07:49:53,638 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/video_preprocessor_config.json
+[INFO|video_processing_utils.py:727] 2026-10-11 07:49:53,638 >> Video processor Qwen3VLVideoProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "do_sample_frames": true,
+  "fps": 2,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "max_frames": 768,
+  "merge_size": 2,
+  "min_frames": 4,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_metadata": false,
+  "size": {
+    "longest_edge": 25165824,
+    "shortest_edge": 4096
+  },
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen3VLVideoProcessor"
+}
+
+[INFO|processing_utils.py:1199] 2026-10-11 07:49:53,639 >> Processor Qwen3VLProcessor:
+- image_processor: Qwen2VLImageProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_processor_type": "Qwen2VLImageProcessor",
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "merge_size": 2,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "size": {
+    "longest_edge": 16777216,
+    "shortest_edge": 65536
+  },
+  "temporal_patch_size": 2
+}
+
+- tokenizer: TokenizersBackend(name_or_path='/mnt/data/models/Qwen3.5-122B-A10B', vocab_size=248044, model_max_length=262144, padding_side='right', truncation_side='right', special_tokens={'eos_token': '<|im_end|>', 'pad_token': '<|endoftext|>', 'audio_bos_token': '<|audio_start|>', 'audio_eos_token': '<|audio_end|>', 'audio_token': '<|audio_pad|>', 'image_token': '<|image_pad|>', 'video_token': '<|video_pad|>', 'vision_bos_token': '<|vision_start|>', 'vision_eos_token': '<|vision_end|>'}, added_tokens_decoder={
+	248044: AddedToken("<|endoftext|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248045: AddedToken("<|im_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248046: AddedToken("<|im_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248047: AddedToken("<|object_ref_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248048: AddedToken("<|object_ref_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248049: AddedToken("<|box_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248050: AddedToken("<|box_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248051: AddedToken("<|quad_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248052: AddedToken("<|quad_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248053: AddedToken("<|vision_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248054: AddedToken("<|vision_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248055: AddedToken("<|vision_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248056: AddedToken("<|image_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248057: AddedToken("<|video_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248058: AddedToken("<tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248059: AddedToken("</tool_call>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248060: AddedToken("<|fim_prefix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248061: AddedToken("<|fim_middle|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248062: AddedToken("<|fim_suffix|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248063: AddedToken("<|fim_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248064: AddedToken("<|repo_name|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248065: AddedToken("<|file_sep|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248066: AddedToken("<tool_response>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248067: AddedToken("</tool_response>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248068: AddedToken("<think>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248069: AddedToken("</think>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=False),
+	248070: AddedToken("<|audio_start|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248071: AddedToken("<|audio_end|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248072: AddedToken("<tts_pad>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248073: AddedToken("<tts_text_bos>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248074: AddedToken("<tts_text_eod>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248075: AddedToken("<tts_text_bos_single>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+	248076: AddedToken("<|audio_pad|>", rstrip=False, lstrip=False, single_word=False, normalized=False, special=True),
+})
+- video_processor: Qwen3VLVideoProcessor {
+  "do_convert_rgb": true,
+  "do_normalize": true,
+  "do_rescale": true,
+  "do_resize": true,
+  "do_sample_frames": true,
+  "fps": 2,
+  "image_mean": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "image_std": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "max_frames": 768,
+  "merge_size": 2,
+  "min_frames": 4,
+  "patch_size": 16,
+  "resample": 3,
+  "rescale_factor": 0.00392156862745098,
+  "return_metadata": false,
+  "size": {
+    "longest_edge": 25165824,
+    "shortest_edge": 4096
+  },
+  "temporal_patch_size": 2,
+  "video_processor_type": "Qwen3VLVideoProcessor"
+}
+
+
+{
+  "image_processor": {
+    "do_convert_rgb": true,
+    "do_normalize": true,
+    "do_rescale": true,
+    "do_resize": true,
+    "image_mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "image_processor_type": "Qwen2VLImageProcessor",
+    "image_std": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "merge_size": 2,
+    "patch_size": 16,
+    "resample": 3,
+    "rescale_factor": 0.00392156862745098,
+    "size": {
+      "longest_edge": 16777216,
+      "shortest_edge": 65536
+    },
+    "temporal_patch_size": 2
+  },
+  "processor_class": "Qwen3VLProcessor",
+  "video_processor": {
+    "do_convert_rgb": true,
+    "do_normalize": true,
+    "do_rescale": true,
+    "do_resize": true,
+    "do_sample_frames": true,
+    "fps": 2,
+    "image_mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "image_std": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "max_frames": 768,
+    "merge_size": 2,
+    "min_frames": 4,
+    "patch_size": 16,
+    "resample": 3,
+    "rescale_factor": 0.00392156862745098,
+    "return_metadata": false,
+    "size": {
+      "longest_edge": 25165824,
+      "shortest_edge": 4096
+    },
+    "temporal_patch_size": 2,
+    "video_processor_type": "Qwen3VLVideoProcessor"
+  }
+}
+
+[WARNING|2026-10-11 07:49:53] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-11 07:49:53] llamafactory.data.loader:144 >> Loading dataset fft_real_100.json...
+training example:
+input_ids:
+[248045, 248068, 271, 248069, 271, 1919, 2128, 318, 1209, 220, 16, 11, 10014, 220, 20, 16, 23, 22, 20, 8, 14103, 264, 2020, 314, 12960, 303, 5484, 6618, 11, 5757, 3061, 11]
+inputs:
+<|im_start|><think>
+
+</think>
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,
+label_ids:
+[-100, 248068, 271, 248069, 271, 1919, 2128, 318, 1209, 220, 16, 11, 10014, 220, 20, 16, 23, 22, 20, 8, 14103, 264, 2020, 314, 12960, 303, 5484, 6618, 11, 5757, 3061, 11]
+labels:
+<think>
+
+</think>
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,
+[INFO|hub.py:364] 2026-10-11 07:49:53,972 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 07:49:53,972 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 07:49:53,976 >> Model config Qwen3_5MoeConfig {
+  "architectures": [
+    "Qwen3_5MoeForConditionalGeneration"
+  ],
+  "image_token_id": 248056,
+  "model_type": "qwen3_5_moe",
+  "text_config": {
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "attn_output_gate": true,
+    "bos_token_id": null,
+    "dtype": "bfloat16",
+    "eos_token_id": 248044,
+    "full_attention_interval": 4,
+    "head_dim": 256,
+    "hidden_act": "silu",
+    "hidden_size": 3072,
+    "initializer_range": 0.02,
+    "layer_types": [
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention",
+      "linear_attention",
+      "linear_attention",
+      "linear_attention",
+      "full_attention"
+    ],
+    "linear_conv_kernel_dim": 4,
+    "linear_key_head_dim": 128,
+    "linear_num_key_heads": 16,
+    "linear_num_value_heads": 64,
+    "linear_value_head_dim": 128,
+    "mamba_ssm_dtype": "float32",
+    "max_position_embeddings": 262144,
+    "mlp_only_layers": [],
+    "model_type": "qwen3_5_moe_text",
+    "moe_intermediate_size": 1024,
+    "mtp_num_hidden_layers": 1,
+    "mtp_use_dedicated_embeddings": false,
+    "num_attention_heads": 32,
+    "num_experts": 256,
+    "num_experts_per_tok": 8,
+    "num_hidden_layers": 48,
+    "num_key_value_heads": 2,
+    "output_router_logits": false,
+    "pad_token_id": null,
+    "partial_rotary_factor": 0.25,
+    "rms_norm_eps": 1e-06,
+    "rope_parameters": {
+      "mrope_interleaved": true,
+      "mrope_section": [
+        11,
+        11,
+        10
+      ],
+      "partial_rotary_factor": 0.25,
+      "rope_theta": 10000000,
+      "rope_type": "default"
+    },
+    "router_aux_loss_coef": 0.001,
+    "shared_expert_intermediate_size": 1024,
+    "tie_word_embeddings": false,
+    "use_cache": true,
+    "vocab_size": 248320
+  },
+  "tie_word_embeddings": false,
+  "transformers_version": "5.6.0",
+  "video_token_id": 248057,
+  "vision_config": {
+    "deepstack_visual_indexes": [],
+    "depth": 27,
+    "hidden_act": "gelu_pytorch_tanh",
+    "hidden_size": 1152,
+    "in_channels": 3,
+    "initializer_range": 0.02,
+    "intermediate_size": 4304,
+    "model_type": "qwen3_5_moe_vision",
+    "num_heads": 16,
+    "num_position_embeddings": 2304,
+    "out_hidden_size": 3072,
+    "patch_size": 16,
+    "spatial_merge_size": 2,
+    "temporal_patch_size": 2
+  },
+  "vision_end_token_id": 248054,
+  "vision_start_token_id": 248053
+}
+
+[INFO|2026-10-11 07:49:53] llamafactory.model.model_utils.kv_cache:144 >> KV cache is disabled during training.
+[INFO|modeling_utils.py:706] 2026-10-11 07:49:54,444 >> loading weights file /mnt/data/models/Qwen3.5-122B-A10B/model.safetensors.index.json
+[zero_memory_phase] 1791704994.444829 checkpoint_shard.1.start
+[zero_memory_phase] 1791704994.445107 checkpoint_shard.1.end
+[INFO|modeling_utils.py:790] 2026-10-11 07:49:54,445 >> Since the `dtype` attribute can't be found in model's config object, will use dtype={dtype} as derived from model's weights
+[INFO|modeling_utils.py:3612] 2026-10-11 07:49:54,445 >> Detected DeepSpeed ZeRO-3: activating zero.init() for this model
+[zero_memory_phase] 1791704994.445964 model_construction.start
+[INFO|configuration_utils.py:1027] 2026-10-11 07:49:54,451 >> Generate config GenerationConfig {
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "use_cache": false
+}
+
+[WARNING|logging.py:340] 2026-10-11 07:49:54,838 >> The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[zero_memory_phase] 1791705011.384226 model_construction.end
+[zero_memory_phase] 1791705011.394448 checkpoint_load.start
+[zero_memory_phase] 1791705011.396688 checkpoint_shard.2.start
+[zero_memory_phase] 1791705011.397018 checkpoint_shard.2.end
+[zero_memory_phase] 1791705012.694357 checkpoint_shard.3.start
+[zero_memory_phase] 1791705012.694844 checkpoint_shard.3.end
+[zero_memory_phase] 1791705013.633636 checkpoint_shard.4.start
+[zero_memory_phase] 1791705013.634029 checkpoint_shard.4.end
+[zero_memory_phase] 1791705014.607079 checkpoint_shard.5.start
+[zero_memory_phase] 1791705014.607468 checkpoint_shard.5.end
+[zero_memory_phase] 1791705015.544096 checkpoint_shard.6.start
+[zero_memory_phase] 1791705015.544473 checkpoint_shard.6.end
+[zero_memory_phase] 1791705016.570472 checkpoint_shard.7.start
+[zero_memory_phase] 1791705016.570857 checkpoint_shard.7.end
+[zero_memory_phase] 1791705017.496898 checkpoint_shard.8.start
+[zero_memory_phase] 1791705017.725409 checkpoint_shard.8.end
+[zero_memory_phase] 1791705018.712454 checkpoint_shard.9.start
+[zero_memory_phase] 1791705018.712832 checkpoint_shard.9.end
+[zero_memory_phase] 1791705019.728569 checkpoint_shard.10.start
+[zero_memory_phase] 1791705019.728947 checkpoint_shard.10.end
+[zero_memory_phase] 1791705020.694725 checkpoint_shard.11.start
+[zero_memory_phase] 1791705020.695117 checkpoint_shard.11.end
+[zero_memory_phase] 1791705021.615108 checkpoint_shard.12.start
+[zero_memory_phase] 1791705021.615497 checkpoint_shard.12.end
+[zero_memory_phase] 1791705022.653640 checkpoint_shard.13.start
+[zero_memory_phase] 1791705022.654030 checkpoint_shard.13.end
+[zero_memory_phase] 1791705023.608444 checkpoint_shard.14.start
+[zero_memory_phase] 1791705023.608828 checkpoint_shard.14.end
+[zero_memory_phase] 1791705024.552915 checkpoint_shard.15.start
+[zero_memory_phase] 1791705024.553302 checkpoint_shard.15.end
+[zero_memory_phase] 1791705025.473407 checkpoint_shard.16.start
+[zero_memory_phase] 1791705025.473789 checkpoint_shard.16.end
+[zero_memory_phase] 1791705026.403740 checkpoint_shard.17.start
+[zero_memory_phase] 1791705026.404131 checkpoint_shard.17.end
+[zero_memory_phase] 1791705027.464454 checkpoint_shard.18.start
+[zero_memory_phase] 1791705027.464849 checkpoint_shard.18.end
+[zero_memory_phase] 1791705028.424460 checkpoint_shard.19.start
+[zero_memory_phase] 1791705028.424850 checkpoint_shard.19.end
+[zero_memory_phase] 1791705029.391020 checkpoint_shard.20.start
+[zero_memory_phase] 1791705029.391435 checkpoint_shard.20.end
+[zero_memory_phase] 1791705030.292428 checkpoint_shard.21.start
+[zero_memory_phase] 1791705030.292822 checkpoint_shard.21.end
+[zero_memory_phase] 1791705031.245243 checkpoint_shard.22.start
+[zero_memory_phase] 1791705031.245632 checkpoint_shard.22.end
+[zero_memory_phase] 1791705032.202907 checkpoint_shard.23.start
+[zero_memory_phase] 1791705032.203312 checkpoint_shard.23.end
+[zero_memory_phase] 1791705033.154023 checkpoint_shard.24.start
+[zero_memory_phase] 1791705033.154412 checkpoint_shard.24.end
+[zero_memory_phase] 1791705034.122455 checkpoint_shard.25.start
+[zero_memory_phase] 1791705034.122850 checkpoint_shard.25.end
+[zero_memory_phase] 1791705035.086205 checkpoint_shard.26.start
+[zero_memory_phase] 1791705035.086646 checkpoint_shard.26.end
+[zero_memory_phase] 1791705036.324978 checkpoint_shard.27.start
+[zero_memory_phase] 1791705036.325413 checkpoint_shard.27.end
+[zero_memory_phase] 1791705037.359645 checkpoint_shard.28.start
+[zero_memory_phase] 1791705037.360083 checkpoint_shard.28.end
+[zero_memory_phase] 1791705038.371889 checkpoint_shard.29.start
+[zero_memory_phase] 1791705038.372328 checkpoint_shard.29.end
+[zero_memory_phase] 1791705039.376147 checkpoint_shard.30.start
+[zero_memory_phase] 1791705039.376588 checkpoint_shard.30.end
+[zero_memory_phase] 1791705040.374034 checkpoint_shard.31.start
+[zero_memory_phase] 1791705040.374486 checkpoint_shard.31.end
+[zero_memory_phase] 1791705041.388047 checkpoint_shard.32.start
+[zero_memory_phase] 1791705041.388477 checkpoint_shard.32.end
+[zero_memory_phase] 1791705042.371305 checkpoint_shard.33.start
+[zero_memory_phase] 1791705042.371751 checkpoint_shard.33.end
+[zero_memory_phase] 1791705043.414974 checkpoint_shard.34.start
+[zero_memory_phase] 1791705043.415419 checkpoint_shard.34.end
+[zero_memory_phase] 1791705044.438172 checkpoint_shard.35.start
+[zero_memory_phase] 1791705044.438602 checkpoint_shard.35.end
+[zero_memory_phase] 1791705045.429732 checkpoint_shard.36.start
+[zero_memory_phase] 1791705045.430172 checkpoint_shard.36.end
+[zero_memory_phase] 1791705046.395034 checkpoint_shard.37.start
+[zero_memory_phase] 1791705046.395472 checkpoint_shard.37.end
+[zero_memory_phase] 1791705047.426044 checkpoint_shard.38.start
+[zero_memory_phase] 1791705047.427042 checkpoint_shard.38.end
+[zero_memory_phase] 1791705048.398594 checkpoint_shard.39.start
+[zero_memory_phase] 1791705048.402316 checkpoint_shard.39.end
+[zero_memory_phase] 1791705049.547218 checkpoint_shard.40.start
+[zero_memory_phase] 1791705049.788685 checkpoint_shard.40.end
+[zero_memory_phase] 1791705050.101555 checkpoint_load.end
+[zero_memory_phase] 1791705050.101599 model_finalize.start
+[zero_memory_phase] 1791705050.114379 model_finalize.end
+[INFO|configuration_utils.py:978] 2026-10-11 07:50:50,116 >> loading configuration file /mnt/data/models/Qwen3.5-122B-A10B/generation_config.json
+[INFO|configuration_utils.py:1027] 2026-10-11 07:50:50,116 >> Generate config GenerationConfig {
+  "bos_token_id": 248044,
+  "do_sample": true,
+  "eos_token_id": [
+    248046,
+    248044
+  ],
+  "pad_token_id": 248044,
+  "temperature": 0.6,
+  "top_k": 20,
+  "top_p": 0.95
+}
+
+[INFO|dynamic_module_utils.py:406] 2026-10-11 07:50:50,116 >> Could not locate the custom_generate/generate.py inside /mnt/data/models/Qwen3.5-122B-A10B.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[INFO|2026-10-11 07:50:50] llamafactory.model.model_utils.checkpointing:144 >> Gradient checkpointing enabled.
+[INFO|2026-10-11 07:50:50] llamafactory.model.model_utils.attention:144 >> Using torch SDPA for faster training and inference.
+[INFO|2026-10-11 07:50:50] llamafactory.model.adapter:144 >> DeepSpeed ZeRO3 detected, remaining trainable params in float32.
+[INFO|2026-10-11 07:50:50] llamafactory.model.adapter:144 >> Fine-tuning method: Full
+[INFO|2026-10-11 07:50:50] llamafactory.model.model_utils.visual:144 >> Set vision model not trainable: ['visual.pos_embed', 'visual.patch_embed', 'visual.blocks'].
+[INFO|2026-10-11 07:50:50] llamafactory.model.model_utils.visual:144 >> Set multi model projector not trainable: ['model.visual.merger'].
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[WARNING|2026-10-11 07:50:50] llamafactory.model.loader:149 >> Detected torch 2.9.x with Conv3D in Qwen3.5 vision modules. Continuing because this text-only run does not exercise the vision tower.
+[INFO|2026-10-11 07:50:50] llamafactory.model.loader:144 >> trainable params: 122,111,526,912 || all params: 122,562,817,776 || trainable%: 99.6318
+[INFO|trainer.py:806] 2026-10-11 07:50:50,130 >> max_steps is given, it will override any value given in num_train_epochs
+[contract] trainable_parameters=122111526912
+[WARNING|trainer_utils.py:1238] 2026-10-11 07:50:50,133 >> The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046, 'bos_token_id': None, 'pad_token_id': 248044}.
+[zero_memory_phase] 1791705050.461512 zero_optimizer_init.start
+Adam Optimizer #0 is created with AVX512 arithmetic capability.
+Config: alpha=0.000010, betas=(0.900000, 0.999000), weight_decay=0.010000, adam_w=1
+[Rank 0] time (ms) | init_optimizer_state: 2184.75
+[zero_memory_state] {"parameter_partition": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1037177184, "storage_ptr": 139655894794240}, "master_partition": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1037177184, "storage_ptr": 139753141555264}, "optimizer_state": {}}
+[zero_memory_phase] 1791705088.100014 zero_optimizer_init.end
+[INFO|trainer.py:1650] 2026-10-11 07:51:28,101 >> ***** Running training *****
+[INFO|trainer.py:1651] 2026-10-11 07:51:28,101 >>   Num examples = 8
+[INFO|trainer.py:1652] 2026-10-11 07:51:28,101 >>   Num Epochs = 4
+[INFO|trainer.py:1653] 2026-10-11 07:51:28,101 >>   Num update steps per epoch = 1
+[INFO|trainer.py:1654] 2026-10-11 07:51:28,101 >>   Instantaneous batch size per device = 1
+[INFO|trainer.py:1657] 2026-10-11 07:51:28,101 >>   Total train batch size (w. parallel, distributed & accumulation) = 8
+[INFO|trainer.py:1658] 2026-10-11 07:51:28,101 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:1659] 2026-10-11 07:51:28,101 >>   Total optimization steps = 4
+[INFO|trainer.py:1660] 2026-10-11 07:51:28,102 >>   Number of trainable parameters = 122,111,526,912
+[Rank 0] time (ms) | optimizer_step: 48793.19
+[Rank 0] time (ms) | fwd_microstep: 9010.58 | bwd_microstep: 27412.89 | bwd_inner_microstep: 27313.55 | bwd_allreduce_microstep: 99.19 | step_microstep: 48874.33
+[Rank 0] time (ms) | fwd: 9010.59 | bwd: 27412.87 | bwd_inner: 27313.55 | bwd_allreduce: 99.20 | step: 48874.34
+{'loss': '4.005', 'grad_norm': '57.92', 'learning_rate': '8.536e-06', 'epoch': '1'}
+[Rank 0] time (ms) | optimizer_step: 7526.70
+[Rank 0] time (ms) | fwd_microstep: 7433.65 | bwd_microstep: 38199.26 | bwd_inner_microstep: 38084.63 | bwd_allreduce_microstep: 114.56 | step_microstep: 7549.99
+[Rank 0] time (ms) | fwd: 7433.65 | bwd: 38199.25 | bwd_inner: 38084.62 | bwd_allreduce: 114.56 | step: 7549.99
+{'loss': '2.158', 'grad_norm': '57.34', 'learning_rate': '5e-06', 'epoch': '2'}
+[Rank 0] time (ms) | optimizer_step: 5140.20
+[Rank 0] time (ms) | fwd_microstep: 7701.01 | bwd_microstep: 27948.46 | bwd_inner_microstep: 27832.96 | bwd_allreduce_microstep: 115.47 | step_microstep: 5162.97
+[Rank 0] time (ms) | fwd: 7701.00 | bwd: 27948.46 | bwd_inner: 27832.96 | bwd_allreduce: 115.47 | step: 5162.97
+{'loss': '1.289', 'grad_norm': '34.76', 'learning_rate': '1.464e-06', 'epoch': '3'}
+[Rank 0] time (ms) | optimizer_step: 5192.96
+[Rank 0] time (ms) | fwd_microstep: 7310.58 | bwd_microstep: 28517.96 | bwd_inner_microstep: 28400.94 | bwd_allreduce_microstep: 116.97 | step_microstep: 5213.43
+[Rank 0] time (ms) | fwd: 7310.59 | bwd: 28517.95 | bwd_inner: 28400.93 | bwd_allreduce: 116.98 | step: 5213.43
+{'loss': '1.082', 'grad_norm': '32.76', 'learning_rate': '0', 'epoch': '4'}
+[INFO|trainer.py:2169] 2026-10-11 07:55:37,005 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+{'train_runtime': '248.9', 'train_samples_per_second': '0.129', 'train_steps_per_second': '0.016', 'train_loss': '2.133', 'epoch': '4'}
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[INFO|tokenization_utils_base.py:3280] 2026-10-11 07:55:37,009 >> chat template saved in /mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/model_output/chat_template.jinja
+[INFO|tokenization_utils_base.py:2113] 2026-10-11 07:55:37,009 >> tokenizer config file saved in /mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/model_output/tokenizer_config.json
+[INFO|processing_utils.py:881] 2026-10-11 07:55:37,133 >> chat template saved in /mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/model_output/chat_template.jinja
+[INFO|processing_utils.py:899] 2026-10-11 07:55:37,135 >> processor saved in /mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_074933_3916582_semantic/model_output/processor_config.json
+[zero_memory_state_after_step] {"exp_avg": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1037177184, "storage_ptr": 139608723279936}, "exp_avg_sq": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1037177184, "storage_ptr": 139606648922176}}
+[kt_bench] final model save skipped
+***** train metrics *****
+  epoch                    =        4.0
+  train_loss               =     2.1335
+  train_runtime            = 0:04:08.90
+  train_samples_per_second =      0.129
+  train_steps_per_second   =      0.016
+[INFO|modelcard.py:263] 2026-10-11 07:55:37,136 >> Dropping the following result as it does not have all the necessary fields:
+{'task': {'name': 'Causal Language Modeling', 'type': 'text-generation'}}

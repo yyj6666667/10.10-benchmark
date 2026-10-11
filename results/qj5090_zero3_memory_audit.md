@@ -47,8 +47,24 @@ keys, all present in the 1949-key checkpoint. The nested text-model renaming
 maps `model.language_model.*` to nonexistent `model.*`, so the original run
 reported valid weights as missing and exhausted GPU memory while gathering
 parameters for reinitialization. The source patch skips simple renaming when
-every expected key already exists in the checkpoint. This path still needs a
-full trial.
+every expected key already exists in the checkpoint. The next attempt then
+reached a LLaMA Factory Torch 2.9/Conv3D guard; the benchmark now bypasses
+that guard only when the Qwen vision tower is frozen and all dataset records
+are text-only. The [four-step Qwen check](../runs/zero3-qj5090-20261011/qwen_semantic/loss_check.json)
+passed with loss 4.005 → 2.158 → 1.289 → 1.082.
+
+| Qwen stage | Actual task memory | Increment | Allocation / copy | Evidence |
+|---|---:|---:|---|---|
+| Model loaded | Cgroup 239.4 GiB; rank PSS 239.4 GiB | — | CPU parameter partitions | [phase log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
+| Optimizer initialized | Cgroup 960.9 GiB; rank PSS 959.1 GiB, including 256.2 GiB shared-memory PSS | +721.5 GiB | Separate BF16 master and gradient buffers; eight private 32 GiB `/dev/zero` mappings appeared during this phase | [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
+| Four-step training | Peak cgroup 1418.5 GiB; rank PSS 1415.7 GiB; MemAvailable 42.7 GiB | +457.6 GiB | Two distinct CPU BF16 Adam moments were allocated on the first step | [state dtype and loss log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
+
+Each `/dev/zero` mapping is 32 GiB of private dirty memory in one rank's
+`smaps`, even though `offload_param.pin_memory=false` and `Locked=0`.
+DeepSpeed 0.19.1 calls `pin_memory()` unconditionally in
+`_create_param_groups_fp16_flat_cpu_memory`; the phase and sizes strongly
+suggest this is the mapped buffer, but the tensor storage pointer was not
+captured, so that attribution remains an inference. No cgroup OOM event occurred.
 
 The reproducible source change is
 [`patch_transformers_zero3_streaming.py`](../tools/patch_transformers_zero3_streaming.py).
@@ -58,3 +74,8 @@ the patched SHA-256 is
 `a28fd6bbb07528db7372ebc06995be3aba4c8033a7a3f4f220a2d117bc574541`.
 The original file is backed up on qj5090 at
 `/mnt/hurry-bench/diagnostics/zero3_20261011/modeling_utils_before.py`.
+The text-only Conv3D guard adjustment is reproducible through
+[`patch_llamafactory_qwen_text_only_conv3d.py`](../tools/patch_llamafactory_qwen_text_only_conv3d.py);
+its original and patched source SHA-256 values are
+`df8106b8d33be0d349fce6f2c5262e033026485bf66d21f3b65970984aa71575`
+and `aa3c5161a3a2050263136775ee47a6c3f16b1c1abeb7873198ff65af8ba2af4b`.

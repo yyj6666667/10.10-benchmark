@@ -66,6 +66,15 @@ DeepSpeed 0.19.1 calls `pin_memory()` unconditionally in
 suggest this is the mapped buffer, but the tensor storage pointer was not
 captured, so that attribution remains an inference. No cgroup OOM event occurred.
 
+For scale, five BF16 arrays (parameter, master, gradient, and two Adam moments)
+would occupy 995.1 GiB for 106.85B GLM parameters and 1137.3 GiB for 122.11B
+trainable Qwen parameters. The measured steady peaks exceed these figures by
+306.2 and 281.2 GiB, respectively. Cgroup memory includes runtime allocations
+and charged cache, so this subtraction alone does not prove that the full
+256.2 GiB `/dev/zero` mapping is a redundant sixth model copy. The confirmed
+failure mechanism remains the transient checkpoint merge during GLM loading;
+bounded shard loading is the minimal fix demonstrated by the completed runs.
+
 The reproducible source change is
 [`patch_transformers_zero3_streaming.py`](../tools/patch_transformers_zero3_streaming.py).
 The original `modeling_utils.py` SHA-256 is

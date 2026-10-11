@@ -22,6 +22,9 @@ def main() -> None:
 
     from transformers import Trainer
 
+    if os.environ.get("ZERO_MEMORY_DIAGNOSTIC") == "1":
+        install_zero_memory_markers()
+
     from step_phase_timer import install_step_phase_timing
 
     clip_profile_dir = os.environ.get("KT_CLIP_PROFILE_DIR")
@@ -130,6 +133,112 @@ def main() -> None:
         from llamafactory.cli import main as llamafactory_main
 
         llamafactory_main()
+
+
+def install_zero_memory_markers() -> None:
+    """Log loader and engine phase boundaries without changing their behavior."""
+    import deepspeed
+    from transformers import modeling_utils
+
+    rank = os.environ.get("RANK", "0")
+
+    def mark(name: str) -> None:
+        if rank == "0":
+            print(f"[zero_memory_phase] {time.time():.6f} {name}", flush=True)
+
+    init_enter = deepspeed.zero.Init.__enter__
+    init_exit = deepspeed.zero.Init.__exit__
+
+    @functools.wraps(init_enter)
+    def enter(self, *args, **kwargs):
+        mark("model_construction.start")
+        return init_enter(self, *args, **kwargs)
+
+    @functools.wraps(init_exit)
+    def leave(self, *args, **kwargs):
+        try:
+            return init_exit(self, *args, **kwargs)
+        finally:
+            mark("model_construction.end")
+
+    deepspeed.zero.Init.__enter__ = enter
+    deepspeed.zero.Init.__exit__ = leave
+
+    def wrap_static(name: str, label: str) -> None:
+        original = getattr(modeling_utils.PreTrainedModel, name)
+
+        @functools.wraps(original)
+        def wrapped(*args, **kwargs):
+            mark(f"{label}.start")
+            try:
+                return original(*args, **kwargs)
+            finally:
+                mark(f"{label}.end")
+
+        setattr(modeling_utils.PreTrainedModel, name, staticmethod(wrapped))
+
+    wrap_static("_load_pretrained_model", "checkpoint_load")
+    wrap_static("_finalize_model_loading", "model_finalize")
+
+    load_state_dict = modeling_utils.load_state_dict
+    shard_count = 0
+
+    @functools.wraps(load_state_dict)
+    def counted_load(*args, **kwargs):
+        nonlocal shard_count
+        shard_count += 1
+        mark(f"checkpoint_shard.{shard_count}.start")
+        try:
+            return load_state_dict(*args, **kwargs)
+        finally:
+            mark(f"checkpoint_shard.{shard_count}.end")
+
+    modeling_utils.load_state_dict = counted_load
+
+    original_initialize = deepspeed.initialize
+
+    @functools.wraps(original_initialize)
+    def initialize(*args, **kwargs):
+        mark("zero_optimizer_init.start")
+        try:
+            result = original_initialize(*args, **kwargs)
+            if rank == "0":
+                try:
+                    optimizer = result[0].optimizer
+                    parameter = optimizer.fp16_partitioned_groups_flat[0]
+                    master = optimizer.fp32_partitioned_groups_flat[0]
+                    states = optimizer.optimizer.state.get(master, {})
+
+                    def describe(tensor):
+                        return {
+                            "dtype": str(tensor.dtype),
+                            "device": str(tensor.device),
+                            "numel": tensor.numel(),
+                            "storage_ptr": tensor.untyped_storage().data_ptr(),
+                        }
+
+                    print(
+                        "[zero_memory_state] "
+                        + json.dumps(
+                            {
+                                "parameter_partition": describe(parameter),
+                                "master_partition": describe(master),
+                                "optimizer_state": {
+                                    key: describe(value)
+                                    for key, value in states.items()
+                                    if hasattr(value, "untyped_storage")
+                                },
+                            }
+                        ),
+                        flush=True,
+                    )
+                except (AttributeError, IndexError, KeyError, TypeError) as exc:
+                    print(f"[zero_memory_state] unavailable: {exc}", flush=True)
+            return result
+        finally:
+            mark("zero_optimizer_init.end")
+
+    deepspeed.initialize = initialize
 
 
 if __name__ == "__main__":

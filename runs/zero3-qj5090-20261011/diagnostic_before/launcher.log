@@ -1,0 +1,403 @@
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_7
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_0
+[WARNING|2026-10-11 06:05:13] llamafactory.extras.misc:155 >> Version checking has been disabled, may lead to unexpected behaviors.
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_6
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_3
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_4
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_1
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_2
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_060456_3872666_benchmark/step_timing/rank_5
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 7, world size: 8, device: cuda:7, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 2, world size: 8, device: cuda:2, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 5, world size: 8, device: cuda:5, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 4, world size: 8, device: cuda:4, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 3, world size: 8, device: cuda:3, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 0, world size: 8, device: cuda:0, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 6, world size: 8, device: cuda:6, distributed training: True, compute dtype: torch.bfloat16
+[INFO|hub.py:364] 2026-10-11 06:05:15,178 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:05:15,178 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|2026-10-11 06:05:15] llamafactory.hparams.parser:508 >> Process rank: 1, world size: 8, device: cuda:1, distributed training: True, compute dtype: torch.bfloat16
+[INFO|configuration_utils.py:847] 2026-10-11 06:05:15,185 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:05:15,185 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 06:05:15,185 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:05:15,902 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:05:15,902 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:05:15,902 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:05:15,903 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:05:15,903 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:05:15,903 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:05:15,903 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:05:15,904 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:05:15,904 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:05:15,904 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:05:15,904 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:05:15,904 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 06:05:15,904 >> Offline mode: forcing local_files_only=True
+[WARNING|2026-10-11 06:05:16] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-11 06:05:16] llamafactory.data.template:144 >> Add <|user|>,<|observation|> to stop words.
+[INFO|2026-10-11 06:05:16] llamafactory.data.loader:144 >> Loading dataset fft_real_100.json...
+Converting format of dataset:   0%|          | 0/100 [00:00<?, ? examples/s]Converting format of dataset: 100%|██████████| 100/100 [00:00<00:00, 5002.09 examples/s]
+Running tokenizer on dataset:   0%|          | 0/100 [00:00<?, ? examples/s]Running tokenizer on dataset: 100%|██████████| 100/100 [00:00<00:00, 140.50 examples/s]Running tokenizer on dataset: 100%|██████████| 100/100 [00:00<00:00, 140.28 examples/s]
+training example:
+input_ids:
+[151331, 151350, 271, 151351, 271, 198, 1986, 2197, 320, 1252, 220, 16, 11, 10315, 220, 20, 99243, 100899, 8, 14511, 264, 2088, 315, 13338, 304, 5662, 6832, 11, 5942, 3162, 11, 151329]
+inputs:
+[gMASK]<think>
+
+</think>
+
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,<|endoftext|>
+label_ids:
+[-100, 151350, 271, 151351, 271, 198, 1986, 2197, 320, 1252, 220, 16, 11, 10315, 220, 20, 99243, 100899, 8, 14511, 264, 2088, 315, 13338, 304, 5662, 6832, 11, 5942, 3162, 11, 151329]
+labels:
+<think>
+
+</think>
+
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,<|endoftext|>
+[INFO|hub.py:364] 2026-10-11 06:05:17,621 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:05:17,621 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:05:17,622 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|2026-10-11 06:05:17] llamafactory.model.model_utils.kv_cache:144 >> KV cache is disabled during training.
+[INFO|modeling_utils.py:706] 2026-10-11 06:05:18,158 >> loading weights file /mnt/data/models/GLM-4.5-Air/model.safetensors.index.json
+[INFO|modeling_utils.py:779] 2026-10-11 06:05:18,161 >> Will use dtype=torch.bfloat16 as defined in model's config object
+[INFO|modeling_utils.py:3612] 2026-10-11 06:05:18,161 >> Detected DeepSpeed ZeRO-3: activating zero.init() for this model
+[zero_memory_phase] 1791698718.162668 model_construction.start
+[INFO|configuration_utils.py:1027] 2026-10-11 06:05:18,168 >> Generate config GenerationConfig {
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "pad_token_id": 151329,
+  "use_cache": false
+}
+
+[zero_memory_phase] 1791698731.706526 model_construction.end
+[zero_memory_phase] 1791698731.712577 checkpoint_load.start
+[zero_memory_phase] 1791698731.714976 checkpoint_shard.1.start
+[zero_memory_phase] 1791698731.717574 checkpoint_shard.1.end
+[zero_memory_phase] 1791698731.717584 checkpoint_shard.2.start
+[zero_memory_phase] 1791698731.873315 checkpoint_shard.2.end
+[zero_memory_phase] 1791698731.873337 checkpoint_shard.3.start
+[zero_memory_phase] 1791698732.025592 checkpoint_shard.3.end
+[zero_memory_phase] 1791698732.025620 checkpoint_shard.4.start
+[zero_memory_phase] 1791698732.179002 checkpoint_shard.4.end
+[zero_memory_phase] 1791698732.179048 checkpoint_shard.5.start
+[zero_memory_phase] 1791698732.313279 checkpoint_shard.5.end
+[zero_memory_phase] 1791698732.313306 checkpoint_shard.6.start
+[zero_memory_phase] 1791698732.469439 checkpoint_shard.6.end
+[zero_memory_phase] 1791698732.469458 checkpoint_shard.7.start
+[zero_memory_phase] 1791698732.599413 checkpoint_shard.7.end
+[zero_memory_phase] 1791698732.599448 checkpoint_shard.8.start
+[zero_memory_phase] 1791698732.726232 checkpoint_shard.8.end
+[zero_memory_phase] 1791698732.726270 checkpoint_shard.9.start
+[zero_memory_phase] 1791698732.877781 checkpoint_shard.9.end
+[zero_memory_phase] 1791698732.877801 checkpoint_shard.10.start
+[zero_memory_phase] 1791698733.039860 checkpoint_shard.10.end
+[zero_memory_phase] 1791698733.039877 checkpoint_shard.11.start
+[zero_memory_phase] 1791698733.166515 checkpoint_shard.11.end
+[zero_memory_phase] 1791698733.166533 checkpoint_shard.12.start
+[zero_memory_phase] 1791698733.302285 checkpoint_shard.12.end
+[zero_memory_phase] 1791698733.302304 checkpoint_shard.13.start
+[zero_memory_phase] 1791698733.441365 checkpoint_shard.13.end
+[zero_memory_phase] 1791698733.441384 checkpoint_shard.14.start
+[zero_memory_phase] 1791698733.633012 checkpoint_shard.14.end
+[zero_memory_phase] 1791698733.633039 checkpoint_shard.15.start
+[zero_memory_phase] 1791698733.806572 checkpoint_shard.15.end
+[zero_memory_phase] 1791698733.806651 checkpoint_shard.16.start
+[zero_memory_phase] 1791698734.002639 checkpoint_shard.16.end
+[zero_memory_phase] 1791698734.002663 checkpoint_shard.17.start
+[zero_memory_phase] 1791698734.200252 checkpoint_shard.17.end
+[zero_memory_phase] 1791698734.200278 checkpoint_shard.18.start
+[zero_memory_phase] 1791698734.377976 checkpoint_shard.18.end
+[zero_memory_phase] 1791698734.378002 checkpoint_shard.19.start
+[zero_memory_phase] 1791698734.556055 checkpoint_shard.19.end
+[zero_memory_phase] 1791698734.556080 checkpoint_shard.20.start
+[zero_memory_phase] 1791698734.739129 checkpoint_shard.20.end
+[zero_memory_phase] 1791698734.739157 checkpoint_shard.21.start
+[zero_memory_phase] 1791698734.921820 checkpoint_shard.21.end
+[zero_memory_phase] 1791698734.921847 checkpoint_shard.22.start
+[zero_memory_phase] 1791698735.096288 checkpoint_shard.22.end
+[zero_memory_phase] 1791698735.096314 checkpoint_shard.23.start
+[zero_memory_phase] 1791698735.270180 checkpoint_shard.23.end
+[zero_memory_phase] 1791698735.270211 checkpoint_shard.24.start
+[zero_memory_phase] 1791698735.439699 checkpoint_shard.24.end
+[zero_memory_phase] 1791698735.439729 checkpoint_shard.25.start
+[zero_memory_phase] 1791698735.606817 checkpoint_shard.25.end
+[zero_memory_phase] 1791698735.606918 checkpoint_shard.26.start
+[zero_memory_phase] 1791698735.785896 checkpoint_shard.26.end
+[zero_memory_phase] 1791698735.785967 checkpoint_shard.27.start
+[zero_memory_phase] 1791698735.931223 checkpoint_shard.27.end
+[zero_memory_phase] 1791698735.931288 checkpoint_shard.28.start
+[zero_memory_phase] 1791698736.115290 checkpoint_shard.28.end
+[zero_memory_phase] 1791698736.115352 checkpoint_shard.29.start
+[zero_memory_phase] 1791698736.277466 checkpoint_shard.29.end
+[zero_memory_phase] 1791698736.277663 checkpoint_shard.30.start
+[zero_memory_phase] 1791698736.447980 checkpoint_shard.30.end
+[zero_memory_phase] 1791698736.448021 checkpoint_shard.31.start
+[zero_memory_phase] 1791698736.631105 checkpoint_shard.31.end
+[zero_memory_phase] 1791698736.631144 checkpoint_shard.32.start
+[zero_memory_phase] 1791698736.793662 checkpoint_shard.32.end
+[zero_memory_phase] 1791698736.793736 checkpoint_shard.33.start
+[zero_memory_phase] 1791698736.979420 checkpoint_shard.33.end
+[zero_memory_phase] 1791698736.979479 checkpoint_shard.34.start
+[zero_memory_phase] 1791698737.154120 checkpoint_shard.34.end
+[zero_memory_phase] 1791698737.154171 checkpoint_shard.35.start
+[zero_memory_phase] 1791698737.338868 checkpoint_shard.35.end
+[zero_memory_phase] 1791698737.338911 checkpoint_shard.36.start
+[zero_memory_phase] 1791698737.406638 checkpoint_shard.36.end
+[zero_memory_phase] 1791698737.406680 checkpoint_shard.37.start
+[zero_memory_phase] 1791698737.481978 checkpoint_shard.37.end
+[zero_memory_phase] 1791698737.482023 checkpoint_shard.38.start
+[zero_memory_phase] 1791698737.521754 checkpoint_shard.38.end
+[zero_memory_phase] 1791698737.521792 checkpoint_shard.39.start
+[zero_memory_phase] 1791698737.695693 checkpoint_shard.39.end
+[zero_memory_phase] 1791698737.695738 checkpoint_shard.40.start
+[zero_memory_phase] 1791698737.884853 checkpoint_shard.40.end
+[zero_memory_phase] 1791698737.884897 checkpoint_shard.41.start
+[zero_memory_phase] 1791698738.057878 checkpoint_shard.41.end
+[zero_memory_phase] 1791698738.057924 checkpoint_shard.42.start
+[zero_memory_phase] 1791698738.236168 checkpoint_shard.42.end
+[zero_memory_phase] 1791698738.236210 checkpoint_shard.43.start
+[zero_memory_phase] 1791698738.422052 checkpoint_shard.43.end
+[zero_memory_phase] 1791698738.422096 checkpoint_shard.44.start
+[zero_memory_phase] 1791698738.583657 checkpoint_shard.44.end
+[zero_memory_phase] 1791698738.583703 checkpoint_shard.45.start
+[zero_memory_phase] 1791698738.741023 checkpoint_shard.45.end
+[zero_memory_phase] 1791698738.741069 checkpoint_shard.46.start
+[zero_memory_phase] 1791698738.960490 checkpoint_shard.46.end
+[zero_memory_phase] 1791698738.960566 checkpoint_shard.47.start
+[zero_memory_phase] 1791698739.088494 checkpoint_shard.47.end
+W1011 06:09:41.321000 3872867 torch/distributed/elastic/agent/server/api.py:725] Received 15 death signal, shutting down workers
+W1011 06:09:41.322000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872903 closing signal SIGTERM
+W1011 06:09:41.323000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872904 closing signal SIGTERM
+W1011 06:09:41.323000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872905 closing signal SIGTERM
+W1011 06:09:41.324000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872906 closing signal SIGTERM
+W1011 06:09:41.324000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872907 closing signal SIGTERM
+W1011 06:09:41.325000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872908 closing signal SIGTERM
+W1011 06:09:41.325000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872909 closing signal SIGTERM
+W1011 06:09:41.325000 3872867 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3872910 closing signal SIGTERM
+W1011 06:10:11.326000 3872867 torch/distributed/elastic/multiprocessing/api.py:927] Unable to shutdown process 3872903 via 15, forcefully exiting via 9
+W1011 06:10:32.120000 3872867 torch/distributed/elastic/multiprocessing/api.py:927] Unable to shutdown process 3872905 via 15, forcefully exiting via 9
+W1011 06:10:32.444000 3872867 torch/distributed/elastic/multiprocessing/api.py:927] Unable to shutdown process 3872910 via 15, forcefully exiting via 9
+Traceback (most recent call last):
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 284, in launch_agent
+    result = agent.run()
+             ^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/api.py", line 717, in run
+    result = self._invoke_run(role)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/elastic/agent/server/api.py", line 881, in _invoke_run
+    time.sleep(monitor_interval)
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 85, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 3872867 got signal: 15

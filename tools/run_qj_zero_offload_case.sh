@@ -29,6 +29,7 @@ for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/zero3_cpu_offload.json" "$root/tools/kt_bench_entry.py" \
     "$root/tools/record_qj_semantic_check.py" \
     "$root/tools/step_phase_timer.py" "$root/tools/kt_case_monitor.py" \
+    "$root/tools/zero_memory_sampler.py" \
     "$root/tools/host_memory_guard.sh" \
     "$root/src/llamafactory-overlay/llamafactory/cli.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
@@ -61,6 +62,7 @@ train.update(
     per_device_train_batch_size=1, gradient_accumulation_steps=1,
     max_steps=int(steps), logging_strategy='steps', logging_steps=1,
     save_strategy='no', report_to='none', max_grad_norm=1.0,
+    weight_decay=0.01,
     pure_bf16=False, bf16=True, gradient_checkpointing=True,
     dataloader_num_workers=0, dataloader_persistent_workers=False,
     preprocessing_num_workers=1,
@@ -105,6 +107,13 @@ if [[ $mode == semantic && $model == glm ]]; then
     mkdir -p "$profile_dir"
 fi
 set +e
+diagnostic_pid=
+if [[ ${ZERO_MEMORY_DIAGNOSTIC:-0} == 1 ]]; then
+    "$python" "$root/tools/zero_memory_sampler.py" --parent "$$" \
+        --output "$run_dir/memory_diagnostic.jsonl" \
+        > "$run_dir/memory_diagnostic.log" 2>&1 &
+    diagnostic_pid=$!
+fi
 bash "$root/tools/host_memory_guard.sh" "$$" "$run_dir" 20 \
     > "$run_dir/host_memory_guard.log" 2>&1 &
 guard_pid=$!
@@ -116,6 +125,7 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     FFT_STEP_TIMING_WARMUP_STEPS="$warmup" \
     FFT_STEP_TIMING_TOKENS_PER_STEP="$((8 * seq_len))" \
     FFT_TRAINING_BACKEND=deepspeed DISABLE_VERSION_CHECK=1 \
+    ZERO_MEMORY_DIAGNOSTIC="${ZERO_MEMORY_DIAGNOSTIC:-0}" \
     FFT_EXPECTED_TRAINABLE_PARAMS="$expected_params" \
     GLM45_PROFILE_DIR="$profile_dir" GLM45_PROFILE_STEP=3 GLM45_PROFILE_RANKS=0 \
     PYTORCH_ALLOC_CONF=expandable_segments:True \
@@ -125,6 +135,10 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
 status=$?
 kill -TERM "$guard_pid" 2>/dev/null || true
 wait "$guard_pid" 2>/dev/null || true
+if [[ -n $diagnostic_pid ]]; then
+    kill -TERM "$diagnostic_pid" 2>/dev/null || true
+    wait "$diagnostic_pid" 2>/dev/null || true
+fi
 set -e
 printf '%s\n' "$status" > "$run_dir/exit_code.txt"
 if [[ $status -eq 0 && $mode == semantic ]]; then

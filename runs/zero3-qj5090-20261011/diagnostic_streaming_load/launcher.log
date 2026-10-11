@@ -1,0 +1,751 @@
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_7
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_5
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_4
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_0
+[WARNING|2026-10-11 06:13:12] llamafactory.extras.misc:155 >> Version checking has been disabled, may lead to unexpected behaviors.
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_6
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_1
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_3
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_061254_3877066_benchmark/step_timing/rank_2
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 7, world size: 8, device: cuda:7, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 2, world size: 8, device: cuda:2, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 0, world size: 8, device: cuda:0, distributed training: True, compute dtype: torch.bfloat16
+[INFO|hub.py:364] 2026-10-11 06:13:13,674 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:13:13,675 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 6, world size: 8, device: cuda:6, distributed training: True, compute dtype: torch.bfloat16
+[INFO|configuration_utils.py:847] 2026-10-11 06:13:13,681 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:13:13,681 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 06:13:13,681 >> Offline mode: forcing local_files_only=True
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 3, world size: 8, device: cuda:3, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 4, world size: 8, device: cuda:4, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 1, world size: 8, device: cuda:1, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:13:13] llamafactory.hparams.parser:508 >> Process rank: 5, world size: 8, device: cuda:5, distributed training: True, compute dtype: torch.bfloat16
+[INFO|hub.py:364] 2026-10-11 06:13:14,408 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:13:14,409 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:13:14,409 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:13:14,409 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:13:14,409 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:13:14,409 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:13:14,409 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:13:14,410 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:13:14,410 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:13:14,410 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:13:14,411 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:13:14,411 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 06:13:14,411 >> Offline mode: forcing local_files_only=True
+[WARNING|2026-10-11 06:13:15] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-11 06:13:15] llamafactory.data.template:144 >> Add <|user|>,<|observation|> to stop words.
+[INFO|2026-10-11 06:13:15] llamafactory.data.loader:144 >> Loading dataset fft_real_100.json...
+training example:
+input_ids:
+[151331, 151350, 271, 151351, 271, 198, 1986, 2197, 320, 1252, 220, 16, 11, 10315, 220, 20, 99243, 100899, 8, 14511, 264, 2088, 315, 13338, 304, 5662, 6832, 11, 5942, 3162, 11, 151329]
+inputs:
+[gMASK]<think>
+
+</think>
+
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,<|endoftext|>
+label_ids:
+[-100, 151350, 271, 151351, 271, 198, 1986, 2197, 320, 1252, 220, 16, 11, 10315, 220, 20, 99243, 100899, 8, 14511, 264, 2088, 315, 13338, 304, 5662, 6832, 11, 5942, 3162, 11, 151329]
+labels:
+<think>
+
+</think>
+
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,<|endoftext|>
+[INFO|hub.py:364] 2026-10-11 06:13:15,706 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:13:15,706 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:13:15,707 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|2026-10-11 06:13:15] llamafactory.model.model_utils.kv_cache:144 >> KV cache is disabled during training.
+[INFO|modeling_utils.py:706] 2026-10-11 06:13:16,251 >> loading weights file /mnt/data/models/GLM-4.5-Air/model.safetensors.index.json
+[INFO|modeling_utils.py:779] 2026-10-11 06:13:16,255 >> Will use dtype=torch.bfloat16 as defined in model's config object
+[INFO|modeling_utils.py:3612] 2026-10-11 06:13:16,255 >> Detected DeepSpeed ZeRO-3: activating zero.init() for this model
+[zero_memory_phase] 1791699196.256150 model_construction.start
+[INFO|configuration_utils.py:1027] 2026-10-11 06:13:16,261 >> Generate config GenerationConfig {
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "pad_token_id": 151329,
+  "use_cache": false
+}
+
+[zero_memory_phase] 1791699210.171115 model_construction.end
+[zero_memory_phase] 1791699210.177913 checkpoint_load.start
+[zero_memory_phase] 1791699210.180163 checkpoint_shard.1.start
+[zero_memory_phase] 1791699210.180657 checkpoint_shard.1.end
+[zero_memory_phase] 1791699211.165918 checkpoint_shard.2.start
+[zero_memory_phase] 1791699211.171377 checkpoint_shard.2.end
+[zero_memory_phase] 1791699213.391489 checkpoint_shard.3.start
+[zero_memory_phase] 1791699213.396791 checkpoint_shard.3.end
+[zero_memory_phase] 1791699215.457523 checkpoint_shard.4.start
+[zero_memory_phase] 1791699215.462902 checkpoint_shard.4.end
+[zero_memory_phase] 1791699217.576703 checkpoint_shard.5.start
+[zero_memory_phase] 1791699217.581934 checkpoint_shard.5.end
+[zero_memory_phase] 1791699219.873250 checkpoint_shard.6.start
+[zero_memory_phase] 1791699219.878807 checkpoint_shard.6.end
+[zero_memory_phase] 1791699222.025558 checkpoint_shard.7.start
+[zero_memory_phase] 1791699222.030508 checkpoint_shard.7.end
+[zero_memory_phase] 1791699224.221197 checkpoint_shard.8.start
+[zero_memory_phase] 1791699224.226423 checkpoint_shard.8.end
+[zero_memory_phase] 1791699226.277990 checkpoint_shard.9.start
+[zero_memory_phase] 1791699226.283255 checkpoint_shard.9.end
+[zero_memory_phase] 1791699228.330228 checkpoint_shard.10.start
+[zero_memory_phase] 1791699228.335301 checkpoint_shard.10.end
+[zero_memory_phase] 1791699230.632723 checkpoint_shard.11.start
+[zero_memory_phase] 1791699230.637990 checkpoint_shard.11.end
+[zero_memory_phase] 1791699232.911012 checkpoint_shard.12.start
+[zero_memory_phase] 1791699232.916172 checkpoint_shard.12.end
+[zero_memory_phase] 1791699235.062575 checkpoint_shard.13.start
+[zero_memory_phase] 1791699235.067854 checkpoint_shard.13.end
+[zero_memory_phase] 1791699237.208954 checkpoint_shard.14.start
+[zero_memory_phase] 1791699237.213716 checkpoint_shard.14.end
+[zero_memory_phase] 1791699239.385758 checkpoint_shard.15.start
+[zero_memory_phase] 1791699239.392544 checkpoint_shard.15.end
+[zero_memory_phase] 1791699241.465785 checkpoint_shard.16.start
+[zero_memory_phase] 1791699241.472932 checkpoint_shard.16.end
+[zero_memory_phase] 1791699243.526732 checkpoint_shard.17.start
+[zero_memory_phase] 1791699243.532236 checkpoint_shard.17.end
+[zero_memory_phase] 1791699245.674353 checkpoint_shard.18.start
+[zero_memory_phase] 1791699245.679671 checkpoint_shard.18.end
+[zero_memory_phase] 1791699247.794298 checkpoint_shard.19.start
+[zero_memory_phase] 1791699247.799678 checkpoint_shard.19.end
+[zero_memory_phase] 1791699249.774494 checkpoint_shard.20.start
+[zero_memory_phase] 1791699249.779823 checkpoint_shard.20.end
+[zero_memory_phase] 1791699251.834054 checkpoint_shard.21.start
+[zero_memory_phase] 1791699251.839492 checkpoint_shard.21.end
+[zero_memory_phase] 1791699253.968160 checkpoint_shard.22.start
+[zero_memory_phase] 1791699253.973462 checkpoint_shard.22.end
+[zero_memory_phase] 1791699256.231071 checkpoint_shard.23.start
+[zero_memory_phase] 1791699256.236424 checkpoint_shard.23.end
+[zero_memory_phase] 1791699258.313403 checkpoint_shard.24.start
+[zero_memory_phase] 1791699258.318818 checkpoint_shard.24.end
+[zero_memory_phase] 1791699260.372249 checkpoint_shard.25.start
+[zero_memory_phase] 1791699260.377714 checkpoint_shard.25.end
+[zero_memory_phase] 1791699262.593080 checkpoint_shard.26.start
+[zero_memory_phase] 1791699262.598507 checkpoint_shard.26.end
+[zero_memory_phase] 1791699265.005756 checkpoint_shard.27.start
+[zero_memory_phase] 1791699265.010928 checkpoint_shard.27.end
+[zero_memory_phase] 1791699267.192703 checkpoint_shard.28.start
+[zero_memory_phase] 1791699267.198850 checkpoint_shard.28.end
+[zero_memory_phase] 1791699269.483060 checkpoint_shard.29.start
+[zero_memory_phase] 1791699269.489031 checkpoint_shard.29.end
+[zero_memory_phase] 1791699271.467458 checkpoint_shard.30.start
+[zero_memory_phase] 1791699271.472566 checkpoint_shard.30.end
+[zero_memory_phase] 1791699273.834914 checkpoint_shard.31.start
+[zero_memory_phase] 1791699273.840351 checkpoint_shard.31.end
+[zero_memory_phase] 1791699276.014064 checkpoint_shard.32.start
+[zero_memory_phase] 1791699276.019674 checkpoint_shard.32.end
+[zero_memory_phase] 1791699278.258595 checkpoint_shard.33.start
+[zero_memory_phase] 1791699278.264007 checkpoint_shard.33.end
+[zero_memory_phase] 1791699280.465168 checkpoint_shard.34.start
+[zero_memory_phase] 1791699280.470659 checkpoint_shard.34.end
+[zero_memory_phase] 1791699283.618512 checkpoint_shard.35.start
+[zero_memory_phase] 1791699283.625111 checkpoint_shard.35.end
+[zero_memory_phase] 1791699291.358235 checkpoint_shard.36.start
+[zero_memory_phase] 1791699291.363679 checkpoint_shard.36.end
+[zero_memory_phase] 1791699294.770621 checkpoint_shard.37.start
+[zero_memory_phase] 1791699294.776981 checkpoint_shard.37.end
+[zero_memory_phase] 1791699299.180672 checkpoint_shard.38.start
+[zero_memory_phase] 1791699299.186837 checkpoint_shard.38.end
+[zero_memory_phase] 1791699303.067594 checkpoint_shard.39.start
+[zero_memory_phase] 1791699303.073799 checkpoint_shard.39.end
+[zero_memory_phase] 1791699310.322255 checkpoint_shard.40.start
+[zero_memory_phase] 1791699310.329230 checkpoint_shard.40.end
+[zero_memory_phase] 1791699314.230833 checkpoint_shard.41.start
+[zero_memory_phase] 1791699314.237096 checkpoint_shard.41.end
+[zero_memory_phase] 1791699317.073976 checkpoint_shard.42.start
+[zero_memory_phase] 1791699317.079915 checkpoint_shard.42.end
+[zero_memory_phase] 1791699319.938622 checkpoint_shard.43.start
+[zero_memory_phase] 1791699319.945263 checkpoint_shard.43.end
+[zero_memory_phase] 1791699324.576693 checkpoint_shard.44.start
+[zero_memory_phase] 1791699324.582750 checkpoint_shard.44.end
+[zero_memory_phase] 1791699327.529722 checkpoint_shard.45.start
+[zero_memory_phase] 1791699327.535617 checkpoint_shard.45.end
+[zero_memory_phase] 1791699331.594861 checkpoint_shard.46.start
+[zero_memory_phase] 1791699331.601347 checkpoint_shard.46.end
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank5]:   File "<frozen runpy>", line 88, in _run_code
+[rank5]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank5]:     main()
+[rank5]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank5]:     run_exp()
+[rank5]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank5]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank5]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank5]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank5]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank5]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank5]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank5]:     return original_train(self, *args, **kwargs)
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank5]:     return inner_training_loop(
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank5]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank5]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank5]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank5]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank5]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank5]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank5]:     raise ValueError(
+[rank5]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank5]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank5]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[zero_memory_phase] 1791699334.891024 checkpoint_shard.47.start
+[zero_memory_phase] 1791699334.896322 checkpoint_shard.47.end
+[zero_memory_phase] 1791699334.905377 checkpoint_load.end
+[zero_memory_phase] 1791699334.905393 model_finalize.start
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[WARNING|loading_report.py:269] 2026-10-11 06:15:34,913 >> [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[zero_memory_phase] 1791699334.913374 model_finalize.end
+[INFO|configuration_utils.py:978] 2026-10-11 06:15:34,914 >> loading configuration file /mnt/data/models/GLM-4.5-Air/generation_config.json
+[INFO|configuration_utils.py:1027] 2026-10-11 06:15:34,914 >> Generate config GenerationConfig {
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "pad_token_id": 151329
+}
+
+[INFO|dynamic_module_utils.py:406] 2026-10-11 06:15:34,914 >> Could not locate the custom_generate/generate.py inside /mnt/data/models/GLM-4.5-Air.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[INFO|2026-10-11 06:15:34] llamafactory.model.model_utils.checkpointing:144 >> Gradient checkpointing enabled.
+[INFO|2026-10-11 06:15:34] llamafactory.model.model_utils.attention:144 >> Using torch SDPA for faster training and inference.
+[INFO|2026-10-11 06:15:34] llamafactory.model.adapter:144 >> DeepSpeed ZeRO3 detected, remaining trainable params in float32.
+[INFO|2026-10-11 06:15:34] llamafactory.model.adapter:144 >> Fine-tuning method: Full
+[INFO|2026-10-11 06:15:34] llamafactory.model.loader:144 >> trainable params: 106,852,245,504 || all params: 106,852,245,504 || trainable%: 100.0000
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[INFO|trainer.py:806] 2026-10-11 06:15:34,928 >> max_steps is given, it will override any value given in num_train_epochs
+[contract] trainable_parameters=106852245504
+[WARNING|trainer_utils.py:1238] 2026-10-11 06:15:34,931 >> The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank2]:   File "<frozen runpy>", line 88, in _run_code
+[rank2]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank2]:     main()
+[rank2]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank2]:     run_exp()
+[rank2]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank2]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank2]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank2]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank2]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank2]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank2]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank2]:     return original_train(self, *args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank2]:     return inner_training_loop(
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank2]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank2]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank2]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank2]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank2]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank2]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank2]:     raise ValueError(
+[rank2]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank2]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank2]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank3]:   File "<frozen runpy>", line 88, in _run_code
+[rank3]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank3]:     main()
+[rank3]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank3]:     run_exp()
+[rank3]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank3]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank3]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank3]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank3]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank3]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank3]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank3]:     return original_train(self, *args, **kwargs)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank3]:     return inner_training_loop(
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank3]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank3]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank3]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank3]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank3]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank3]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank3]:     raise ValueError(
+[rank3]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank3]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank3]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank6]:   File "<frozen runpy>", line 88, in _run_code
+[rank6]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank6]:     main()
+[rank6]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank6]:     run_exp()
+[rank6]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank6]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank6]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank6]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank6]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank6]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank6]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank6]:     return original_train(self, *args, **kwargs)
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank6]:     return inner_training_loop(
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank6]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank6]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank6]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank6]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank6]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank6]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank6]:     raise ValueError(
+[rank6]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank6]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank6]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank4]:   File "<frozen runpy>", line 88, in _run_code
+[rank4]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank4]:     main()
+[rank4]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank4]:     run_exp()
+[rank4]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank4]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank4]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank4]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank4]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank4]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank4]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank4]:     return original_train(self, *args, **kwargs)
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank4]:     return inner_training_loop(
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank4]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank4]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank4]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank4]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank4]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank4]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank4]:     raise ValueError(
+[rank4]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank4]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank4]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank7]:   File "<frozen runpy>", line 88, in _run_code
+[rank7]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank7]:     main()
+[rank7]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank7]:     run_exp()
+[rank7]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank7]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank7]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank7]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank7]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank7]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank7]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank7]:     return original_train(self, *args, **kwargs)
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank7]:     return inner_training_loop(
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank7]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank7]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank7]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank7]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank7]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank7]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank7]:     raise ValueError(
+[rank7]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank7]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank7]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank0]:   File "<frozen runpy>", line 88, in _run_code
+[rank0]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank0]:     main()
+[rank0]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank0]:     run_exp()
+[rank0]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank0]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank0]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank0]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank0]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank0]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank0]:     return original_train(self, *args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank0]:     return inner_training_loop(
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank0]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank0]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank0]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank0]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank0]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank0]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank0]:     raise ValueError(
+[rank0]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank0]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank0]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank1]:   File "<frozen runpy>", line 88, in _run_code
+[rank1]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 212, in <module>
+[rank1]:     main()
+[rank1]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 131, in main
+[rank1]:     run_exp()
+[rank1]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 139, in run_exp
+[rank1]:     _training_function(config={"args": args, "callbacks": callbacks})
+[rank1]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/tuner.py", line 107, in _training_function
+[rank1]:     run_sft(model_args, data_args, training_args, finetuning_args, generating_args, callbacks)
+[rank1]:   File "/mnt/hurry-bench/src/llamafactory-overlay/llamafactory/train/sft/workflow.py", line 121, in run_sft
+[rank1]:     train_result = trainer.train(resume_from_checkpoint=training_args.resume_from_checkpoint)
+[rank1]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/hurry-bench/tools/kt_bench_entry.py", line 124, in validated_train
+[rank1]:     return original_train(self, *args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1608, in train
+[rank1]:     return inner_training_loop(
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1647, in _inner_training_loop
+[rank1]:     model, train_dataloader = self._prepare_for_training(max_steps, train_dataloader, resume_from_checkpoint)
+[rank1]:                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/hurry-bench/src/transformers/transformers/trainer.py", line 1913, in _prepare_for_training
+[rank1]:     self.optimizer, self.lr_scheduler = deepspeed_init(self, num_training_steps=max_steps)
+[rank1]:                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 599, in deepspeed_init
+[rank1]:     hf_deepspeed_config.trainer_config_finalize(args, model, num_training_steps)
+[rank1]:   File "/mnt/hurry-bench/src/transformers/transformers/integrations/deepspeed.py", line 255, in trainer_config_finalize
+[rank1]:     raise ValueError(
+[rank1]: ValueError: Please correct the following DeepSpeed config values that mismatch TrainingArguments values:
+[rank1]: - ds optimizer.params.weight_decay=0.01 vs hf weight_decay=0.0
+[rank1]: The easiest method is to set these DeepSpeed config values to 'auto'.
+[rank0]:[W1011 06:15:37.447006989 ProcessGroupNCCL.cpp:1524] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1011 06:15:37.423000 3877267 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3877304 closing signal SIGTERM
+W1011 06:15:37.423000 3877267 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3877305 closing signal SIGTERM
+W1011 06:15:37.424000 3877267 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3877306 closing signal SIGTERM
+W1011 06:15:37.425000 3877267 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3877307 closing signal SIGTERM
+W1011 06:15:37.425000 3877267 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3877308 closing signal SIGTERM
+W1011 06:15:37.426000 3877267 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3877310 closing signal SIGTERM
+W1011 06:15:37.426000 3877267 torch/distributed/elastic/multiprocessing/api.py:908] Sending process 3877311 closing signal SIGTERM
+E1011 06:15:38.156000 3877267 torch/distributed/elastic/multiprocessing/api.py:882] failed (exitcode: 1) local_rank: 5 (pid: 3877309) of binary: /mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/bin/python
+Traceback (most recent call last):
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/run.py", line 936, in main
+    run(args)
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/run.py", line 927, in run
+    elastic_launch(
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 156, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 293, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+kt_bench_entry FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-11_06:15:37
+  host      : qujing
+  rank      : 5 (local_rank: 5)
+  exitcode  : 1 (pid: 3877309)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

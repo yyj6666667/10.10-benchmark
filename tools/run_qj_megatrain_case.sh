@@ -21,6 +21,9 @@ profile_rank=${MEGATRAIN_PROFILE_RANK:-0}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
 [[ $offload_emb_head == 0 || $offload_emb_head == 1 ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
+checkpoint_interval=${MEGATRAIN_CHECKPOINT_INTERVAL:-$(( seq_len >= 4096 ? 2 : 1 ))}
+[[ $checkpoint_interval =~ ^[1-9][0-9]*$ ]] || exit 2
+num_grad_slabs=$((2 * checkpoint_interval))
 (( steps > warmup )) || exit 2
 if [[ -n $profile_dir ]]; then
     [[ $profile_step =~ ^[1-9][0-9]*$ && $profile_rank =~ ^[0-7]$ ]] || exit 2
@@ -71,17 +74,18 @@ if [[ -n $profile_dir && $mode != semantic ]]; then
 fi
 run_dir=$root/runs/${model_kind}_megatrain_seq${seq_len}_8gpu_${stamp}_$$_${mode}
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" "$offload_emb_head" "$profile_dir" "$profile_step" "$profile_rank" <<'PY'
+"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" "$offload_emb_head" "$profile_dir" "$profile_step" "$profile_rank" "$checkpoint_interval" "$num_grad_slabs" <<'PY'
 import json, sys
 from pathlib import Path
-run, model, seq, steps, warmup, mode, offload_emb_head, profile_dir, profile_step, profile_rank = sys.argv[1:]
+run, model, seq, steps, warmup, mode, offload_emb_head, profile_dir, profile_step, profile_rank, checkpoint_interval, num_grad_slabs = sys.argv[1:]
 Path(run, 'run_config.json').write_text(json.dumps({
     'host': 'qj5090', 'backend': 'megatrain', 'model_kind': model,
     'sequence_length': int(seq), 'global_batch': 8, 'precision': 'bf16',
     'steps': int(steps), 'warmup_steps': int(warmup),
     'mode': mode,
     'offload_embedding_head_gpu': offload_emb_head == '1',
-    'checkpoint_interval': 1, 'num_grad_slabs': 2,
+    'checkpoint_interval': int(checkpoint_interval),
+    'num_grad_slabs': int(num_grad_slabs),
     'dataset': 'fft_real_100', 'gradient_clipping': 1.0,
     'host_available_guard_gib': 20,
     'profile_dir': profile_dir or None,
@@ -108,7 +112,9 @@ nvidia-smi -L >> "$run_dir/versions.txt"
 cmd=("$python" "$root/tools/megatrain_full_ft.py"
     --model-kind "$model_kind" --dataset-dir "$root/data"
     --output-dir "$run_dir/case" --sequence-length "$seq_len"
-    --steps "$steps" --warmup-steps "$warmup")
+    --steps "$steps" --warmup-steps "$warmup"
+    --checkpoint-interval "$checkpoint_interval"
+    --num-grad-slabs "$num_grad_slabs")
 if [[ ${MEGATRAIN_REPEAT_BATCH:-0} == 1 ]]; then cmd+=(--repeat-batch); fi
 printf '%q ' "${cmd[@]}" > "$run_dir/command.txt"
 printf '\n' >> "$run_dir/command.txt"

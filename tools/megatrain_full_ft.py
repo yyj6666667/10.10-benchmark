@@ -30,6 +30,8 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--sequence-length", type=int, required=True)
     parser.add_argument("--steps", type=int, default=8)
     parser.add_argument("--warmup-steps", type=int, default=2)
+    parser.add_argument("--checkpoint-interval", type=int, default=1)
+    parser.add_argument("--num-grad-slabs", type=int, default=2)
     parser.add_argument("--repeat-batch", action="store_true")
     parser.add_argument("--check-only", action="store_true")
     parser.add_argument("--devices", default="0,1,2,3,4,5,6,7")
@@ -37,6 +39,8 @@ def arguments() -> argparse.Namespace:
     args = parser.parse_args()
     if args.steps <= args.warmup_steps or args.sequence_length < 2:
         parser.error("steps must exceed warmup; sequence length must be at least 2")
+    if args.checkpoint_interval < 1 or args.num_grad_slabs < 2 * args.checkpoint_interval:
+        parser.error("num-grad-slabs must be at least twice checkpoint-interval")
     try:
         args.devices = [int(device) for device in args.devices.split(",")]
     except ValueError:
@@ -175,7 +179,8 @@ def main() -> None:
         num_steps=args.steps, learning_rate=1e-5, max_grad_norm=1.0,
         dtype=torch.bfloat16, attn_implementation="sdpa",
         dataset_name="fft_real_100", dataset_dir=str(args.dataset_dir),
-        checkpoint_interval=1, num_grad_slabs=2, seed=42,
+        checkpoint_interval=args.checkpoint_interval,
+        num_grad_slabs=args.num_grad_slabs, seed=42,
     )
     engine = CPUMasterModel(model, config)
     del model
@@ -247,6 +252,8 @@ def main() -> None:
         "warmup_steps": args.warmup_steps,
         "contract": contract, "repeat_batch": args.repeat_batch,
         "optimizer": "DeepSpeedCPUAdam(BF16 states)",
+        "checkpoint_interval": args.checkpoint_interval,
+        "num_grad_slabs": args.num_grad_slabs,
         "timing_method": "MegaTrain CUDA event forward/backward; host optimizer/step",
         "rows": rows,
         "stable": {field: mean(field) for field in

@@ -1,0 +1,2 @@
+Seq,单卡 GPU 峰值 (GiB),CPU RSS 峰值 (GB),Step (s),TPS,Forward (s),Backward (s),Optimizer (s)
+4096,29.35,5495.79,61.458,533.18,5.982,34.862,17.707

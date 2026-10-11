@@ -229,6 +229,12 @@ construction took 276.6 seconds with the earlier allocation (seq64) and
 checkpoint loading, whose cache state differed. The seq128 run finished four
 steps with loss 2.220 → 1.320 → 0.753 → 0.509. Run-specific stage logs and
 source checksums are under `/mnt/hurry-bench/runs/`.
+Qwen seq4096 initially reached the 20 GiB host-memory guard with four pinned
+CPU gradient slabs per worker. The retry used three slabs per worker; a full
+slab pool waits for the gradient consumer to return a buffer. All four steps
+completed with falling loss, and steps 3–4 measured 61.458 s/step and
+533.18 TPS. The [retry evidence](results/qj5090_megatrain_qwen4096_memory_retry.md)
+records both runs and the remaining memory headroom.
 For the isolated MegaTrain profiler run, `tools/patch_megatrain_worker_profiler.py`
 adds an opt-in hook to the GPU worker. `tools/megatrain_profile_hooks.py`
 captures rank 0's third training step after two warmup steps and labels layer

@@ -38,7 +38,7 @@ checkpoint_interval=${MEGATRAIN_CHECKPOINT_INTERVAL:-$(( seq_len >= 4096 ? 2 : 1
 [[ $checkpoint_interval =~ ^[1-9][0-9]*$ ]] || exit 2
 num_grad_slabs=$((2 * checkpoint_interval))
 if [[ $model_kind == qwen35_122b && $seq_len -ge 4096 ]]; then
-    # Three pinned CPU slabs retain overlap while leaving room for seq4096 activations.
+    # Three pinned CPU slabs retain overlap while protecting host-memory headroom.
     num_grad_slabs=3
 fi
 num_grad_slabs=${MEGATRAIN_NUM_GRAD_SLABS:-$num_grad_slabs}

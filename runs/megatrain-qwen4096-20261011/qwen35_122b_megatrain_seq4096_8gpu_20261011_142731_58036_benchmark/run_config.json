@@ -1,0 +1,23 @@
+{
+  "host": "qj5090",
+  "backend": "megatrain",
+  "model_kind": "qwen35_122b",
+  "sequence_length": 4096,
+  "global_batch": 8,
+  "precision": "bf16",
+  "steps": 4,
+  "warmup_steps": 2,
+  "mode": "benchmark",
+  "offload_embedding_head_gpu": true,
+  "release_layer_slot_during_head": true,
+  "alias_layer_slots": true,
+  "direct_shared_init": true,
+  "checkpoint_interval": 2,
+  "num_grad_slabs": 3,
+  "dataset": "fft_real_100",
+  "gradient_clipping": 1.0,
+  "host_available_guard_gib": 20,
+  "profile_dir": null,
+  "profile_step": null,
+  "profile_rank": null
+}

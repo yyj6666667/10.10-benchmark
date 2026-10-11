@@ -1,0 +1,53 @@
+[startup] {"stage": "begin", "elapsed_sec": 0.001, "torch_threads": 64}
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[load] shard 1/39
+[load] shard 2/39
+[load] shard 3/39
+[load] shard 4/39
+[load] shard 5/39
+[load] shard 6/39
+[load] shard 7/39
+[load] shard 8/39
+[load] shard 9/39
+[load] shard 10/39
+[load] shard 11/39
+[load] shard 12/39
+[load] shard 13/39
+[load] shard 14/39
+[load] shard 15/39
+[load] shard 16/39
+[load] shard 17/39
+[load] shard 18/39
+[load] shard 19/39
+[load] shard 20/39
+[load] shard 21/39
+[load] shard 22/39
+[load] shard 23/39
+[load] shard 24/39
+[load] shard 25/39
+[load] shard 26/39
+[load] shard 27/39
+[load] shard 28/39
+[load] shard 29/39
+[load] shard 30/39
+[load] shard 31/39
+[load] shard 32/39
+[load] shard 33/39
+[load] shard 34/39
+[load] shard 35/39
+[load] shard 36/39
+[load] shard 37/39
+[load] shard 38/39
+[load] shard 39/39
+[startup] {"stage": "checkpoint_loaded", "elapsed_sec": 78.515, "torch_threads": 64}
+[contract] {"parameters": 122111526912, "checkpoint_tensors": 831}
+[WARNING|2026-10-11 14:16:16] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[startup] {"stage": "examples_encoded", "elapsed_sec": 80.791, "torch_threads": 64}
+[shared_init] {"stage": "parameters_shared", "elapsed_sec": 78.356, "direct_shared_init": true}
+[shared_init] {"stage": "flats_shared", "elapsed_sec": 145.823, "direct_shared_init": true}
+[shared_init] {"stage": "gradients_shared", "elapsed_sec": 213.99, "direct_shared_init": true}
+[shared_init] {"stage": "state_ready", "elapsed_sec": 213.992, "direct_shared_init": true}
+[startup] {"stage": "engine_ready", "elapsed_sec": 316.856, "torch_threads": 64}
+[startup] {"stage": "optimizer_ready", "elapsed_sec": 319.497, "torch_threads": 64}
+/mnt/sft_yyj_yyj/pythons/cpython-3.11.15-20260303/lib/python3.11/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 49 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

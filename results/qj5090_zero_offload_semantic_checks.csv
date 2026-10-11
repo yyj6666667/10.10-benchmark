@@ -1,0 +1,1 @@
+run_id,model,backend,host,sequence_length,num_gpus,steps,first_loss,last_loss,status

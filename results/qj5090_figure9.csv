@@ -22,7 +22,7 @@ Qwen3.5-122B-A10B,pytorch_onednn,256,SUCCESS,29.57,1500.87,54.080,37.87,5.512,21
 Qwen3.5-122B-A10B,pytorch_onednn,512,SUCCESS,30.68,1294.27,62.155,65.90,8.237,27.067,26.863,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
 Qwen3.5-122B-A10B,pytorch_onednn,1024,SUCCESS,29.01,1260.99,99.057,82.70,13.004,51.266,34.801,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
 Qwen3.5-122B-A10B,pytorch_onednn,2048,SUCCESS,30.89,1263.61,154.171,106.27,22.335,103.858,28.011,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
-Qwen3.5-122B-A10B,pytorch_onednn,4096,FAILED,,,,,,,,qj5090,qj5090:/mnt/hurry-bench/runs/qwen35_122b_fsdp2_onednn_seq4096_8gpu_20261011_030539_3796313/launcher.log,exit=1; Traceback (most recent call last):; min MemAvailable=219.2 GiB
+Qwen3.5-122B-A10B,pytorch_onednn,4096,SUCCESS,31.34,1339.84,273.377,119.86,43.552,193.248,36.662,qj5090,results/qj5090_qwen35_122b_fsdp2_onednn_performance.csv,
 Qwen3.5-122B-A10B,ktransformers,32,SUCCESS,20.58,1200.42,17.065,15.00,4.062,5.393,4.320,qj5090,results/qj5090_qwen_kt_performance.csv,
 Qwen3.5-122B-A10B,ktransformers,64,SUCCESS,20.59,1202.21,18.486,27.70,4.386,6.089,4.728,qj5090,results/qj5090_qwen_kt_performance.csv,
 Qwen3.5-122B-A10B,ktransformers,128,SUCCESS,18.00,1206.73,19.257,53.17,4.745,6.976,4.216,qj5090,results/qj5090_qwen_kt_performance.csv,

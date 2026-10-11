@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Complete only missing qj5090 MegaTrain points after the active GLM 512 case.
+# Complete Qwen MegaTrain first; retry GLM 4K only after all Qwen points pass.
 set -Eeuo pipefail
 
 root=/mnt/hurry-bench
@@ -86,32 +86,6 @@ run_case() {
     return 2
 }
 
-glm_table=$(table_for glm45_air)
-for seq in 512 1024 2048 4096; do
-    if has_result "$glm_table" "$seq"; then
-        echo "SKIP measured GLM seq=$seq"
-        continue
-    fi
-    # The independently launched 512 case may already have failed. Do not
-    # repeat an identical resource failure while continuing the other model.
-    if [[ $seq == 512 ]]; then
-        previous=$(latest_run glm45_air 512)
-        if [[ -n $previous && -f $previous/exit_code.txt ]]; then
-            status=$(cat "$previous/exit_code.txt")
-            record_failure glm45_air glm 512 "$status" >/dev/null
-            echo "GLM seq=512 already failed: $previous"
-            mark_later_if_limited glm 512 "$previous" || true
-            break
-        fi
-    fi
-    if run_case glm45_air glm "$seq"; then
-        continue
-    else
-        status=$?
-        [[ $status == 1 ]] && break
-    fi
-done
-
 qwen_table=$(table_for qwen35_122b)
 if ! has_result "$qwen_table" 32; then
     wait_for_resources
@@ -139,4 +113,18 @@ for seq in 32 64 128 256 512 1024 2048 4096; do
         [[ $status == 1 ]] && break
     fi
 done
+
+for seq in 32 64 128 256 512 1024 2048 4096; do
+    if ! has_result "$qwen_table" "$seq"; then
+        echo "Qwen series incomplete at seq=$seq; GLM 4K remains paused" >&2
+        exit 1
+    fi
+done
+
+glm_table=$(table_for glm45_air)
+if has_result "$glm_table" 4096; then
+    echo "SKIP measured GLM seq=4096"
+else
+    run_case glm45_air glm 4096 || true
+fi
 echo "COMPLETE MegaTrain missing-case queue at $(date -Is)"

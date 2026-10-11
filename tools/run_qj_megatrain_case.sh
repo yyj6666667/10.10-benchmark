@@ -139,6 +139,7 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     TOKENIZERS_PARALLELISM=false HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
     PYTHONPATH="$root/tools:$root/src/megatrain:$root/src/transformers:$root/src/llamafactory-overlay" \
     PYTORCH_ALLOC_CONF=expandable_segments:True \
+    PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
     "$python" "$root/tools/kt_case_monitor.py" --output "$run_dir" \
     --gpu-ids 0,1,2,3,4,5,6,7 -- "${cmd[@]}" \
     > "$run_dir/launcher.log" 2>&1 &

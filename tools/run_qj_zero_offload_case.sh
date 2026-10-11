@@ -50,6 +50,7 @@ import yaml
 root, run, checkpoint, template, model, seq, steps, warmup, mode = sys.argv[1:]
 root, run = Path(root), Path(run)
 train = yaml.safe_load((root / 'tools/kt_glm_train_base.yaml').read_text())
+zero = json.loads((root / 'tools/zero3_cpu_offload.json').read_text())['zero_optimization']
 for key in ('use_kt', 'kt_weight_path', 'kt_config'):
     train.pop(key, None)
 train.update(
@@ -78,6 +79,10 @@ train.pop('dataloader_prefetch_factor', None)
     'global_batch': 8, 'precision': 'bf16', 'dataset': 'fft_real_100',
     'gradient_clipping': 1.0,
     'optimizer_offload': 'cpu', 'parameter_offload': 'cpu',
+    'optimizer_offload_pin_memory': zero['offload_optimizer']['pin_memory'],
+    'parameter_offload_pin_memory': zero['offload_param']['pin_memory'],
+    'stage3_prefetch_bucket_size': zero['stage3_prefetch_bucket_size'],
+    'overlap_comm': zero['overlap_comm'],
     'host_available_guard_gib': 20,
     'mode': mode,
 }, indent=2) + '\n')

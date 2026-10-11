@@ -1,4 +1,3 @@
 model,backend,sequence_length,status,source,note
 GLM-4.5-Air-106B,megatrain,4096,OOM,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq4096_8gpu_20261011_101800_4038584_benchmark/launcher.log,exit=247; torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.75 GiB. GPU 0 has a total capacity of 31.36 GiB of which 671.62 MiB is free. Including non-PyTor; min MemAvailable=667.5 GiB
-Qwen3.5-122B-A10B,megatrain,2048,BLOCKED,qj5090:/mnt/hurry-bench/runs/qwen35_122b_megatrain_seq32_8gpu_20261010_233349_3719112_semantic/launcher.log,Not run: seq32 fixed-batch semantic check failed before valid timing
 Qwen3.5-122B-A10B,megatrain,4096,BLOCKED,qj5090:/mnt/hurry-bench/runs/qwen35_122b_megatrain_seq32_8gpu_20261010_233349_3719112_semantic/launcher.log,Not run: seq32 fixed-batch semantic check failed before valid timing

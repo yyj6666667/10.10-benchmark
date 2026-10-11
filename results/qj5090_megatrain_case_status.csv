@@ -1,5 +1,4 @@
 model,backend,sequence_length,status,source,note
-GLM-4.5-Air-106B,megatrain,512,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq128_8gpu_20261011_002755_3742518_benchmark/launcher.log,Not run: seq128 CUDA OOM in backward on 32 GiB GPUs; longer sequences require a lower-memory MegaTrain configuration
 GLM-4.5-Air-106B,megatrain,1024,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq128_8gpu_20261011_002755_3742518_benchmark/launcher.log,Not run: seq128 CUDA OOM in backward on 32 GiB GPUs; longer sequences require a lower-memory MegaTrain configuration
 GLM-4.5-Air-106B,megatrain,2048,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq128_8gpu_20261011_002755_3742518_benchmark/launcher.log,Not run: seq128 CUDA OOM in backward on 32 GiB GPUs; longer sequences require a lower-memory MegaTrain configuration
 GLM-4.5-Air-106B,megatrain,4096,BLOCKED,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq128_8gpu_20261011_002755_3742518_benchmark/launcher.log,Not run: seq128 CUDA OOM in backward on 32 GiB GPUs; longer sequences require a lower-memory MegaTrain configuration

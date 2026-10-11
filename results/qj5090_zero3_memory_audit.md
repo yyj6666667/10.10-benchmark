@@ -1,6 +1,6 @@
 # qj5090 ZeRO-3 CPU offload memory audit (2026-10-11)
 
-This is the running audit for GLM-4.5-Air and Qwen3.5-122B-A10B. The eight-GPU
+This audit covers GLM-4.5-Air and Qwen3.5-122B-A10B. The eight-GPU
 GLM diagnostic uses the actual ZeRO-3 CPU parameter and optimizer offload
 configuration, BF16 master weights/gradients and BF16 optimizer states. No
 checkpoint is saved. The pre-fix diagnostic was stopped deliberately after
@@ -8,6 +8,14 @@ the memory cause was established, while 248.6 GiB remained available.
 The run used DeepSpeed 0.19.1, PyTorch 2.9.1+cu128, Transformers 5.6.0,
 and Accelerate 1.14.0; exact paths and hashes are in each run's `versions.txt`
 and `checksums.txt`.
+
+After the fixes, both models completed all eight sequence lengths from 32 to
+4096 with two warmup and two measured optimizer steps. The official results
+are [GLM](qj5090_glm_zero_offload_performance.csv) and
+[Qwen](qj5090_qwen_zero_offload_performance.csv). At 4096 tokens, GLM measured
+42.398 s/step (772.86 tokens/s) and Qwen measured 54.077 s/step
+(605.95 tokens/s). The raw run directories are under
+[`runs/zero3-qj5090-20261011`](../runs/zero3-qj5090-20261011/).
 
 | Phase | Actual host memory | Increment | Allocation / copy | Evidence |
 |---|---:|---:|---|---|

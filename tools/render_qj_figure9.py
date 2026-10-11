@@ -184,8 +184,11 @@ def plot(rows: list[dict[str, str]]) -> None:
              ha="center", fontsize=9, color="#4a4a4a")
     for extension in ("png", "svg"):
         options = {"metadata": {"Date": None}} if extension == "svg" else {}
-        fig.savefig(RESULTS / f"qj5090_figure9.{extension}", dpi=220,
+        path = RESULTS / f"qj5090_figure9.{extension}"
+        fig.savefig(path, dpi=220,
                     bbox_inches="tight", **options)
+        if extension == "svg":
+            path.write_text("\n".join(line.rstrip() for line in path.read_text().splitlines()) + "\n")
     plt.close(fig)
 
 
@@ -217,7 +220,7 @@ def write_performance_tables(rows: list[dict[str, str]]) -> None:
 def main() -> None:
     rows = assemble()
     with (RESULTS / "qj5090_figure9.csv").open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=RESULT_FIELDS)
+        writer = csv.DictWriter(stream, fieldnames=RESULT_FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     plot(rows)

@@ -206,7 +206,7 @@ ZeRO uses DeepSpeed 0.19.1 stage 3 with parameters and optimizer state
 offloaded to CPU, matching the paper's stated offload layout. BF16 master
 gradients and optimizer states remain enabled. The earlier optimizer-only
 preflight is retained as diagnostic evidence and excluded from throughput.
-The pending CPU-offload sweep uses eight data-parallel ranks, one sample per
+The completed CPU-offload sweep uses eight data-parallel ranks, one sample per
 GPU, no gradient accumulation, and no tensor or pipeline parallelism. It
 prefetches up to 10 million parameter elements based on ZeRO-3's module
 execution trace. `overlap_comm=true` places parameter gathering on a
@@ -220,15 +220,21 @@ trace for step 3 on rank 0. It marks forward, backward, and optimizer
 boundaries and captures the parameter fetch and GPU kernels in the same
 timeline. That check is not a throughput measurement; the subsequent clean
 seq32 run supplies the chart row.
-The exact retry config is `tools/zero3_cpu_offload.json`; qj5090's 32 GiB
-GPUs and 1.5 TiB host RAM may still limit feasible cases, so each sequence
-requires a fresh result or a recorded failure.
-Both CPU offload sections set `pin_memory=false`. The preceding pinned-memory
-attempt was blocked by host memory pressure on GLM and GPU OOM on Qwen during
-model initialization; those results remain in the case-status table. The
-configuration retains ZeRO-3's 10-million-element parameter prefetch and
-`overlap_comm=true`. The fixed-batch check runs before each model's 2-warmup,
-2-measured-step sequence sweep; the host-memory guard remains active.
+The exact config is `tools/zero3_cpu_offload.json`. Both CPU offload sections
+set `pin_memory=false`; DeepSpeed 0.19.1 still allocates a large pinned flat
+parameter buffer internally. The original GLM attempt approached the host
+memory guard while Transformers merged all checkpoint shards in every rank,
+before the optimizer existed. The bounded shard loader in
+`tools/patch_transformers_zero3_streaming.py` reduced the observed load peak
+from 1425.1 GiB to 247.9 GiB. Qwen also needed a narrow checkpoint-key
+mapping fix and a text-only guard for its frozen vision tower. The
+[memory audit](results/qj5090_zero3_memory_audit.md) separates confirmed
+allocations from the remaining buffer attribution hypothesis.
+Both models passed a four-step fixed-batch loss check. All eight lengths
+32–4096 then completed on each model with two warmup and two measured steps;
+their tables are `results/qj5090_glm_zero_offload_performance.csv` and
+`results/qj5090_qwen_zero_offload_performance.csv`. No model checkpoint was
+saved. The host-memory guard stayed active throughout.
 
 ## qj5090 FSDP2 + oneDNN baseline
 

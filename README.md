@@ -39,8 +39,7 @@ subsequent instruction, new runs use 4 steps: 2 warmup and 2 measured.
 TPS is `8 * sequence_length / mean_step_seconds`
 over the measured steps. The GLM KT semantic check repeats four examples on
 four GPUs. Qwen KT, MegaTrain, ZeRO, and FSDP2 semantic checks repeat eight
-examples on eight GPUs. Semantic checks must not be plotted as
-throughput.
+examples on eight GPUs.
 
 The CPU RSS column sums the RSS of the benchmark process and its children.
 MegaTrain maps the same shared CPU parameters into eight workers, so this

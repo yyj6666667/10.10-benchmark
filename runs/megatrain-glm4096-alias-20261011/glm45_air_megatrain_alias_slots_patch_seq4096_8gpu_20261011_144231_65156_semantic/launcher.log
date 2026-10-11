@@ -1,0 +1,67 @@
+[startup] {"stage": "begin", "elapsed_sec": 0.001, "torch_threads": 64}
+[load] shard 1/46
+[load] shard 2/46
+[load] shard 3/46
+[load] shard 4/46
+[load] shard 5/46
+[load] shard 6/46
+[load] shard 7/46
+[load] shard 8/46
+[load] shard 9/46
+[load] shard 10/46
+[load] shard 11/46
+[load] shard 12/46
+[load] shard 13/46
+[load] shard 14/46
+[load] shard 15/46
+[load] shard 16/46
+[load] shard 17/46
+[load] shard 18/46
+[load] shard 19/46
+[load] shard 20/46
+[load] shard 21/46
+[load] shard 22/46
+[load] shard 23/46
+[load] shard 24/46
+[load] shard 25/46
+[load] shard 26/46
+[load] shard 27/46
+[load] shard 28/46
+[load] shard 29/46
+[load] shard 30/46
+[load] shard 31/46
+[load] shard 32/46
+[load] shard 33/46
+[load] shard 34/46
+[load] shard 35/46
+[load] shard 36/46
+[load] shard 37/46
+[load] shard 38/46
+[load] shard 39/46
+[load] shard 40/46
+[load] shard 41/46
+[load] shard 42/46
+[load] shard 43/46
+[load] shard 44/46
+[load] shard 45/46
+[load] shard 46/46
+[startup] {"stage": "checkpoint_loaded", "elapsed_sec": 149.593, "torch_threads": 64}
+[contract] {"parameters": 106852245504, "checkpoint_tensors": 17925}
+[WARNING|2026-10-11 14:45:07] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-11 14:45:07] llamafactory.data.template:144 >> Add <|user|>,<|observation|> to stop words.
+[startup] {"stage": "examples_encoded", "elapsed_sec": 153.365, "torch_threads": 64}
+[shared_init] {"stage": "parameters_shared", "elapsed_sec": 72.072, "direct_shared_init": false}
+[shared_init] {"stage": "flats_shared", "elapsed_sec": 149.195, "direct_shared_init": false}
+[shared_init] {"stage": "gradients_shared", "elapsed_sec": 224.948, "direct_shared_init": false}
+[shared_init] {"stage": "state_ready", "elapsed_sec": 224.951, "direct_shared_init": false}
+[startup] {"stage": "engine_ready", "elapsed_sec": 394.558, "torch_threads": 64}
+[startup] {"stage": "optimizer_ready", "elapsed_sec": 397.279, "torch_threads": 64}
+[step] {"step": 1, "loss": 4.187525039403175, "grad_norm": 138.0, "tokens": 32768, "step_sec": 84.54382588714361, "forward_sec": 4.80724072265625, "backward_sec": 26.60231494140625, "optimizer_sec": 31.71346079185605}
+[step] {"step": 2, "loss": 0.6330887860647606, "grad_norm": 3.0, "tokens": 32768, "step_sec": 48.25991873443127, "forward_sec": 5.1676000976562495, "backward_sec": 25.160206787109374, "optimizer_sec": 15.945068709552288}
+[step] {"step": 3, "loss": 0.4367119700926884, "grad_norm": 2.703125, "tokens": 32768, "step_sec": 46.81745442375541, "forward_sec": 4.723443603515625, "backward_sec": 25.768551513671877, "optimizer_sec": 14.375103008002043}
+[step] {"step": 4, "loss": 0.22604042148196346, "grad_norm": 2.046875, "tokens": 32768, "step_sec": 48.4436667971313, "forward_sec": 4.735495849609375, "backward_sec": 26.479641845703124, "optimizer_sec": 15.145245306193829}
+Worker 67759 did not exit, terminating
+Worker 67779 did not exit, terminating
+Worker 67797 did not exit, terminating
+Worker 67805 did not exit, terminating
+Worker 67826 did not exit, terminating

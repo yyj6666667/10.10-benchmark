@@ -79,18 +79,22 @@ def read_performance(path: Path) -> dict[int, dict[str, str]]:
 
 
 def read_statuses() -> dict[tuple[str, str, int], dict[str, str]]:
-    path = RESULTS / "qj5090_case_status.csv"
-    if not path.exists():
-        return {}
     statuses = {}
-    with path.open(newline="") as stream:
-        for row in csv.DictReader(stream):
-            key = row["model"], row["backend"], int(row["sequence_length"])
-            if row["status"] not in {"OOM", "FAILED", "BLOCKED"}:
-                raise ValueError(f"invalid status override: {row}")
-            if not row["source"]:
-                raise ValueError(f"status lacks evidence source: {row}")
-            statuses[key] = row
+    for path in (RESULTS / "qj5090_case_status.csv",
+                 RESULTS / "qj5090_zero_offload_case_status.csv"):
+        if not path.exists():
+            continue
+        with path.open(newline="") as stream:
+            for row in csv.DictReader(stream):
+                is_zero = row["backend"] == "zero_offload"
+                if is_zero != (path.name == "qj5090_zero_offload_case_status.csv"):
+                    continue
+                key = row["model"], row["backend"], int(row["sequence_length"])
+                if row["status"] not in {"OOM", "FAILED", "BLOCKED"}:
+                    raise ValueError(f"invalid status override: {row}")
+                if not row["source"]:
+                    raise ValueError(f"status lacks evidence source: {row}")
+                statuses[key] = row
     return statuses
 
 

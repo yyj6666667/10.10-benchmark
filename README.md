@@ -64,8 +64,10 @@ is rerun; the chart uses the latest completed case. Compare configuration
 checksums before interpreting the raw CSV as one uniform series.
 On qj5090, seq4096 also moves dense GPU AdamW moments to CPU between steps.
 The moments return to GPU for each fused optimizer update; their FP32 values
-and the AdamW computation are unchanged. GLM seq4096 reached the 20 GiB host
-memory reserve during step 2, so it has no valid throughput measurement.
+and the AdamW computation are unchanged. An earlier GLM seq4096 attempt
+reached the 20 GiB host-memory reserve during step 2. The later retry with
+CPU expert checkpointing completed all eight steps and yielded 114.58 TPS
+after two warmup steps.
 The earlier GLM seq1024 memory failure was resolved by BF16 gradient storage;
 the revised 1024 and 2048 cases both finished all eight steps.
 After GLM seq4096 reached the host-memory guard, later long-sequence cases

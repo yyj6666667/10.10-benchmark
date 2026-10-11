@@ -2,6 +2,8 @@
 
 这里是 Figure 9 的 qj5090 复现实验入口：两种模型、8 张 GPU、序列长度 32 至 4096，比较 KT-FT、PyTorch FSDP2 + CPU oneDNN、DeepSpeed ZeRO-3 CPU offload 和 MegaTrain。APTMoE 没有在本轮重测。历史实验资料在 [references](references/)；当前图只取 qj5090 的实测数据。
 
+![qj5090 两种模型的全参数微调吞吐量对比](results/qj5090_figure9.png)
+
 ## 登录与实验位置
 
 ~~~bash

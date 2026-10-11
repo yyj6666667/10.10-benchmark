@@ -1,5 +1,4 @@
 model,backend,sequence_length,status,source,note
-Qwen3.5-122B-A10B,zero_offload,512,BLOCKED,qj5090:/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_072424_3911414_semantic/launcher.log,Not run: ZeRO-3 parameter and optimizer CPU offload failed at seq32 on qj5090
 Qwen3.5-122B-A10B,zero_offload,1024,BLOCKED,qj5090:/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_072424_3911414_semantic/launcher.log,Not run: ZeRO-3 parameter and optimizer CPU offload failed at seq32 on qj5090
 Qwen3.5-122B-A10B,zero_offload,2048,BLOCKED,qj5090:/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_072424_3911414_semantic/launcher.log,Not run: ZeRO-3 parameter and optimizer CPU offload failed at seq32 on qj5090
 Qwen3.5-122B-A10B,zero_offload,4096,BLOCKED,qj5090:/mnt/hurry-bench/runs/qwen_zero_offload_seq32_8gpu_20261011_072424_3911414_semantic/launcher.log,Not run: ZeRO-3 parameter and optimizer CPU offload failed at seq32 on qj5090

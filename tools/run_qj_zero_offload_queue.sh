@@ -27,6 +27,19 @@ record_failure() {
     fi
 }
 
+mark_later() {
+    local model=$1 seq_len=$2 run source
+    run=$(latest_run "$model" "$seq_len")
+    [[ -n $run && -f $run/exit_code.txt ]] || return 0
+    source=$run/launcher.log
+    [[ -f $run/host_memory_guard.txt ]] && source=$run/host_memory_guard.txt
+    /mnt/data/venvs/sft-yyj-pro/bin/python \
+        "$root/tools/mark_qj_unrun_cases.py" "$model" zero_offload \
+        --after "$seq_len" --source "qj5090:$source" \
+        --reason "Not run: ZeRO-3 parameter and optimizer CPU offload failed at seq$seq_len on qj5090" \
+        --replace-existing-blocked
+}
+
 for model in glm qwen; do
     wait_for_resources() {
         while true; do
@@ -45,6 +58,7 @@ for model in glm qwen; do
     else
         status=$?
         record_failure "$model" 32 "$status"
+        mark_later "$model" 32
         echo "FAIL ZeRO fixed-batch check model=$model exit=$status at $(date -Is)" >&2
         continue
     fi
@@ -58,7 +72,12 @@ for model in glm qwen; do
             status=$?
             record_failure "$model" "$seq_len" "$status"
             echo "FAIL ZeRO model=$model seq=$seq_len exit=$status at $(date -Is)" >&2
-            if (( seq_len == 32 )); then break; fi
+            run=$(latest_run "$model" "$seq_len")
+            if (( seq_len == 32 )) || [[ -f $run/host_memory_guard.txt ]] \
+                || rg -q 'torch.OutOfMemoryError|CUDA out of memory' "$run/launcher.log"; then
+                mark_later "$model" "$seq_len"
+                break
+            fi
         fi
     done
 done

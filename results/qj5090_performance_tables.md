@@ -13,6 +13,12 @@
 | 2048 | 21.44 | 1524.64 | 47.356 | 345.98 | 7.992 | 31.149 | 8.143 |
 | 4096 | 27.21 | 1524.62 | 54.077 | 605.95 | 8.939 | 37.476 | 7.540 |
 
+## Qwen3.5-122B-A10B · MegaTrain
+
+| Seq | 单卡 GPU 峰值 (GiB) | CPU RSS 峰值 (GB) | Step (s) | TPS | Forward (s) | Backward (s) | Optimizer (s) |
+|---|---|---|---|---|---|---|---|
+| 32 | 20.05 | 5422.56 | 69.425 | 3.69 | 5.879 | 32.238 | 28.273 |
+
 ## Qwen3.5-122B-A10B · PyTorch (FSDP2 + oneDNN)
 
 | Seq | 单卡 GPU 峰值 (GiB) | CPU RSS 峰值 (GB) | Step (s) | TPS | Forward (s) | Backward (s) | Optimizer (s) |

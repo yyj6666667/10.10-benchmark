@@ -2,3 +2,4 @@ run_id,model,backend,host,sequence_length,num_gpus,steps,first_loss,last_loss,st
 glm45_air_megatrain_seq256_8gpu_20261011_042820_3839929_semantic,GLM-4.5-Air,megatrain,qj5090,256,8,4,3.2180935897426575,0.4258211990582667,SUCCESS
 glm45_air_megatrain_seq32_8gpu_20261010_234214_3723383_semantic,GLM-4.5-Air,megatrain,qj5090,32,8,8,11.838709115982056,1.460685446858406,SUCCESS
 glm45_air_megatrain_seq32_8gpu_20261011_032611_3805580_semantic,GLM-4.5-Air,megatrain,qj5090,32,8,4,11.838709115982056,3.520161211490631,SUCCESS
+qwen35_122b_megatrain_seq32_8gpu_20261011_122158_4082638_semantic,Qwen3.5-122B-A10B,megatrain,qj5090,32,8,4,4.002016067504883,0.8392136842012405,SUCCESS

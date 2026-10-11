@@ -205,9 +205,14 @@ The mode is enabled for Qwen, and its transfer and reconstruction time is
 included in the measured step time.
 The next Qwen fixed-batch attempt reached layer backward but CUDA could not
 allocate a 1.50 GiB gradient while 1.09 GiB sat in inactive reserved blocks.
-`tools/patch_megatrain_backward_cache.py` adds an optional allocator cache
-release before layer backward; its synchronization cost is included in timing.
-This is a diagnostic memory workaround until its effect is measured.
+An allocator cache release ruled out fragmentation: the following run still
+failed to allocate the 3.00 GiB expert gradient with only 0.60 GiB free.
+The worker held two 4.68 GiB flat buffers and, per slot, both Qwen layer
+structures as independent GPU parameter copies (4.68 + 4.67 GiB). Its two
+slots therefore used about 28.07 GiB before gradients or activations.
+`tools/patch_megatrain_aliased_slots.py` preserves both slots and prefetch,
+but makes each structure's template parameters views of that slot's flat
+buffer. The benchmark includes all transfers, compute, and synchronization.
 For the isolated MegaTrain profiler run, `tools/patch_megatrain_worker_profiler.py`
 adds an opt-in hook to the GPU worker. `tools/megatrain_profile_hooks.py`
 captures rank 0's third training step after two warmup steps and labels layer

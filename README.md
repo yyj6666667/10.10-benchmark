@@ -222,10 +222,12 @@ seq32 run supplies the chart row.
 The exact retry config is `tools/zero3_cpu_offload.json`; qj5090's 32 GiB
 GPUs and 1.5 TiB host RAM may still limit feasible cases, so each sequence
 requires a fresh result or a recorded failure.
-Both CPU offload sections now set `pin_memory=true` for the GLM and Qwen
-measurements. The configuration retains ZeRO-3's 10-million-element parameter
-prefetch and `overlap_comm=true`. The fixed-batch check runs before each model's
-2-warmup, 2-measured-step sequence sweep; the host-memory guard remains active.
+Both CPU offload sections set `pin_memory=false`. The preceding pinned-memory
+attempt was blocked by host memory pressure on GLM and GPU OOM on Qwen during
+model initialization; those results remain in the case-status table. The
+configuration retains ZeRO-3's 10-million-element parameter prefetch and
+`overlap_comm=true`. The fixed-batch check runs before each model's 2-warmup,
+2-measured-step sequence sweep; the host-memory guard remains active.
 
 ## qj5090 FSDP2 + oneDNN baseline
 

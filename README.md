@@ -32,8 +32,10 @@ Results and small run evidence are kept in the private GitHub repository
 ## Measurement convention
 
 For eight-GPU server throughput, global batch size is 8. Completed KT cases
-used 15 optimizer steps, with the first 5 excluded. New runs use 8 steps,
-with the first 2 excluded. TPS is `8 * sequence_length / mean_step_seconds`
+used 15 optimizer steps, with the first 5 excluded. Earlier oneDNN and
+MegaTrain runs used 8 steps, with the first 2 excluded. From the user's
+subsequent instruction, new runs use 4 steps: 2 warmup and 2 measured.
+TPS is `8 * sequence_length / mean_step_seconds`
 over the measured steps. The GLM KT semantic check repeats four examples on
 four GPUs. Qwen KT, MegaTrain, ZeRO, and FSDP2 semantic checks repeat eight
 examples on eight GPUs. Semantic checks must not be plotted as

@@ -20,13 +20,13 @@ done
 sleep 15
 
 echo "BEGIN Qwen KT fixed-batch loss check at $(date -Is)"
-KT_BENCH_MODE=semantic bash "$root/tools/run_qj_kt_case.sh" 512 15 qwen
+KT_BENCH_MODE=semantic bash "$root/tools/run_qj_kt_case.sh" 512 4 qwen
 echo "PASS Qwen KT fixed-batch loss check at $(date -Is)"
 
 for seq_len in 32 64 128 256 512 1024 2048 4096; do
     sleep 15
     echo "BEGIN Qwen KT seq=$seq_len at $(date -Is)"
-    if bash "$root/tools/run_qj_kt_case.sh" "$seq_len" 15 qwen; then
+    if bash "$root/tools/run_qj_kt_case.sh" "$seq_len" 4 qwen; then
         echo "PASS Qwen KT seq=$seq_len at $(date -Is)"
     else
         status=$?

@@ -53,7 +53,7 @@ for model in glm qwen; do
     wait_for_resources
     echo "BEGIN ZeRO fixed-batch check model=$model at $(date -Is)"
     if ZERO_BENCH_MODE=semantic bash "$root/tools/run_qj_zero_offload_case.sh" \
-        "$model" 32 8 2; then
+        "$model" 32 4 2; then
         echo "PASS ZeRO fixed-batch check model=$model at $(date -Is)"
     else
         status=$?
@@ -66,7 +66,7 @@ for model in glm qwen; do
     for seq_len in 32 64 128 256 512 1024 2048 4096; do
         wait_for_resources
         echo "BEGIN ZeRO model=$model seq=$seq_len at $(date -Is)"
-        if bash "$root/tools/run_qj_zero_offload_case.sh" "$model" "$seq_len" 8 2; then
+        if bash "$root/tools/run_qj_zero_offload_case.sh" "$model" "$seq_len" 4 2; then
             echo "PASS ZeRO model=$model seq=$seq_len at $(date -Is)"
         else
             status=$?

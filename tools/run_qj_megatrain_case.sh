@@ -12,7 +12,7 @@ if (( $# < 2 || $# > 4 )); then
 fi
 model_kind=$1
 seq_len=$2
-steps=${3:-8}
+steps=${3:-4}
 warmup=${4:-2}
 offload_emb_head=${MEGATRAIN_OFFLOAD_EMB_HEAD:-0}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2

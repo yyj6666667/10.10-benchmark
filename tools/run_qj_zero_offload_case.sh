@@ -8,7 +8,7 @@ if (( $# < 2 || $# > 4 )); then
 fi
 model=$1
 seq_len=$2
-steps=${3:-8}
+steps=${3:-4}
 warmup=${4:-2}
 [[ $model == glm || $model == qwen ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2

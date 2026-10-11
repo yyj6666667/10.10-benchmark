@@ -35,7 +35,7 @@ for model in glm45_air qwen35_122b; do
     for seq_len in "${lengths[@]}"; do
         if [[ $model == qwen35_122b && $seq_len == 32 ]]; then
             echo "BEGIN MegaTrain Qwen fixed-batch loss check at $(date -Is)"
-            if MEGATRAIN_REPEAT_BATCH=1 bash "$root/tools/run_qj_megatrain_case.sh" "$model" 32 8 2; then
+            if MEGATRAIN_REPEAT_BATCH=1 bash "$root/tools/run_qj_megatrain_case.sh" "$model" 32 4 2; then
                 echo "PASS MegaTrain Qwen fixed-batch loss check at $(date -Is)"
             else
                 echo "FAIL MegaTrain Qwen fixed-batch loss check at $(date -Is)" >&2
@@ -47,7 +47,7 @@ for model in glm45_air qwen35_122b; do
         done
         sleep 20
         echo "BEGIN MegaTrain model=$model seq=$seq_len at $(date -Is)"
-        if bash "$root/tools/run_qj_megatrain_case.sh" "$model" "$seq_len" 8 2; then
+        if bash "$root/tools/run_qj_megatrain_case.sh" "$model" "$seq_len" 4 2; then
             echo "PASS MegaTrain model=$model seq=$seq_len at $(date -Is)"
         else
             status=$?

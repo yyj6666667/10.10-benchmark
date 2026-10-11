@@ -8,6 +8,7 @@ if [[ $# -lt 2 || $# -gt 3 ]]; then
 fi
 seq_len=$1
 steps=$2
+warmup=2
 model=${3:-glm}
 mode=${KT_BENCH_MODE:-benchmark}
 owner_omp_threads=${KT_BENCH_OWNER_OMP_THREADS:-${KT_CLIP_PROFILE_OWNER_OMP_THREADS:-64}}
@@ -145,7 +146,7 @@ if model == "qwen":
     "checkpoint": checkpoint,
     "sequence_length": int(seq_len),
     "steps": int(steps),
-    "warmup_steps": 5,
+    "warmup_steps": 2,
     "global_batch": 8,
     "tokens_per_step": 8 * int(seq_len),
     "host": "qj5090",
@@ -215,7 +216,7 @@ env \
     ACCELERATE_KT_LORA_ALPHA=0 KT_FINETUNE_MODE=full \
     FFT_TRAINING_BACKEND=kt FFT_PRECISION=bf16 FFT_FINETUNING_TYPE=full \
     FFT_TEXT_ONLY=1 FFT_STEP_TIMING_OUT_DIR="$run_dir/step_timing" \
-    FFT_STEP_TIMING_WARMUP_STEPS=5 \
+    FFT_STEP_TIMING_WARMUP_STEPS="$warmup" \
     FFT_STEP_TIMING_TOKENS_PER_STEP="$((8 * seq_len))" \
     GLM45_PROFILE_DIR="$profile_dir" GLM45_PROFILE_RANKS=0 GLM45_PROFILE_STEP=6 \
     KT_CLIP_PROFILE_DIR="$clip_profile_dir" KT_CLIP_PROFILE_STOP_AFTER_CLIP=1 \

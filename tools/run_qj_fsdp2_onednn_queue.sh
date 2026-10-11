@@ -28,7 +28,7 @@ wait_for_resources
 for model_kind in glm45_air qwen35_122b; do
     echo "BEGIN oneDNN fixed-batch loss check model=$model_kind at $(date -Is)"
     if FSDP2_REPEAT_BATCH=1 bash "$root/tools/run_qj_fsdp2_onednn_case.sh" \
-        "$model_kind" 32 8 2; then
+        "$model_kind" 32 4 2; then
         echo "PASS oneDNN fixed-batch loss check model=$model_kind at $(date -Is)"
     else
         status=$?
@@ -47,7 +47,7 @@ for model_kind in glm45_air qwen35_122b; do
     fi
     for seq_len in 32 64 128 256 512 1024 2048 4096; do
         echo "BEGIN oneDNN model=$model_kind seq=$seq_len at $(date -Is)"
-        if bash "$root/tools/run_qj_fsdp2_onednn_case.sh" "$model_kind" "$seq_len" 8 2; then
+        if bash "$root/tools/run_qj_fsdp2_onednn_case.sh" "$model_kind" "$seq_len" 4 2; then
             echo "PASS oneDNN model=$model_kind seq=$seq_len at $(date -Is)"
         else
             status=$?

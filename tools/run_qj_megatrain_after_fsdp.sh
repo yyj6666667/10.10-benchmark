@@ -71,12 +71,12 @@ wait_for_resources
 echo "BEGIN MegaTrain GLM fixed-batch loss check at $(date -Is)"
 if MEGATRAIN_FINITE_PROBE=1 MEGATRAIN_REPEAT_BATCH=1 \
     bash "$root/tools/run_qj_megatrain_case.sh" \
-    glm45_air 32 8 2; then
+    glm45_air 32 4 2; then
     echo "PASS MegaTrain GLM fixed-batch loss check at $(date -Is)"
     for seq_len in 32 64 128 256 512 1024 2048 4096; do
         wait_for_resources
         echo "BEGIN MegaTrain GLM seq=$seq_len at $(date -Is)"
-        if bash "$root/tools/run_qj_megatrain_case.sh" glm45_air "$seq_len" 8 2; then
+        if bash "$root/tools/run_qj_megatrain_case.sh" glm45_air "$seq_len" 4 2; then
             echo "PASS MegaTrain GLM seq=$seq_len at $(date -Is)"
         else
             status=$?
@@ -115,7 +115,7 @@ fi
 wait_for_resources
 echo "BEGIN MegaTrain Qwen fixed-batch loss check at $(date -Is)"
 if MEGATRAIN_REPEAT_BATCH=1 bash "$root/tools/run_qj_megatrain_case.sh" \
-    qwen35_122b 32 8 2; then
+    qwen35_122b 32 4 2; then
     echo "PASS MegaTrain Qwen fixed-batch loss check at $(date -Is)"
 else
     status=$?
@@ -137,7 +137,7 @@ fi
 for seq_len in 32 64 128 256 512 1024 2048 4096; do
     wait_for_resources
     echo "BEGIN MegaTrain Qwen seq=$seq_len at $(date -Is)"
-    if bash "$root/tools/run_qj_megatrain_case.sh" qwen35_122b "$seq_len" 8 2; then
+    if bash "$root/tools/run_qj_megatrain_case.sh" qwen35_122b "$seq_len" 4 2; then
         echo "PASS MegaTrain Qwen seq=$seq_len at $(date -Is)"
     else
         status=$?

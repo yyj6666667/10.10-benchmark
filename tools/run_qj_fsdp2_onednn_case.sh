@@ -8,7 +8,7 @@ if (( $# < 2 || $# > 4 )); then
 fi
 model_kind=$1
 seq_len=$2
-steps=${3:-8}
+steps=${3:-4}
 warmup=${4:-2}
 profile=${FSDP2_PROFILE:-0}
 gpu_state_offload=${FSDP2_GPU_STATE_OFFLOAD:-}

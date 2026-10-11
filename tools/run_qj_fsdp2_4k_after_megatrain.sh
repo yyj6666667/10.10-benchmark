@@ -26,7 +26,7 @@ for model_kind in glm45_air qwen35_122b; do
     wait_for_resources
     echo "BEGIN oneDNN $model_kind seq4096 at $(date -Is)"
     if FSDP2_COMPRESS_CPU_GRADIENTS=1 \
-        bash "$root/tools/run_qj_fsdp2_onednn_case.sh" "$model_kind" 4096 8 2; then
+        bash "$root/tools/run_qj_fsdp2_onednn_case.sh" "$model_kind" 4096 4 2; then
         echo "PASS oneDNN $model_kind seq4096 at $(date -Is)"
     else
         status=$?

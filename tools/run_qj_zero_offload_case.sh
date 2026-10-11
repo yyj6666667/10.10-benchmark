@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One eight-GPU ZeRO-3 optimizer-only CPU-offload full fine-tuning case.
+# One eight-GPU ZeRO-3 parameter and optimizer CPU-offload full fine-tuning case.
 set -Eeuo pipefail
 
 if (( $# < 2 || $# > 4 )); then
@@ -77,7 +77,7 @@ train.pop('dataloader_prefetch_factor', None)
     'warmup_steps': int(warmup), 'tokens_per_step': 8 * int(seq),
     'global_batch': 8, 'precision': 'bf16', 'dataset': 'fft_real_100',
     'gradient_clipping': 1.0,
-    'optimizer_offload': 'cpu', 'parameter_offload': False,
+    'optimizer_offload': 'cpu', 'parameter_offload': 'cpu',
     'host_available_guard_gib': 20,
     'mode': mode,
 }, indent=2) + '\n')

@@ -181,12 +181,13 @@ time. `tools/patch_megatrain_gpu_lifecycle.py` applies the change to
 the extracted Infinity worker; a fresh fixed-batch check gates its timings.
 The case runner stops workers promptly on an observed CUDA OOM so a failed
 case cannot hold the remaining benchmark queue indefinitely.
-ZeRO uses DeepSpeed 0.19.1 stage 3 with optimizer state offloaded to CPU and
-parameter shards on GPU, matching the historical offload layout. BF16 master
-gradients and optimizer states remain enabled. The exact config is
-`tools/zero3_cpu_offload.json`; qj5090's 32 GiB GPUs are smaller than the
-historical 48 GiB cards, so each sequence requires a fresh result or a
-recorded failure.
+ZeRO uses DeepSpeed 0.19.1 stage 3 with parameters and optimizer state
+offloaded to CPU, matching the paper's stated offload layout. BF16 master
+gradients and optimizer states remain enabled. The earlier optimizer-only
+preflight is retained as diagnostic evidence and excluded from throughput.
+The exact retry config is `tools/zero3_cpu_offload.json`; qj5090's 32 GiB
+GPUs and 1.5 TiB host RAM may still limit feasible cases, so each sequence
+requires a fresh result or a recorded failure.
 
 ## qj5090 FSDP2 + oneDNN baseline
 

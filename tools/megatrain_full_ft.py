@@ -158,7 +158,21 @@ def main() -> None:
     args = arguments()
     world_size = len(args.devices)
     args.output_dir.mkdir(parents=True, exist_ok=True)
+    startup_started = time.perf_counter()
+
+    def startup_stage(name: str) -> None:
+        print("[startup] " + json.dumps({
+            "stage": name,
+            "elapsed_sec": round(time.perf_counter() - startup_started, 3),
+            "torch_threads": torch.get_num_threads(),
+        }), flush=True)
+
+    # The checkpoint and shared-memory construction copy hundreds of GB.
+    # Set the host's physical-core count before those copies begin.
+    torch.set_num_threads(64)
+    startup_stage("begin")
     model, contract = make_text_model(args.model_kind, load_weights=not args.check_only)
+    startup_stage("checkpoint_loaded")
     print("[contract] " + json.dumps(contract), flush=True)
     if args.check_only:
         return
@@ -173,6 +187,7 @@ def main() -> None:
     records = load_records(args.dataset_dir, "fft_real_100")
     examples = encode_samples(tokenizer, MODELS[args.model_kind], records,
                               args.sequence_length)
+    startup_stage("examples_encoded")
     config = CPUMasterConfig(
         model_name=str(MODELS[args.model_kind].checkpoint),
         devices=args.devices, batch_size=world_size, max_seq_len=args.sequence_length,
@@ -183,8 +198,8 @@ def main() -> None:
         num_grad_slabs=args.num_grad_slabs, seed=42,
     )
     engine = CPUMasterModel(model, config)
+    startup_stage("engine_ready")
     del model
-    torch.set_num_threads(64)
     parameters = engine.get_parameters()
     if sum(p.numel() for p in parameters) != contract["parameters"]:
         raise RuntimeError("MegaTrain optimizer does not own the full text model")
@@ -210,6 +225,7 @@ def main() -> None:
     # model within this host's memory budget.
     optimizer = DeepSpeedCPUAdam(parameters, lr=1e-5, weight_decay=0.01,
                                  adamw_mode=True, fp32_optimizer_states=False)
+    startup_stage("optimizer_ready")
     rows = []
     try:
         for step in range(args.steps):

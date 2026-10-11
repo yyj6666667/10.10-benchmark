@@ -213,6 +213,22 @@ slots therefore used about 28.07 GiB before gradients or activations.
 `tools/patch_megatrain_aliased_slots.py` preserves both slots and prefetch,
 but makes each structure's template parameters views of that slot's flat
 buffer. The benchmark includes all transfers, compute, and synchronization.
+Qwen startup previously constructed its CPU master and shared tensors with
+only eight PyTorch intra-op threads; the harness selected 64 threads only
+after that construction finished. `tools/megatrain_full_ft.py` now selects
+the host's 64 physical cores before loading and sharing weights and logs
+startup stages. The opt-in `tools/patch_megatrain_shared_init.py` allocates
+the separate H2D flat and gradient tensors directly in shared storage,
+avoiding their private intermediate allocations. The Qwen case runner enables
+it and records the choice; GLM keeps the previous allocation path. This patch
+uses PyTorch 2.9.1's `_new_shared` storage API, so it is tied to the recorded
+environment version. A small BF16 shared-state check matched the old flat,
+gradient, and update behavior. In the eight-GPU Qwen runs, CPU-master
+construction took 276.6 seconds with the earlier allocation (seq64) and
+235.6 seconds with direct shared allocation (seq128); the two stages exclude
+checkpoint loading, whose cache state differed. The seq128 run finished four
+steps with loss 2.220 → 1.320 → 0.753 → 0.509. Run-specific stage logs and
+source checksums are under `/mnt/hurry-bench/runs/`.
 For the isolated MegaTrain profiler run, `tools/patch_megatrain_worker_profiler.py`
 adds an opt-in hook to the GPU worker. `tools/megatrain_profile_hooks.py`
 captures rank 0's third training step after two warmup steps and labels layer

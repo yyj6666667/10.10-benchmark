@@ -39,8 +39,8 @@ def arguments() -> argparse.Namespace:
     args = parser.parse_args()
     if args.steps <= args.warmup_steps or args.sequence_length < 2:
         parser.error("steps must exceed warmup; sequence length must be at least 2")
-    if args.checkpoint_interval < 1 or args.num_grad_slabs < 2 * args.checkpoint_interval:
-        parser.error("num-grad-slabs must be at least twice checkpoint-interval")
+    if args.checkpoint_interval < 1 or args.num_grad_slabs < 2:
+        parser.error("checkpoint-interval must be positive and num-grad-slabs at least 2")
     try:
         args.devices = [int(device) for device in args.devices.split(",")]
     except ValueError:

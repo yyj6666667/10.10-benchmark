@@ -37,6 +37,12 @@ direct_shared_init=${MEGATRAIN_DIRECT_SHARED_INIT:-$direct_shared_init}
 checkpoint_interval=${MEGATRAIN_CHECKPOINT_INTERVAL:-$(( seq_len >= 4096 ? 2 : 1 ))}
 [[ $checkpoint_interval =~ ^[1-9][0-9]*$ ]] || exit 2
 num_grad_slabs=$((2 * checkpoint_interval))
+if [[ $model_kind == qwen35_122b && $seq_len -ge 4096 ]]; then
+    # Three pinned CPU slabs retain overlap while leaving room for seq4096 activations.
+    num_grad_slabs=3
+fi
+num_grad_slabs=${MEGATRAIN_NUM_GRAD_SLABS:-$num_grad_slabs}
+[[ $num_grad_slabs =~ ^[1-9][0-9]*$ ]] && (( num_grad_slabs >= 2 )) || exit 2
 (( steps > warmup )) || exit 2
 if [[ -n $profile_dir ]]; then
     [[ $profile_step =~ ^[1-9][0-9]*$ && $profile_rank =~ ^[0-7]$ ]] || exit 2

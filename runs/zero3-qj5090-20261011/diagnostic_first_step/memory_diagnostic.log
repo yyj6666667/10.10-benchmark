@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/mnt/hurry-bench/tools/zero_memory_sampler.py", line 98, in <module>
+    main()
+  File "/mnt/hurry-bench/tools/zero_memory_sampler.py", line 93, in main
+    output.write(json.dumps(sample(parent)) + "\n")
+                            ^^^^^^^^^^^^^^
+  File "/mnt/hurry-bench/tools/zero_memory_sampler.py", line 72, in sample
+    gpu = subprocess.run(
+          ^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/pythons/cpython-3.11.15-20260303/lib/python3.11/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/pythons/cpython-3.11.15-20260303/lib/python3.11/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/sft_yyj_yyj/pythons/cpython-3.11.15-20260303/lib/python3.11/subprocess.py", line 2116, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/mnt/sft_yyj_yyj/pythons/cpython-3.11.15-20260303/lib/python3.11/subprocess.py", line 1253, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['nvidia-smi', '--query-compute-apps=pid,used_gpu_memory', '--format=csv,noheader,nounits']' timed out after 10 seconds

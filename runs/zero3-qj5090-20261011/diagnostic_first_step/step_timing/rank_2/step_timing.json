@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "timing_mode": "coarse_host_wall_no_cuda_sync",
+  "backend": "deepspeed",
+  "precision": "bf16",
+  "instrumentation": {
+    "forced_cuda_synchronize": false,
+    "backend_internal_probes": false,
+    "system_resource_monitor": false,
+    "per_step_file_io": false,
+    "torch_profiler_step": null
+  },
+  "warmup_steps": 0,
+  "tokens_per_step": 256,
+  "num_steps": 1,
+  "num_stable_steps": 1,
+  "steps": [
+    {
+      "global_step": 1,
+      "microbatches": 1,
+      "forward_sec": 7.290925614535809,
+      "backward_sec": 27.64447047933936,
+      "optimizer_sec": 10.08743716403842,
+      "step_total_sec": 45.060940425843,
+      "step_tps": 5.681195234291668
+    }
+  ],
+  "aggregate_all": {
+    "forward_sec": {
+      "count": 1,
+      "mean_sec": 7.290925614535809,
+      "min_sec": 7.290925614535809,
+      "max_sec": 7.290925614535809
+    },
+    "backward_sec": {
+      "count": 1,
+      "mean_sec": 27.64447047933936,
+      "min_sec": 27.64447047933936,
+      "max_sec": 27.64447047933936
+    },
+    "optimizer_sec": {
+      "count": 1,
+      "mean_sec": 10.08743716403842,
+      "min_sec": 10.08743716403842,
+      "max_sec": 10.08743716403842
+    },
+    "step_total_sec": {
+      "count": 1,
+      "mean_sec": 45.060940425843,
+      "min_sec": 45.060940425843,
+      "max_sec": 45.060940425843
+    }
+  },
+  "aggregate_stable": {
+    "forward_sec": {
+      "count": 1,
+      "mean_sec": 7.290925614535809,
+      "min_sec": 7.290925614535809,
+      "max_sec": 7.290925614535809
+    },
+    "backward_sec": {
+      "count": 1,
+      "mean_sec": 27.64447047933936,
+      "min_sec": 27.64447047933936,
+      "max_sec": 27.64447047933936
+    },
+    "optimizer_sec": {
+      "count": 1,
+      "mean_sec": 10.08743716403842,
+      "min_sec": 10.08743716403842,
+      "max_sec": 10.08743716403842
+    },
+    "step_total_sec": {
+      "count": 1,
+      "mean_sec": 45.060940425843,
+      "min_sec": 45.060940425843,
+      "max_sec": 45.060940425843
+    }
+  },
+  "tps_attribution": {
+    "tokens_per_step": 256,
+    "mean_stable_step_sec": 45.060940425843,
+    "stable_tps": 5.681195234291668
+  }
+}

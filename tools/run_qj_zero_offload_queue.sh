@@ -3,12 +3,14 @@
 set -Eeuo pipefail
 root=/mnt/hurry-bench
 previous_pid_file=${ZERO_WAIT_PID_FILE:-$root/logs/megatrain-queue-20261011.pid}
-previous_pid=$(cat "$previous_pid_file")
 exec 9>"$root/logs/zero-offload-queue.lock"
 flock -n 9 || exit 3
-while [[ -n $(ps -p "$previous_pid" -o stat= 2>/dev/null | grep -v '^Z' || true) ]]; do
-    sleep 30
-done
+if [[ ${ZERO_SKIP_PREVIOUS_QUEUE_WAIT:-0} != 1 ]]; then
+    previous_pid=$(cat "$previous_pid_file")
+    while [[ -n $(ps -p "$previous_pid" -o stat= 2>/dev/null | grep -v '^Z' || true) ]]; do
+        sleep 30
+    done
+fi
 
 latest_run() {
     local model=$1 seq_len=$2
@@ -52,7 +54,8 @@ for model in glm qwen; do
     }
     wait_for_resources
     echo "BEGIN ZeRO fixed-batch check model=$model at $(date -Is)"
-    if ZERO_BENCH_MODE=semantic bash "$root/tools/run_qj_zero_offload_case.sh" \
+    if ZERO_BENCH_MODE=semantic ZERO_MEMORY_DIAGNOSTIC=1 \
+        bash "$root/tools/run_qj_zero_offload_case.sh" \
         "$model" 32 4 2; then
         echo "PASS ZeRO fixed-batch check model=$model at $(date -Is)"
     else

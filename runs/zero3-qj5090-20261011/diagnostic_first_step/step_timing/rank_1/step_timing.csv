@@ -1,0 +1,2 @@
+global_step,microbatches,forward_sec,backward_sec,optimizer_sec,step_total_sec,step_tps
+1,1,7.292174454778433,27.62997580692172,9.193062201142311,44.15532214194536,5.797715599878111

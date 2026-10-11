@@ -121,7 +121,35 @@ def main() -> None:
                 )
             if int(os.environ.get("RANK", "0")) == 0:
                 print(f"[contract] trainable_parameters={logical}", flush=True)
-            return original_train(self, *args, **kwargs)
+            result = original_train(self, *args, **kwargs)
+            if (
+                os.environ.get("ZERO_MEMORY_DIAGNOSTIC") == "1"
+                and int(os.environ.get("RANK", "0")) == 0
+            ):
+                try:
+                    engine = self.model_wrapped
+                    optimizer = engine.optimizer
+                    master = optimizer.fp32_partitioned_groups_flat[0]
+                    states = optimizer.optimizer.state.get(master, {})
+                    print(
+                        "[zero_memory_state_after_step] "
+                        + json.dumps(
+                            {
+                                key: {
+                                    "dtype": str(value.dtype),
+                                    "device": str(value.device),
+                                    "numel": value.numel(),
+                                    "storage_ptr": value.untyped_storage().data_ptr(),
+                                }
+                                for key, value in states.items()
+                                if hasattr(value, "untyped_storage")
+                            }
+                        ),
+                        flush=True,
+                    )
+                except (AttributeError, IndexError, KeyError, TypeError) as exc:
+                    print(f"[zero_memory_state_after_step] unavailable: {exc}", flush=True)
+            return result
 
         Trainer.train = validated_train
         # torchrun has already created the eight ranks. Calling the CLI here

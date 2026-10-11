@@ -57,7 +57,7 @@ passed with loss 4.005 → 2.158 → 1.289 → 1.082.
 |---|---:|---:|---|---|
 | Model loaded | Cgroup 239.4 GiB; rank PSS 239.4 GiB | — | CPU parameter partitions | [phase log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
 | Optimizer initialized | Cgroup 960.9 GiB; rank PSS 959.1 GiB, including 256.2 GiB shared-memory PSS | +721.5 GiB | Separate BF16 master and gradient buffers; eight private 32 GiB `/dev/zero` mappings appeared during this phase | [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
-| Four-step training | Peak cgroup 1418.5 GiB; rank PSS 1415.7 GiB; MemAvailable 42.7 GiB | +457.6 GiB | Two distinct CPU BF16 Adam moments were allocated on the first step | [state dtype and loss log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
+| Four-step training | Peak cgroup 1418.5 GiB; rank PSS 1415.7 GiB (1158.5 GiB anonymous + 256.2 GiB shared mapping); MemAvailable 42.7 GiB | +457.6 GiB | Two distinct CPU BF16 Adam moments were allocated on the first step | [state dtype and loss log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
 
 Each `/dev/zero` mapping is 32 GiB of private dirty memory in one rank's
 `smaps`, even though `offload_param.pin_memory=false` and `Locked=0`.
@@ -65,6 +65,11 @@ DeepSpeed 0.19.1 calls `pin_memory()` unconditionally in
 `_create_param_groups_fp16_flat_cpu_memory`; the phase and sizes strongly
 suggest this is the mapped buffer, but the tensor storage pointer was not
 captured, so that attribution remains an inference. No cgroup OOM event occurred.
+The optimizer-initialized PSS was 701.9 GiB anonymous plus 256.2 GiB in
+that mapping; after Adam's first step, anonymous PSS grew to 1158.5 GiB while
+the mapping stayed at 256.2 GiB. This is consistent with five BF16 model-sized
+arrays in anonymous memory and a separate pinned flat parameter buffer, but
+only a live tensor-pointer-to-VMA check could prove the exact mapping identity.
 
 For scale, five BF16 arrays (parameter, master, gradient, and two Adam moments)
 would occupy 995.1 GiB for 106.85B GLM parameters and 1137.3 GiB for 122.11B

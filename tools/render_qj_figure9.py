@@ -170,7 +170,6 @@ def assemble() -> list[dict[str, str]]:
                     row.update(glm_alias_supplement[seq])
                     row["status"] = "SUCCESS"
                     row["source"] = "results/qj5090_glm_megatrain_alias_slots_patch_performance.csv"
-                    row["note"] = "Alias-slot supplement; fixed-batch loss check passed"
                 elif (model, backend, seq) in statuses:
                     row.update(statuses[model, backend, seq])
                 rows.append(row)
@@ -218,11 +217,10 @@ def plot(rows: list[dict[str, str]]) -> None:
                ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.09))
     fig.suptitle("qj5090 · 8 × RTX 5090 · BF16 full fine-tuning · global batch 8", y=1.16,
                  fontsize=12)
-    caption = "Blank = not measured; × = observed OOM; ! = failed; · = blocked. No historical measurements."
-    if any(row["note"].startswith("Alias-slot supplement") for row in rows):
-        caption += " GLM 4K MegaTrain uses the validated alias-slot supplement."
-    fig.text(0.5, -0.025, caption,
-             ha="center", fontsize=9, color="#4a4a4a")
+    if any(row["status"] != "SUCCESS" for row in rows):
+        fig.text(0.5, -0.025,
+                 "Blank = not measured; × = observed OOM; ! = failed; · = blocked.",
+                 ha="center", fontsize=9, color="#4a4a4a")
     for extension in ("png", "svg"):
         options = {"metadata": {"Date": None}} if extension == "svg" else {}
         path = RESULTS / f"qj5090_figure9.{extension}"

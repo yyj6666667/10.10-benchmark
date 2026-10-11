@@ -90,6 +90,12 @@ cross entropy in 128-token chunks and recomputes each chunk in backward, so
 the full FP32 logits copy is never live. The run configuration records this
 option; a BF16/FP32 reference check matched loss within 7.6e-6 and gradients
 exactly on a small masked test case.
+That Qwen retry had been launched for eight steps before the user requested
+two warmup plus two measured steps. A monitor stopped its torchrun process
+after the fourth complete step. `planned_stop_after_step.json`, the four
+per-step records, `selected_timing.json`, and the process exit code remain in
+the remote run directory; `tools/collect_qj_planned_stop.py` selected steps
+3 and 4 without editing the raw timing. The selected result is 119.86 TPS.
 
 An earlier GLM KT 4096 diagnostic ran while another service occupied GPU 0;
 it is excluded from this chart. The clean qj5090 retry succeeded and its

@@ -104,8 +104,35 @@ def read_statuses() -> dict[tuple[str, str, int], dict[str, str]]:
     return statuses
 
 
+def read_glm_alias_supplement() -> dict[int, dict[str, str]]:
+    """Use the isolated GLM 4K retry only after its fixed-batch loss gate passes."""
+    path = RESULTS / "qj5090_glm_megatrain_alias_slots_patch_performance.csv"
+    measurements = read_performance(path)
+    if not measurements:
+        return {}
+    if set(measurements) != {4096}:
+        raise ValueError(f"GLM alias supplement contains unexpected lengths: {path}")
+    gate = RESULTS / "qj5090_glm_megatrain_alias_slots_patch_semantic_checks.csv"
+    if not gate.exists():
+        raise ValueError(f"GLM alias supplement lacks semantic evidence: {gate}")
+    with gate.open(newline="") as stream:
+        passed = any(
+            row["model"] == "GLM-4.5-Air"
+            and row["backend"] == "megatrain"
+            and row["sequence_length"] == "4096"
+            and row["num_gpus"] == "8"
+            and row["steps"] == "4"
+            and row["status"] == "SUCCESS"
+            for row in csv.DictReader(stream)
+        )
+    if not passed:
+        raise ValueError(f"GLM alias supplement has no passing loss gate: {gate}")
+    return measurements
+
+
 def assemble() -> list[dict[str, str]]:
     statuses = read_statuses()
+    glm_alias_supplement = read_glm_alias_supplement()
     rows = []
     for model, kt_stem, fsdp_stem in MODELS:
         measurements = {
@@ -138,6 +165,12 @@ def assemble() -> list[dict[str, str]]:
                     row.update(measurements[backend][seq])
                     row["status"] = "SUCCESS"
                     row["source"] = sources[backend]
+                elif model == "GLM-4.5-Air-106B" and backend == "megatrain" \
+                        and seq in glm_alias_supplement:
+                    row.update(glm_alias_supplement[seq])
+                    row["status"] = "SUCCESS"
+                    row["source"] = "results/qj5090_glm_megatrain_alias_slots_patch_performance.csv"
+                    row["note"] = "Alias-slot supplement; fixed-batch loss check passed"
                 elif (model, backend, seq) in statuses:
                     row.update(statuses[model, backend, seq])
                 rows.append(row)
@@ -185,8 +218,10 @@ def plot(rows: list[dict[str, str]]) -> None:
                ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.09))
     fig.suptitle("qj5090 · 8 × RTX 5090 · BF16 full fine-tuning · global batch 8", y=1.16,
                  fontsize=12)
-    fig.text(0.5, -0.025,
-             "Blank = not measured; × = observed OOM; ! = failed; · = blocked. No historical measurements.",
+    caption = "Blank = not measured; × = observed OOM; ! = failed; · = blocked. No historical measurements."
+    if any(row["note"].startswith("Alias-slot supplement") for row in rows):
+        caption += " GLM 4K MegaTrain uses the validated alias-slot supplement."
+    fig.text(0.5, -0.025, caption,
              ha="center", fontsize=9, color="#4a4a4a")
     for extension in ("png", "svg"):
         options = {"metadata": {"Date": None}} if extension == "svg" else {}

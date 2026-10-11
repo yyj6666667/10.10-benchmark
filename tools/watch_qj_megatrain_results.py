@@ -12,12 +12,16 @@ from pathlib import Path
 
 FILES = (
     "glm_megatrain_performance.csv",
+    "glm_megatrain_alias_slots_patch_performance.csv",
+    "glm_megatrain_alias_slots_patch_semantic_checks.csv",
     "qwen_megatrain_performance.csv",
     "case_status.csv",
     "semantic_checks.csv",
 )
 DESTINATIONS = {
     "glm_megatrain_performance.csv": "qj5090_glm_megatrain_performance.csv",
+    "glm_megatrain_alias_slots_patch_performance.csv": "qj5090_glm_megatrain_alias_slots_patch_performance.csv",
+    "glm_megatrain_alias_slots_patch_semantic_checks.csv": "qj5090_glm_megatrain_alias_slots_patch_semantic_checks.csv",
     "qwen_megatrain_performance.csv": "qj5090_qwen_megatrain_performance.csv",
     "case_status.csv": "qj5090_megatrain_case_status.csv",
     "semantic_checks.csv": "qj5090_megatrain_semantic_checks.csv",

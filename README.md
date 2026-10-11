@@ -171,6 +171,16 @@ to meta tensors across `to_empty()`, which replaced them with CPU parameters;
 the embedding output was zero and the first layer produced NaNs. The loader
 now resolves tensor names after CPU allocation and rejects non-CPU targets.
 Those earlier attempts are excluded from throughput.
+On qj5090, the original eight-GPU MegaTrain configuration completed GLM
+seq32 and seq64 but hit CUDA OOM in seq128 backward. An optional worker mode
+(`MEGATRAIN_OFFLOAD_EMB_HEAD=1`) releases the GPU embedding after its forward
+lookup and reloads it from the CPU master for embedding backward. It also
+loads the output head only for the loss and head backward. It reloads from
+the unchanged BF16 CPU master and includes the extra transfers in step wall
+time. `tools/patch_megatrain_gpu_lifecycle.py` applies the change to
+the extracted Infinity worker; a fresh fixed-batch check gates its timings.
+The case runner stops workers promptly on an observed CUDA OOM so a failed
+case cannot hold the remaining benchmark queue indefinitely.
 ZeRO uses DeepSpeed 0.19.1 stage 3 with optimizer state offloaded to CPU and
 parameter shards on GPU, matching the historical offload layout. BF16 master
 gradients and optimizer states remain enabled. The exact config is

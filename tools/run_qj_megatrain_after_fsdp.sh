@@ -23,6 +23,7 @@ while [[ -n $(ps -p "$previous_pid" -o stat= 2>/dev/null | grep -v '^Z' || true)
 done
 wait_for_resources
 
+if [[ ${MEGATRAIN_SKIP_SINGLE_GPU_DIAGNOSTIC:-0} != 1 ]]; then
 stamp=$(date +%Y%m%d_%H%M%S)
 diagnostic=$root/runs/glm45_air_megatrain_single_gpu_diagnostic_${stamp}_$$
 mkdir -p "$diagnostic"
@@ -64,6 +65,7 @@ else
     echo "$status" > "$diagnostic/exit_code.txt"
     echo "FAIL MegaTrain GLM single-GPU diagnostic exit=$status at $(date -Is)" >&2
 fi
+fi
 
 wait_for_resources
 echo "BEGIN MegaTrain GLM fixed-batch loss check at $(date -Is)"
@@ -84,6 +86,13 @@ if MEGATRAIN_FINITE_PROBE=1 MEGATRAIN_REPEAT_BATCH=1 \
             "$python" "$root/tools/record_qj_case_status.py" glm megatrain \
                 "$seq_len" "$run" "$status"
             echo "FAIL MegaTrain GLM seq=$seq_len exit=$status at $(date -Is)" >&2
+            if rg -q 'torch.OutOfMemoryError|CUDA out of memory' "$run/launcher.log"; then
+                "$python" "$root/tools/mark_qj_unrun_cases.py" glm megatrain \
+                    --after "$seq_len" --source "qj5090:$run/launcher.log" \
+                    --reason "Not run: MegaTrain CUDA OOM at seq$seq_len on 32 GiB GPUs" \
+                    --replace-existing-blocked
+                break
+            fi
             if (( seq_len == 32 )); then break; fi
         fi
     done
@@ -98,7 +107,8 @@ else
     [[ -f $run/host_memory_guard.txt ]] && source=$run/host_memory_guard.txt
     "$python" "$root/tools/mark_qj_unrun_cases.py" glm megatrain \
         --after 32 --source "qj5090:$source" \
-        --reason 'Not run: seq32 fixed-batch semantic check failed before valid timing'
+        --reason 'Not run: seq32 fixed-batch semantic check failed before valid timing' \
+        --replace-existing-blocked
     echo "FAIL MegaTrain GLM fixed-batch loss check exit=$status at $(date -Is)" >&2
 fi
 
@@ -118,7 +128,8 @@ else
     [[ -f $run/host_memory_guard.txt ]] && source=$run/host_memory_guard.txt
     "$python" "$root/tools/mark_qj_unrun_cases.py" qwen megatrain \
         --after 32 --source "qj5090:$source" \
-        --reason 'Not run: seq32 fixed-batch semantic check failed before valid timing'
+        --reason 'Not run: seq32 fixed-batch semantic check failed before valid timing' \
+        --replace-existing-blocked
     echo "FAIL MegaTrain Qwen fixed-batch loss check exit=$status at $(date -Is)" >&2
     exit "$status"
 fi
@@ -136,6 +147,13 @@ for seq_len in 32 64 128 256 512 1024 2048 4096; do
         "$python" "$root/tools/record_qj_case_status.py" qwen megatrain \
             "$seq_len" "$run" "$status"
         echo "FAIL MegaTrain Qwen seq=$seq_len exit=$status at $(date -Is)" >&2
+        if rg -q 'torch.OutOfMemoryError|CUDA out of memory' "$run/launcher.log"; then
+            "$python" "$root/tools/mark_qj_unrun_cases.py" qwen megatrain \
+                --after "$seq_len" --source "qj5090:$run/launcher.log" \
+                --reason "Not run: MegaTrain CUDA OOM at seq$seq_len on 32 GiB GPUs" \
+                --replace-existing-blocked
+            break
+        fi
         if (( seq_len == 32 )); then break; fi
     fi
 done

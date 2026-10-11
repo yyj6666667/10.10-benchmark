@@ -14,7 +14,9 @@ model_kind=$1
 seq_len=$2
 steps=${3:-8}
 warmup=${4:-2}
+offload_emb_head=${MEGATRAIN_OFFLOAD_EMB_HEAD:-0}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
+[[ $offload_emb_head == 0 || $offload_emb_head == 1 ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
 (( steps > warmup )) || exit 2
 
@@ -29,6 +31,7 @@ for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/record_qj_semantic_check.py" \
     "$root/tools/collect_qj_fsdp2_onednn_result.py" \
     "$root/tools/host_memory_guard.sh" \
+    "$root/tools/megatrain_oom_guard.sh" \
     "$root/src/megatrain/infinity/model/cpu_master.py" \
     "$root/src/megatrain/infinity/model/mp_worker.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
@@ -57,15 +60,16 @@ mode=benchmark
 [[ ${MEGATRAIN_REPEAT_BATCH:-0} == 1 ]] && mode=semantic
 run_dir=$root/runs/${model_kind}_megatrain_seq${seq_len}_8gpu_${stamp}_$$_${mode}
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" <<'PY'
+"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" "$offload_emb_head" <<'PY'
 import json, sys
 from pathlib import Path
-run, model, seq, steps, warmup, mode = sys.argv[1:]
+run, model, seq, steps, warmup, mode, offload_emb_head = sys.argv[1:]
 Path(run, 'run_config.json').write_text(json.dumps({
     'host': 'qj5090', 'backend': 'megatrain', 'model_kind': model,
     'sequence_length': int(seq), 'global_batch': 8, 'precision': 'bf16',
     'steps': int(steps), 'warmup_steps': int(warmup),
     'mode': mode,
+    'offload_embedding_head_gpu': offload_emb_head == '1',
     'checkpoint_interval': 1, 'num_grad_slabs': 2,
     'dataset': 'fft_real_100', 'gradient_clipping': 1.0,
     'host_available_guard_gib': 20,
@@ -96,14 +100,22 @@ bash "$root/tools/host_memory_guard.sh" "$$" "$run_dir" 20 \
 guard_pid=$!
 env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 \
+    MEGATRAIN_OFFLOAD_EMB_HEAD="$offload_emb_head" \
     TORCH_EXTENSIONS_DIR="$root/torch_extensions" \
     TOKENIZERS_PARALLELISM=false HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
     PYTHONPATH="$root/tools:$root/src/megatrain:$root/src/transformers:$root/src/llamafactory-overlay" \
     PYTORCH_ALLOC_CONF=expandable_segments:True \
     "$python" "$root/tools/kt_case_monitor.py" --output "$run_dir" \
     --gpu-ids 0,1,2,3,4,5,6,7 -- "${cmd[@]}" \
-    > "$run_dir/launcher.log" 2>&1
+    > "$run_dir/launcher.log" 2>&1 &
+monitor_pid=$!
+bash "$root/tools/megatrain_oom_guard.sh" "$monitor_pid" "$run_dir/launcher.log" \
+    > "$run_dir/oom_guard.log" 2>&1 &
+oom_guard_pid=$!
+wait "$monitor_pid"
 status=$?
+kill -TERM "$oom_guard_pid" 2>/dev/null || true
+wait "$oom_guard_pid" 2>/dev/null || true
 kill -TERM "$guard_pid" 2>/dev/null || true
 wait "$guard_pid" 2>/dev/null || true
 set -e

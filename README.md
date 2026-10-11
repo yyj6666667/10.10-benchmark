@@ -193,6 +193,14 @@ time. `tools/patch_megatrain_gpu_lifecycle.py` applies the change to
 the extracted Infinity worker; a fresh fixed-batch check gates its timings.
 The case runner stops workers promptly on an observed CUDA OOM so a failed
 case cannot hold the remaining benchmark queue indefinitely.
+For the isolated MegaTrain profiler run, `tools/patch_megatrain_worker_profiler.py`
+adds an opt-in hook to the GPU worker. `tools/megatrain_profile_hooks.py`
+captures rank 0's third training step after two warmup steps and labels layer
+weight H2D on `weight_stream`, layer compute on `compute_stream`, and gradient
+D2H on `grad_stream`. The trace includes CPU and CUDA activities. This run
+uses a repeated fixed batch for the loss check and never contributes a
+throughput bar. The worker source is backed up before patching and restored
+before the paused sweep resumes.
 ZeRO uses DeepSpeed 0.19.1 stage 3 with parameters and optimizer state
 offloaded to CPU, matching the paper's stated offload layout. BF16 master
 gradients and optimizer states remain enabled. The earlier optimizer-only

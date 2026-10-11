@@ -15,10 +15,17 @@ seq_len=$2
 steps=${3:-4}
 warmup=${4:-2}
 offload_emb_head=${MEGATRAIN_OFFLOAD_EMB_HEAD:-0}
+profile_dir=${MEGATRAIN_PROFILE_DIR:-}
+profile_step=${MEGATRAIN_PROFILE_STEP:-3}
+profile_rank=${MEGATRAIN_PROFILE_RANK:-0}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
 [[ $offload_emb_head == 0 || $offload_emb_head == 1 ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
 (( steps > warmup )) || exit 2
+if [[ -n $profile_dir ]]; then
+    [[ $profile_step =~ ^[1-9][0-9]*$ && $profile_rank =~ ^[0-7]$ ]] || exit 2
+    (( profile_step <= steps )) || exit 2
+fi
 
 root=/mnt/hurry-bench
 python=/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/bin/python
@@ -58,12 +65,16 @@ PY
 stamp=$(date +%Y%m%d_%H%M%S)
 mode=benchmark
 [[ ${MEGATRAIN_REPEAT_BATCH:-0} == 1 ]] && mode=semantic
+if [[ -n $profile_dir && $mode != semantic ]]; then
+    echo "profiling requires MEGATRAIN_REPEAT_BATCH=1" >&2
+    exit 2
+fi
 run_dir=$root/runs/${model_kind}_megatrain_seq${seq_len}_8gpu_${stamp}_$$_${mode}
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" "$offload_emb_head" <<'PY'
+"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" "$offload_emb_head" "$profile_dir" "$profile_step" "$profile_rank" <<'PY'
 import json, sys
 from pathlib import Path
-run, model, seq, steps, warmup, mode, offload_emb_head = sys.argv[1:]
+run, model, seq, steps, warmup, mode, offload_emb_head, profile_dir, profile_step, profile_rank = sys.argv[1:]
 Path(run, 'run_config.json').write_text(json.dumps({
     'host': 'qj5090', 'backend': 'megatrain', 'model_kind': model,
     'sequence_length': int(seq), 'global_batch': 8, 'precision': 'bf16',
@@ -73,6 +84,9 @@ Path(run, 'run_config.json').write_text(json.dumps({
     'checkpoint_interval': 1, 'num_grad_slabs': 2,
     'dataset': 'fft_real_100', 'gradient_clipping': 1.0,
     'host_available_guard_gib': 20,
+    'profile_dir': profile_dir or None,
+    'profile_step': int(profile_step) if profile_dir else None,
+    'profile_rank': int(profile_rank) if profile_dir else None,
 }, indent=2) + '\n')
 PY
 sha256sum "$root/tools/megatrain_full_ft.py" \
@@ -81,6 +95,11 @@ sha256sum "$root/tools/megatrain_full_ft.py" \
     "$root/src/megatrain/infinity/model/mp_state.py" \
     "$root/data/fft_real_100.json" "$checkpoint/config.json" \
     "$checkpoint/model.safetensors.index.json" > "$run_dir/checksums.txt"
+if [[ -n $profile_dir ]]; then
+    sha256sum "$root/tools/megatrain_profile_hooks.py" \
+        "$root/tools/patch_megatrain_worker_profiler.py" \
+        >> "$run_dir/checksums.txt"
+fi
 env PYTHONPATH="$root/tools:$root/src/megatrain:$root/src/transformers:$root/src/llamafactory-overlay" \
     "$python" -c 'import torch, transformers, infinity; print(torch.__version__, transformers.__version__, infinity.__file__)' \
     > "$run_dir/versions.txt"
@@ -101,6 +120,8 @@ guard_pid=$!
 env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 \
     MEGATRAIN_OFFLOAD_EMB_HEAD="$offload_emb_head" \
+    MEGATRAIN_PROFILE_DIR="$profile_dir" \
+    MEGATRAIN_PROFILE_STEP="$profile_step" MEGATRAIN_PROFILE_RANK="$profile_rank" \
     TORCH_EXTENSIONS_DIR="$root/torch_extensions" \
     TOKENIZERS_PARALLELISM=false HF_DATASETS_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
     PYTHONPATH="$root/tools:$root/src/megatrain:$root/src/transformers:$root/src/llamafactory-overlay" \

@@ -1,5 +1,6 @@
 # 10.10 benchmark
 
+我有一个问题，就是为什么我没有在zero offload上面观察到特别明显的往下传梯度或者传权重的过程呢？
 The current single-node, full-parameter fine-tuning benchmark runs only on
 qj5090, reached through the sap1 SSH jump host. Older host analyses remain
 in `references/` for context and are excluded from the current chart.

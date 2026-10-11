@@ -8,11 +8,15 @@ if [[ $# -lt 2 || $# -gt 3 ]]; then
 fi
 seq_len=$1
 steps=$2
-warmup=2
+warmup=${KT_BENCH_WARMUP_STEPS:-2}
 model=${3:-glm}
 mode=${KT_BENCH_MODE:-benchmark}
 owner_omp_threads=${KT_BENCH_OWNER_OMP_THREADS:-${KT_CLIP_PROFILE_OWNER_OMP_THREADS:-64}}
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ ]] || exit 2
+[[ $warmup =~ ^[0-9]+$ ]] && (( steps > warmup )) || {
+    echo "steps must exceed KT_BENCH_WARMUP_STEPS" >&2
+    exit 2
+}
 [[ $owner_omp_threads =~ ^[1-9][0-9]*$ ]] || { echo "invalid owner OpenMP thread count: $owner_omp_threads" >&2; exit 2; }
 export KT_BENCH_OWNER_OMP_THREADS=$owner_omp_threads
 [[ $mode == benchmark || $mode == semantic || $mode == profile || $mode == clip_profile ]] || { echo "unknown mode: $mode" >&2; exit 2; }
@@ -92,7 +96,7 @@ mkdir -p "$run_dir"
 printf '%s\n' "$gpu_state" > "$run_dir/gpu_before.csv"
 free -h > "$run_dir/memory_before.txt"
 
-"$python" - "$tools_dir" "$run_dir" "$checkpoint" "$root/data" "$seq_len" "$steps" "$model" "$template" "$model_name" "$mode" <<'PY'
+"$python" - "$tools_dir" "$run_dir" "$checkpoint" "$root/data" "$seq_len" "$steps" "$warmup" "$model" "$template" "$model_name" "$mode" <<'PY'
 import json
 import os
 import sys
@@ -100,7 +104,7 @@ from pathlib import Path
 
 import yaml
 
-tools, run, checkpoint, data, seq_len, steps, model, template, model_name, mode = sys.argv[1:]
+tools, run, checkpoint, data, seq_len, steps, warmup, model, template, model_name, mode = sys.argv[1:]
 tools, run = Path(tools), Path(run)
 train = yaml.safe_load((tools / "kt_glm_train_base.yaml").read_text())
 train.update(
@@ -146,7 +150,7 @@ if model == "qwen":
     "checkpoint": checkpoint,
     "sequence_length": int(seq_len),
     "steps": int(steps),
-    "warmup_steps": 2,
+    "warmup_steps": int(warmup),
     "global_batch": 8,
     "tokens_per_step": 8 * int(seq_len),
     "host": "qj5090",

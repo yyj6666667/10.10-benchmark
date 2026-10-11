@@ -1,0 +1,502 @@
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_6
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_2
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_0
+[WARNING|2026-10-11 06:22:34] llamafactory.extras.misc:155 >> Version checking has been disabled, may lead to unexpected behaviors.
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_1
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_5
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_4
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_3
+[step_phase_timer] mode=coarse_host_wall_no_cuda_sync backend=deepspeed out=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/step_timing/rank_7
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 7, world size: 8, device: cuda:7, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 5, world size: 8, device: cuda:5, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 1, world size: 8, device: cuda:1, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 2, world size: 8, device: cuda:2, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 4, world size: 8, device: cuda:4, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 3, world size: 8, device: cuda:3, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 6, world size: 8, device: cuda:6, distributed training: True, compute dtype: torch.bfloat16
+[INFO|2026-10-11 06:22:36] llamafactory.hparams.parser:508 >> Process rank: 0, world size: 8, device: cuda:0, distributed training: True, compute dtype: torch.bfloat16
+[INFO|hub.py:364] 2026-10-11 06:22:36,191 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:22:36,192 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:22:36,198 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:22:36,198 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 06:22:36,198 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:22:36,922 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:22:36,922 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:22:36,922 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:22:36,923 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:22:36,923 >> Offline mode: forcing local_files_only=True
+[INFO|hub.py:364] 2026-10-11 06:22:36,923 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:22:36,923 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:22:36,924 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:22:36,924 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:22:36,924 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:22:36,924 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|hub.py:364] 2026-10-11 06:22:36,924 >> Offline mode: forcing local_files_only=True
+[INFO|tokenization_utils_base.py:1594] 2026-10-11 06:22:36,924 >> Offline mode: forcing local_files_only=True
+[WARNING|2026-10-11 06:22:37] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-11 06:22:37] llamafactory.data.template:144 >> Add <|user|>,<|observation|> to stop words.
+[INFO|2026-10-11 06:22:37] llamafactory.data.loader:144 >> Loading dataset fft_real_100.json...
+training example:
+input_ids:
+[151331, 151350, 271, 151351, 271, 198, 1986, 2197, 320, 1252, 220, 16, 11, 10315, 220, 20, 99243, 100899, 8, 14511, 264, 2088, 315, 13338, 304, 5662, 6832, 11, 5942, 3162, 11, 151329]
+inputs:
+[gMASK]<think>
+
+</think>
+
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,<|endoftext|>
+label_ids:
+[-100, 151350, 271, 151351, 271, 198, 1986, 2197, 320, 1252, 220, 16, 11, 10315, 220, 20, 99243, 100899, 8, 14511, 264, 2088, 315, 13338, 304, 5662, 6832, 11, 5942, 3162, 11, 151329]
+labels:
+<think>
+
+</think>
+
+
+This document (index 1, seed 51875) covers a range of topics in machine learning, systems software,<|endoftext|>
+[INFO|hub.py:364] 2026-10-11 06:22:38,252 >> Offline mode: forcing local_files_only=True
+[INFO|configuration_utils.py:769] 2026-10-11 06:22:38,252 >> loading configuration file /mnt/data/models/GLM-4.5-Air/config.json
+[INFO|configuration_utils.py:847] 2026-10-11 06:22:38,253 >> Model config Glm4MoeConfig {
+  "architectures": [
+    "Glm4MoeForCausalLM"
+  ],
+  "attention_bias": true,
+  "attention_dropout": 0.0,
+  "bos_token_id": null,
+  "dtype": "bfloat16",
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "first_k_dense_replace": 1,
+  "head_dim": 128,
+  "hidden_act": "silu",
+  "hidden_size": 4096,
+  "initializer_range": 0.02,
+  "intermediate_size": 10944,
+  "max_position_embeddings": 131072,
+  "model_type": "glm4_moe",
+  "moe_intermediate_size": 1408,
+  "n_group": 1,
+  "n_routed_experts": 128,
+  "n_shared_experts": 1,
+  "norm_topk_prob": true,
+  "num_attention_heads": 96,
+  "num_experts_per_tok": 8,
+  "num_hidden_layers": 46,
+  "num_key_value_heads": 8,
+  "num_nextn_predict_layers": 1,
+  "pad_token_id": 151329,
+  "partial_rotary_factor": 0.5,
+  "rms_norm_eps": 1e-05,
+  "rope_parameters": {
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 1000000,
+    "rope_type": "default"
+  },
+  "routed_scaling_factor": 1.0,
+  "tie_word_embeddings": false,
+  "topk_group": 1,
+  "transformers_version": "5.6.0",
+  "use_cache": true,
+  "use_qk_norm": false,
+  "vocab_size": 151552
+}
+
+[INFO|2026-10-11 06:22:38] llamafactory.model.model_utils.kv_cache:144 >> KV cache is disabled during training.
+[INFO|modeling_utils.py:706] 2026-10-11 06:22:38,796 >> loading weights file /mnt/data/models/GLM-4.5-Air/model.safetensors.index.json
+[INFO|modeling_utils.py:779] 2026-10-11 06:22:38,800 >> Will use dtype=torch.bfloat16 as defined in model's config object
+[INFO|modeling_utils.py:3612] 2026-10-11 06:22:38,800 >> Detected DeepSpeed ZeRO-3: activating zero.init() for this model
+[zero_memory_phase] 1791699758.801296 model_construction.start
+[INFO|configuration_utils.py:1027] 2026-10-11 06:22:38,806 >> Generate config GenerationConfig {
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "pad_token_id": 151329,
+  "use_cache": false
+}
+
+[zero_memory_phase] 1791699772.622531 model_construction.end
+[zero_memory_phase] 1791699772.629335 checkpoint_load.start
+[zero_memory_phase] 1791699772.631606 checkpoint_shard.1.start
+[zero_memory_phase] 1791699772.633523 checkpoint_shard.1.end
+[zero_memory_phase] 1791699773.455010 checkpoint_shard.2.start
+[zero_memory_phase] 1791699773.720300 checkpoint_shard.2.end
+[zero_memory_phase] 1791699775.463805 checkpoint_shard.3.start
+[zero_memory_phase] 1791699775.469260 checkpoint_shard.3.end
+[zero_memory_phase] 1791699777.439543 checkpoint_shard.4.start
+[zero_memory_phase] 1791699777.446845 checkpoint_shard.4.end
+[zero_memory_phase] 1791699779.304076 checkpoint_shard.5.start
+[zero_memory_phase] 1791699779.309510 checkpoint_shard.5.end
+[zero_memory_phase] 1791699781.163666 checkpoint_shard.6.start
+[zero_memory_phase] 1791699781.169320 checkpoint_shard.6.end
+[zero_memory_phase] 1791699783.180449 checkpoint_shard.7.start
+[zero_memory_phase] 1791699783.187281 checkpoint_shard.7.end
+[zero_memory_phase] 1791699785.040658 checkpoint_shard.8.start
+[zero_memory_phase] 1791699785.048154 checkpoint_shard.8.end
+[zero_memory_phase] 1791699786.938455 checkpoint_shard.9.start
+[zero_memory_phase] 1791699786.945829 checkpoint_shard.9.end
+[zero_memory_phase] 1791699788.891848 checkpoint_shard.10.start
+[zero_memory_phase] 1791699788.899474 checkpoint_shard.10.end
+[zero_memory_phase] 1791699790.954304 checkpoint_shard.11.start
+[zero_memory_phase] 1791699790.959659 checkpoint_shard.11.end
+[zero_memory_phase] 1791699793.003616 checkpoint_shard.12.start
+[zero_memory_phase] 1791699793.008915 checkpoint_shard.12.end
+[zero_memory_phase] 1791699795.011142 checkpoint_shard.13.start
+[zero_memory_phase] 1791699795.016756 checkpoint_shard.13.end
+[zero_memory_phase] 1791699797.087092 checkpoint_shard.14.start
+[zero_memory_phase] 1791699797.286877 checkpoint_shard.14.end
+[zero_memory_phase] 1791699799.305352 checkpoint_shard.15.start
+[zero_memory_phase] 1791699799.310824 checkpoint_shard.15.end
+[zero_memory_phase] 1791699801.330950 checkpoint_shard.16.start
+[zero_memory_phase] 1791699801.336434 checkpoint_shard.16.end
+[zero_memory_phase] 1791699803.351247 checkpoint_shard.17.start
+[zero_memory_phase] 1791699803.356733 checkpoint_shard.17.end
+[zero_memory_phase] 1791699805.479385 checkpoint_shard.18.start
+[zero_memory_phase] 1791699805.484870 checkpoint_shard.18.end
+[zero_memory_phase] 1791699807.400769 checkpoint_shard.19.start
+[zero_memory_phase] 1791699807.406345 checkpoint_shard.19.end
+[zero_memory_phase] 1791699809.404875 checkpoint_shard.20.start
+[zero_memory_phase] 1791699809.410412 checkpoint_shard.20.end
+[zero_memory_phase] 1791699811.463463 checkpoint_shard.21.start
+[zero_memory_phase] 1791699811.469024 checkpoint_shard.21.end
+[zero_memory_phase] 1791699813.517786 checkpoint_shard.22.start
+[zero_memory_phase] 1791699813.523208 checkpoint_shard.22.end
+[zero_memory_phase] 1791699815.509984 checkpoint_shard.23.start
+[zero_memory_phase] 1791699815.515238 checkpoint_shard.23.end
+[zero_memory_phase] 1791699817.462700 checkpoint_shard.24.start
+[zero_memory_phase] 1791699817.467713 checkpoint_shard.24.end
+[zero_memory_phase] 1791699819.387046 checkpoint_shard.25.start
+[zero_memory_phase] 1791699819.392148 checkpoint_shard.25.end
+[zero_memory_phase] 1791699821.364976 checkpoint_shard.26.start
+[zero_memory_phase] 1791699821.370469 checkpoint_shard.26.end
+[zero_memory_phase] 1791699823.259399 checkpoint_shard.27.start
+[zero_memory_phase] 1791699823.264428 checkpoint_shard.27.end
+[zero_memory_phase] 1791699825.165656 checkpoint_shard.28.start
+[zero_memory_phase] 1791699825.171908 checkpoint_shard.28.end
+[zero_memory_phase] 1791699827.982473 checkpoint_shard.29.start
+[zero_memory_phase] 1791699827.989132 checkpoint_shard.29.end
+[zero_memory_phase] 1791699833.489229 checkpoint_shard.30.start
+[zero_memory_phase] 1791699833.495761 checkpoint_shard.30.end
+[zero_memory_phase] 1791699836.836738 checkpoint_shard.31.start
+[zero_memory_phase] 1791699836.843113 checkpoint_shard.31.end
+[zero_memory_phase] 1791699840.196573 checkpoint_shard.32.start
+[zero_memory_phase] 1791699840.304641 checkpoint_shard.32.end
+[zero_memory_phase] 1791699847.608128 checkpoint_shard.33.start
+[zero_memory_phase] 1791699847.614031 checkpoint_shard.33.end
+[zero_memory_phase] 1791699855.036247 checkpoint_shard.34.start
+[zero_memory_phase] 1791699855.043739 checkpoint_shard.34.end
+[zero_memory_phase] 1791699862.743279 checkpoint_shard.35.start
+[zero_memory_phase] 1791699862.748791 checkpoint_shard.35.end
+[zero_memory_phase] 1791699869.548645 checkpoint_shard.36.start
+[zero_memory_phase] 1791699869.553992 checkpoint_shard.36.end
+[zero_memory_phase] 1791699873.645612 checkpoint_shard.37.start
+[zero_memory_phase] 1791699873.651042 checkpoint_shard.37.end
+[zero_memory_phase] 1791699877.816467 checkpoint_shard.38.start
+[zero_memory_phase] 1791699877.822294 checkpoint_shard.38.end
+[zero_memory_phase] 1791699879.931597 checkpoint_shard.39.start
+[zero_memory_phase] 1791699879.937424 checkpoint_shard.39.end
+[zero_memory_phase] 1791699882.126795 checkpoint_shard.40.start
+[zero_memory_phase] 1791699882.145311 checkpoint_shard.40.end
+[zero_memory_phase] 1791699884.910389 checkpoint_shard.41.start
+[zero_memory_phase] 1791699884.952763 checkpoint_shard.41.end
+[zero_memory_phase] 1791699887.156513 checkpoint_shard.42.start
+[zero_memory_phase] 1791699887.162493 checkpoint_shard.42.end
+[zero_memory_phase] 1791699889.208909 checkpoint_shard.43.start
+[zero_memory_phase] 1791699889.214873 checkpoint_shard.43.end
+[zero_memory_phase] 1791699891.340318 checkpoint_shard.44.start
+[zero_memory_phase] 1791699891.346019 checkpoint_shard.44.end
+[zero_memory_phase] 1791699893.362322 checkpoint_shard.45.start
+[zero_memory_phase] 1791699893.368789 checkpoint_shard.45.end
+[zero_memory_phase] 1791699895.450968 checkpoint_shard.46.start
+[zero_memory_phase] 1791699895.456932 checkpoint_shard.46.end
+[zero_memory_phase] 1791699897.692579 checkpoint_shard.47.start
+[zero_memory_phase] 1791699897.798457 checkpoint_shard.47.end
+[zero_memory_phase] 1791699897.807657 checkpoint_load.end
+[zero_memory_phase] 1791699897.807680 model_finalize.start
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[WARNING|loading_report.py:269] 2026-10-11 06:24:57,815 >> [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[zero_memory_phase] 1791699897.815641 model_finalize.end
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[INFO|configuration_utils.py:978] 2026-10-11 06:24:57,816 >> loading configuration file /mnt/data/models/GLM-4.5-Air/generation_config.json
+[INFO|configuration_utils.py:1027] 2026-10-11 06:24:57,816 >> Generate config GenerationConfig {
+  "eos_token_id": [
+    151329,
+    151336,
+    151338
+  ],
+  "pad_token_id": 151329
+}
+
+[INFO|dynamic_module_utils.py:406] 2026-10-11 06:24:57,817 >> Could not locate the custom_generate/generate.py inside /mnt/data/models/GLM-4.5-Air.
+[INFO|2026-10-11 06:24:57] llamafactory.model.model_utils.checkpointing:144 >> Gradient checkpointing enabled.
+[INFO|2026-10-11 06:24:57] llamafactory.model.model_utils.attention:144 >> Using torch SDPA for faster training and inference.
+[INFO|2026-10-11 06:24:57] llamafactory.model.adapter:144 >> DeepSpeed ZeRO3 detected, remaining trainable params in float32.
+[INFO|2026-10-11 06:24:57] llamafactory.model.adapter:144 >> Fine-tuning method: Full
+[transformers] [1mGlm4MoeForCausalLM LOAD REPORT[0m from: /mnt/data/models/GLM-4.5-Air
+Key                                                    | Status  | 
+-------------------------------------------------------+---------+-
+model.layers.{1...45}.mlp.gate.e_score_correction_bias | MISSING | 
+
+Notes:
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[INFO|2026-10-11 06:24:57] llamafactory.model.loader:144 >> trainable params: 106,852,245,504 || all params: 106,852,245,504 || trainable%: 100.0000
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[INFO|trainer.py:806] 2026-10-11 06:24:57,830 >> max_steps is given, it will override any value given in num_train_epochs
+[contract] trainable_parameters=106852245504
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[WARNING|trainer_utils.py:1238] 2026-10-11 06:24:57,832 >> The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 151329}.
+[zero_memory_phase] 1791699898.172459 zero_optimizer_init.start
+Adam Optimizer #0 is created with AVX512 arithmetic capability.
+Config: alpha=0.000010, betas=(0.900000, 0.999000), weight_decay=0.010000, adam_w=1
+[Rank 0] time (ms) | init_optimizer_state: 2692.23
+[zero_memory_state] {"parameter_partition": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1184281344, "storage_ptr": 140339834781696}, "master_partition": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1184281344, "storage_ptr": 140430848200768}, "optimizer_state": {}}
+[zero_memory_phase] 1791699933.828384 zero_optimizer_init.end
+[INFO|trainer.py:1650] 2026-10-11 06:25:33,829 >> ***** Running training *****
+[INFO|trainer.py:1651] 2026-10-11 06:25:33,829 >>   Num examples = 8
+[INFO|trainer.py:1652] 2026-10-11 06:25:33,829 >>   Num Epochs = 4
+[INFO|trainer.py:1653] 2026-10-11 06:25:33,829 >>   Num update steps per epoch = 1
+[INFO|trainer.py:1654] 2026-10-11 06:25:33,829 >>   Instantaneous batch size per device = 1
+[INFO|trainer.py:1657] 2026-10-11 06:25:33,829 >>   Total train batch size (w. parallel, distributed & accumulation) = 8
+[INFO|trainer.py:1658] 2026-10-11 06:25:33,829 >>   Gradient Accumulation steps = 1
+[INFO|trainer.py:1659] 2026-10-11 06:25:33,829 >>   Total optimization steps = 4
+[INFO|trainer.py:1660] 2026-10-11 06:25:33,830 >>   Number of trainable parameters = 106,852,245,504
+[Rank 0] time (ms) | optimizer_step: 14474.82
+[Rank 0] time (ms) | fwd_microstep: 7342.83 | bwd_microstep: 32289.50 | bwd_inner_microstep: 32211.85 | bwd_allreduce_microstep: 77.45 | step_microstep: 14511.01
+[Rank 0] time (ms) | fwd: 7342.85 | bwd: 32289.48 | bwd_inner: 32211.86 | bwd_allreduce: 77.46 | step: 14511.01
+{'loss': '9.343', 'grad_norm': '4969', 'learning_rate': '8.536e-06', 'epoch': '1'}
+[Rank 0] time (ms) | optimizer_step: 10288.68
+[Rank 0] time (ms) | fwd_microstep: 6060.87 | bwd_microstep: 31362.14 | bwd_inner_microstep: 31288.46 | bwd_allreduce_microstep: 73.65 | step_microstep: 10334.07
+[Rank 0] time (ms) | fwd: 6060.86 | bwd: 31362.15 | bwd_inner: 31288.46 | bwd_allreduce: 73.66 | step: 10334.06
+{'loss': '6.89', 'grad_norm': '942.9', 'learning_rate': '5e-06', 'epoch': '2'}
+[glm45_step_profiler] rank=0 start_step=3
+[Rank 0] time (ms) | optimizer_step: 7526.66
+[Rank 0] time (ms) | fwd_microstep: 6066.41 | bwd_microstep: 24904.76 | bwd_inner_microstep: 24812.77 | bwd_allreduce_microstep: 91.89 | step_microstep: 7547.34
+[Rank 0] time (ms) | fwd: 6066.40 | bwd: 24904.74 | bwd_inner: 24812.76 | bwd_allreduce: 91.89 | step: 7547.35
+[glm45_step_profiler] rank=0 saved=/mnt/hurry-bench/runs/glm_zero_offload_seq32_8gpu_20261011_062217_3882176_semantic/profile/rank_0_step_3.trace.json
+{'loss': '5.06', 'grad_norm': '239.3', 'learning_rate': '1.464e-06', 'epoch': '3'}
+[Rank 0] time (ms) | optimizer_step: 10366.46
+[Rank 0] time (ms) | fwd_microstep: 6027.86 | bwd_microstep: 23914.86 | bwd_inner_microstep: 23824.25 | bwd_allreduce_microstep: 90.56 | step_microstep: 10396.35
+[Rank 0] time (ms) | fwd: 6027.86 | bwd: 23914.86 | bwd_inner: 23824.24 | bwd_allreduce: 90.57 | step: 10396.35
+{'loss': '4.518', 'grad_norm': '239.5', 'learning_rate': '0', 'epoch': '4'}
+[INFO|trainer.py:2169] 2026-10-11 06:29:34,350 >> 
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+{'train_runtime': '240.5', 'train_samples_per_second': '0.133', 'train_steps_per_second': '0.017', 'train_loss': '6.453', 'epoch': '4'}
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+[zero_memory_state_after_step] {"exp_avg": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1184281344, "storage_ptr": 140298912174144}, "exp_avg_sq": {"dtype": "torch.bfloat16", "device": "cpu", "numel": 1184281344, "storage_ptr": 140296543608896}}
+[kt_bench] final model save skipped
+[kt_bench] final model save skipped
+***** train metrics *****
+  epoch                    =        4.0
+  train_loss               =     6.4528
+  train_runtime            = 0:04:00.52
+  train_samples_per_second =      0.133
+  train_steps_per_second   =      0.017
+[INFO|modelcard.py:263] 2026-10-11 06:29:34,353 >> Dropping the following result as it does not have all the necessary fields:
+{'task': {'name': 'Causal Language Modeling', 'type': 'text-generation'}}

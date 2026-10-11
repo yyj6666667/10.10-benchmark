@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import subprocess
 import time
 from pathlib import Path
@@ -12,9 +14,11 @@ FILES = (
     "glm_zero_offload_performance.csv",
     "qwen_zero_offload_performance.csv",
     "case_status.csv",
+    "semantic_checks.csv",
 )
 DESTINATIONS = {
     "case_status.csv": "qj5090_zero_offload_case_status.csv",
+    "semantic_checks.csv": "qj5090_zero_offload_semantic_checks.csv",
 }
 
 
@@ -35,6 +39,31 @@ def fetch_tables(clone: Path) -> list[Path]:
         destination = clone / "results" / DESTINATIONS.get(name, name)
         temporary = clone / "results" / f".{name}.incoming"
         command("scp", "-o", "ProxyJump=sap1", f"qj5090:{source}", str(temporary))
+        if name in {"case_status.csv", "semantic_checks.csv"}:
+            with temporary.open(newline="") as stream:
+                reader = csv.DictReader(stream)
+                fields = reader.fieldnames
+                rows = list(reader)
+            rows = [row for row in rows if row["backend"] == "zero_offload"]
+            if name == "case_status.csv":
+                successful = set()
+                for model, label in (
+                    ("glm", "GLM-4.5-Air-106B"),
+                    ("qwen", "Qwen3.5-122B-A10B"),
+                ):
+                    table = clone / "results" / f"{model}_zero_offload_performance.csv"
+                    if table.exists():
+                        with table.open(newline="") as stream:
+                            successful.update((label, row["Seq"]) for row in csv.DictReader(stream))
+                rows = [
+                    row for row in rows
+                    if (row["model"], row["sequence_length"]) not in successful
+                ]
+            buffer = io.StringIO(newline="")
+            writer = csv.DictWriter(buffer, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(rows)
+            temporary.write_text(buffer.getvalue())
         if not destination.exists() or destination.read_bytes() != temporary.read_bytes():
             temporary.replace(destination)
             changed.append(destination.relative_to(clone))

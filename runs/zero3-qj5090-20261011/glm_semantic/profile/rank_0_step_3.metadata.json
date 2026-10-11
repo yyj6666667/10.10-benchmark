@@ -1,0 +1,12 @@
+{
+  "rank": 0,
+  "step": 3,
+  "activities": [
+    "CPU",
+    "CUDA"
+  ],
+  "record_shapes": false,
+  "profile_memory": false,
+  "with_stack": false,
+  "trace": "rank_0_step_3.trace.json"
+}

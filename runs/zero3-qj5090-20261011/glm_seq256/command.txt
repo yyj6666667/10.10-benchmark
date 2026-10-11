@@ -1,0 +1,1 @@
+/mnt/sft_yyj_yyj/venvs/qwen3-30b-a3b-deepspeed-cpuadam-py311/bin/torchrun --standalone --nproc_per_node=8 -m kt_bench_entry /mnt/hurry-bench/runs/glm_zero_offload_seq256_8gpu_20261011_065005_3899419_benchmark/train_config.yaml 

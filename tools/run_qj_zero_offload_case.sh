@@ -31,7 +31,9 @@ for path in "$checkpoint/model.safetensors.index.json" \
     "$root/tools/step_phase_timer.py" "$root/tools/kt_case_monitor.py" \
     "$root/tools/zero_memory_sampler.py" \
     "$root/tools/host_memory_guard.sh" \
-    "$root/src/llamafactory-overlay/llamafactory/cli.py"; do
+    "$root/src/llamafactory-overlay/llamafactory/cli.py" \
+    "$root/src/llamafactory-overlay/llamafactory/model/loader.py" \
+    "$root/src/transformers/transformers/modeling_utils.py"; do
     [[ -f $path ]] || { echo "missing $path" >&2; exit 1; }
 done
 compute_apps=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits)
@@ -52,6 +54,11 @@ root, run, checkpoint, template, model, seq, steps, warmup, mode = sys.argv[1:]
 root, run = Path(root), Path(run)
 train = yaml.safe_load((root / 'tools/kt_glm_train_base.yaml').read_text())
 zero = json.loads((root / 'tools/zero3_cpu_offload.json').read_text())['zero_optimization']
+if model == 'qwen':
+    examples = json.loads((root / 'data/fft_real_100.json').read_text())
+    multimodal = {'image', 'images', 'video', 'videos', 'audio', 'audios'}
+    if not examples or any(multimodal.intersection(example) for example in examples):
+        raise ValueError('Qwen Conv3D guard may only be bypassed for text-only examples')
 for key in ('use_kt', 'kt_weight_path', 'kt_config'):
     train.pop(key, None)
 train.update(
@@ -91,6 +98,8 @@ train.pop('dataloader_prefetch_factor', None)
 PY
 sha256sum "$root/tools/zero3_cpu_offload.json" "$root/tools/kt_bench_entry.py" \
     "$root/tools/step_phase_timer.py" "$root/data/fft_real_100.json" \
+    "$root/src/llamafactory-overlay/llamafactory/model/loader.py" \
+    "$root/src/transformers/transformers/modeling_utils.py" \
     "$checkpoint/config.json" "$checkpoint/model.safetensors.index.json" \
     "$run_dir/train_config.yaml" > "$run_dir/checksums.txt"
 env PYTHONPATH="$root/tools:$root/src/transformers:$root/src/llamafactory-overlay" \
@@ -102,6 +111,8 @@ cmd=("$torchrun" --standalone --nproc_per_node=8 -m kt_bench_entry "$run_dir/tra
 printf '%q ' "${cmd[@]}" > "$run_dir/command.txt"
 printf '\n' >> "$run_dir/command.txt"
 profile_dir=
+text_only_benchmark=0
+[[ $model == qwen ]] && text_only_benchmark=1
 if [[ $mode == semantic && $model == glm ]]; then
     profile_dir=$run_dir/profile
     mkdir -p "$profile_dir"
@@ -125,6 +136,7 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     FFT_STEP_TIMING_WARMUP_STEPS="$warmup" \
     FFT_STEP_TIMING_TOKENS_PER_STEP="$((8 * seq_len))" \
     FFT_TRAINING_BACKEND=deepspeed DISABLE_VERSION_CHECK=1 \
+    FFT_TEXT_ONLY_BENCHMARK="$text_only_benchmark" \
     ZERO_MEMORY_DIAGNOSTIC="${ZERO_MEMORY_DIAGNOSTIC:-0}" \
     FFT_EXPECTED_TRAINABLE_PARAMS="$expected_params" \
     GLM45_PROFILE_DIR="$profile_dir" GLM45_PROFILE_STEP=3 GLM45_PROFILE_RANKS=0 \

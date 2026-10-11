@@ -1,0 +1,38 @@
+{
+  "method": "process_tree_sum_rss_and_nvidia_smi_2s_samples",
+  "gpu_ids": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "baseline_gpu_used_mib": {
+    "0": 2,
+    "1": 2,
+    "2": 2,
+    "3": 2,
+    "4": 2,
+    "5": 2,
+    "6": 2,
+    "7": 2
+  },
+  "peak_gpu_used_mib": {
+    "0": 17202,
+    "1": 17202,
+    "2": 17202,
+    "3": 17202,
+    "4": 17202,
+    "5": 17202,
+    "6": 17202,
+    "7": 17202
+  },
+  "peak_single_gpu_used_gib": 16.798828125,
+  "peak_process_tree_rss_gb": 1372.961132544,
+  "minimum_host_available_gb": 197.465350144,
+  "elapsed_sec": 346.39362151920795,
+  "exit_code": 0
+}

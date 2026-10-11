@@ -42,7 +42,9 @@ mark_later() {
         --replace-existing-blocked
 }
 
-for model in glm qwen; do
+read -r -a models <<< "${ZERO_QUEUE_MODELS:-glm qwen}"
+for model in "${models[@]}"; do
+    [[ $model == glm || $model == qwen ]] || exit 2
     wait_for_resources() {
         while true; do
             compute_apps=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits)

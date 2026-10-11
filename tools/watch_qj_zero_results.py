@@ -35,8 +35,11 @@ def fetch_tables(clone: Path) -> list[Path]:
     changed = []
     for name in FILES:
         source = f"/mnt/hurry-bench/results/{name}"
-        exists = command("ssh", "-J", "sap1", "qj5090", f"test -f {source}", check=False)
-        if exists.returncode:
+        exists = command(
+            "ssh", "-J", "sap1", "qj5090",
+            f"if test -f {source}; then echo yes; else echo no; fi",
+        )
+        if exists.stdout.strip() == "no":
             continue
         destination = clone / "results" / DESTINATIONS.get(name, name)
         temporary = clone / "results" / f".{name}.incoming"
@@ -77,9 +80,10 @@ def fetch_tables(clone: Path) -> list[Path]:
 def queue_running() -> bool:
     remote = (
         "pid=$(cat /mnt/hurry-bench/logs/zero-offload-recovery-20261011.pid 2>/dev/null); "
-        "test -n \"$pid\" && ps -p \"$pid\" -o stat= | grep -qv '^Z'"
+        "if test -n \"$pid\" && ps -p \"$pid\" -o stat= | grep -qv '^Z'; "
+        "then echo RUNNING; else echo STOPPED; fi"
     )
-    return command("ssh", "-J", "sap1", "qj5090", remote, check=False).returncode == 0
+    return command("ssh", "-J", "sap1", "qj5090", remote).stdout.strip() == "RUNNING"
 
 
 def main() -> None:
@@ -96,23 +100,26 @@ def main() -> None:
     (clone / "results").mkdir(exist_ok=True)
 
     while True:
-        command("git", "fetch", "origin", "main", cwd=clone)
-        command("git", "reset", "--hard", "origin/main", cwd=clone)
-        changed = fetch_tables(clone)
-        if changed:
-            command("git", "add", *(str(path) for path in changed), cwd=clone)
-            command("git", "commit", "-m", "Sync qj5090 ZeRO measurements", cwd=clone)
-            for attempt in range(5):
-                pushed = command("git", "push", "origin", "main", cwd=clone, check=False)
-                if pushed.returncode == 0:
-                    print(f"pushed {', '.join(map(str, changed))}", flush=True)
-                    break
-                command("git", "pull", "--rebase", "origin", "main", cwd=clone)
-            else:
-                raise RuntimeError(f"Could not push measurement update: {pushed.stderr}")
-        if not queue_running():
-            print("queue ended; final result sync complete", flush=True)
-            return
+        try:
+            command("git", "fetch", "origin", "main", cwd=clone)
+            command("git", "reset", "--hard", "origin/main", cwd=clone)
+            changed = fetch_tables(clone)
+            if changed:
+                command("git", "add", *(str(path) for path in changed), cwd=clone)
+                command("git", "commit", "-m", "Sync qj5090 ZeRO measurements", cwd=clone)
+                for attempt in range(5):
+                    pushed = command("git", "push", "origin", "main", cwd=clone, check=False)
+                    if pushed.returncode == 0:
+                        print(f"pushed {', '.join(map(str, changed))}", flush=True)
+                        break
+                    command("git", "pull", "--rebase", "origin", "main", cwd=clone)
+                else:
+                    raise RuntimeError(f"Could not push measurement update: {pushed.stderr}")
+            if not queue_running():
+                print("queue ended; final result sync complete", flush=True)
+                return
+        except (RuntimeError, subprocess.TimeoutExpired) as exc:
+            print(f"sync retry: {exc}", flush=True)
         time.sleep(args.interval)
 
 

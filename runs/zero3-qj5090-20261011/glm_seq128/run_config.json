@@ -1,0 +1,22 @@
+{
+  "host": "qj5090",
+  "backend": "deepspeed_zero3_cpu_offload",
+  "model_kind": "glm",
+  "checkpoint": "/mnt/data/models/GLM-4.5-Air",
+  "sequence_length": 128,
+  "steps": 4,
+  "warmup_steps": 2,
+  "tokens_per_step": 1024,
+  "global_batch": 8,
+  "precision": "bf16",
+  "dataset": "fft_real_100",
+  "gradient_clipping": 1.0,
+  "optimizer_offload": "cpu",
+  "parameter_offload": "cpu",
+  "optimizer_offload_pin_memory": false,
+  "parameter_offload_pin_memory": false,
+  "stage3_prefetch_bucket_size": 10000000,
+  "overlap_comm": true,
+  "host_available_guard_gib": 20,
+  "mode": "benchmark"
+}

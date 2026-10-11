@@ -1121,8 +1121,8 @@ z
    <g id="patch_18">
     <path d="M 514.39382 457.291697
 L 526.685266 457.291697
-L 526.685266 457.291697
-L 514.39382 457.291697
+L 526.685266 245.137605
+L 514.39382 245.137605
 z
 " clip-path="url(#p08baac8bb4)" style="fill: url(#h75705f9c9d); stroke: #252b32; stroke-width: 0.65; stroke-linejoin: miter"/>
    </g>
@@ -1275,21 +1275,6 @@ L 575.236479 94.413896
 " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_16">
-    <!-- · -->
-    <g style="fill: #777777" transform="translate(517.880637 450.025601) scale(0.14 -0.14)">
-     <defs>
-      <path id="DejaVuSans-Bold-b7" d="M 653 2828
-L 1778 2828
-L 1778 1619
-L 653 1619
-L 653 2828
-z
-" transform="scale(0.015625)"/>
-     </defs>
-     <use xlink:href="#DejaVuSans-Bold-b7"/>
-    </g>
-   </g>
-   <g id="text_17">
     <!-- Qwen3.5-122B-A10B -->
     <g transform="translate(225.013864 88.413896) scale(0.15 -0.15)">
      <defs>
@@ -1594,7 +1579,7 @@ z
        <use xlink:href="#md1c498e79a" x="638.447691" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_18">
+     <g id="text_17">
       <!-- 32 -->
       <g transform="translate(632.085191 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-33"/>
@@ -1608,7 +1593,7 @@ z
        <use xlink:href="#md1c498e79a" x="699.904922" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_19">
+     <g id="text_18">
       <!-- 64 -->
       <g transform="translate(693.542422 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-36"/>
@@ -1622,7 +1607,7 @@ z
        <use xlink:href="#md1c498e79a" x="761.362153" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_20">
+     <g id="text_19">
       <!-- 128 -->
       <g transform="translate(751.818403 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-31"/>
@@ -1637,7 +1622,7 @@ z
        <use xlink:href="#md1c498e79a" x="822.819384" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_21">
+     <g id="text_20">
       <!-- 256 -->
       <g transform="translate(813.275634 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-32"/>
@@ -1652,7 +1637,7 @@ z
        <use xlink:href="#md1c498e79a" x="884.276615" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_22">
+     <g id="text_21">
       <!-- 512 -->
       <g transform="translate(874.732865 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-35"/>
@@ -1667,7 +1652,7 @@ z
        <use xlink:href="#md1c498e79a" x="945.733846" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_23">
+     <g id="text_22">
       <!-- 1K -->
       <g transform="translate(939.273689 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-31"/>
@@ -1681,7 +1666,7 @@ z
        <use xlink:href="#md1c498e79a" x="1007.191077" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_24">
+     <g id="text_23">
       <!-- 2K -->
       <g transform="translate(1000.73092 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-32"/>
@@ -1695,7 +1680,7 @@ z
        <use xlink:href="#md1c498e79a" x="1068.648308" y="457.291697" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
-     <g id="text_25">
+     <g id="text_24">
       <!-- 4K -->
       <g transform="translate(1062.188151 471.890135) scale(0.1 -0.1)">
        <use xlink:href="#DejaVuSans-34"/>
@@ -1703,7 +1688,7 @@ z
       </g>
      </g>
     </g>
-    <g id="text_26">
+    <g id="text_25">
      <!-- Sequence length (tokens / batch) -->
      <g transform="translate(761.979015 486.328104) scale(0.11 -0.11)">
       <use xlink:href="#DejaVuSans-53"/>
@@ -2079,7 +2064,7 @@ L 1117.19952 457.291697
 L 1117.19952 94.413896
 " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
-   <g id="text_27">
+   <g id="text_26">
     <!-- × -->
     <g style="fill: #d62728" transform="translate(1056.636803 450.025601) scale(0.14 -0.14)">
      <defs>
@@ -2102,7 +2087,7 @@ z
      <use xlink:href="#DejaVuSans-Bold-d7"/>
     </g>
    </g>
-   <g id="text_28">
+   <g id="text_27">
     <!-- GLM-4.5-Air-106B -->
     <g transform="translate(779.081202 88.413896) scale(0.15 -0.15)">
      <defs>
@@ -2255,7 +2240,7 @@ z
     </g>
    </g>
   </g>
-  <g id="text_29">
+  <g id="text_28">
    <!-- qj5090 · 8 × RTX 5090 · BF16 full fine-tuning · global batch 8 -->
    <g transform="translate(379.137885 16.318125) scale(0.12 -0.12)">
     <defs>
@@ -2524,7 +2509,7 @@ z
     <use xlink:href="#DejaVuSans-38" transform="translate(2987.476562 0)"/>
    </g>
   </g>
-  <g id="text_30">
+  <g id="text_29">
    <!-- Blank = not measured; × = observed OOM; ! = failed; · = blocked. No historical measurements. -->
    <g style="fill: #4a4a4a" transform="translate(345.315229 502.056) scale(0.09 -0.09)">
     <defs>
@@ -2798,7 +2783,7 @@ L 334.706791 46.030437
 z
 " style="fill: url(#h4fddaaa90f); stroke: #252b32; stroke-width: 0.65; stroke-linejoin: miter"/>
    </g>
-   <g id="text_31">
+   <g id="text_30">
     <!-- ZeRO-Offload -->
     <g transform="translate(362.706791 53.030437) scale(0.1 -0.1)">
      <defs>
@@ -2838,7 +2823,7 @@ L 450.973979 46.030437
 z
 " style="fill: url(#h75705f9c9d); stroke: #252b32; stroke-width: 0.65; stroke-linejoin: miter"/>
    </g>
-   <g id="text_32">
+   <g id="text_31">
     <!-- MegaTrain -->
     <g transform="translate(478.973979 53.030437) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-4d"/>
@@ -2860,7 +2845,7 @@ L 550.219291 46.030437
 z
 " style="fill: url(#h2598238d40); stroke: #252b32; stroke-width: 0.65; stroke-linejoin: miter"/>
    </g>
-   <g id="text_33">
+   <g id="text_32">
     <!-- PyTorch (FSDP2 + oneDNN) -->
     <g transform="translate(578.219291 53.030437) scale(0.1 -0.1)">
      <defs>
@@ -2971,7 +2956,7 @@ L 735.422416 46.030437
 z
 " style="fill: url(#h2d997c5d54); stroke: #252b32; stroke-width: 0.65; stroke-linejoin: miter"/>
    </g>
-   <g id="text_34">
+   <g id="text_33">
     <!-- KT-FT -->
     <g transform="translate(763.422416 53.030437) scale(0.1 -0.1)">
      <use xlink:href="#DejaVuSans-4b"/>

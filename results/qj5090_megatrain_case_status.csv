@@ -1,3 +1,2 @@
 model,backend,sequence_length,status,source,note
 GLM-4.5-Air-106B,megatrain,4096,OOM,qj5090:/mnt/hurry-bench/runs/glm45_air_megatrain_seq4096_8gpu_20261011_101800_4038584_benchmark/launcher.log,exit=247; torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.75 GiB. GPU 0 has a total capacity of 31.36 GiB of which 671.62 MiB is free. Including non-PyTor; min MemAvailable=667.5 GiB
-Qwen3.5-122B-A10B,megatrain,4096,BLOCKED,qj5090:/mnt/hurry-bench/runs/qwen35_122b_megatrain_seq4096_8gpu_20261011_141452_41259_benchmark/host_memory_guard.txt,exit=241; host_memory_guard: MemAvailable=16754036 KiB at 2026-10-11T14:22:05+00:00; reserve=20 GiB; runner=41259; torchrun=; min MemAvailable=25.1 GiB

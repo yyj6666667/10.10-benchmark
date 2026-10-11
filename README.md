@@ -197,6 +197,15 @@ ZeRO uses DeepSpeed 0.19.1 stage 3 with parameters and optimizer state
 offloaded to CPU, matching the paper's stated offload layout. BF16 master
 gradients and optimizer states remain enabled. The earlier optimizer-only
 preflight is retained as diagnostic evidence and excluded from throughput.
+The pending CPU-offload sweep uses eight data-parallel ranks, one sample per
+GPU, no gradient accumulation, and no tensor or pipeline parallelism. It
+prefetches up to 10 million parameter elements based on ZeRO-3's module
+execution trace. `overlap_comm=true` places parameter gathering on a
+separate CUDA stream so it can overlap subsequent GPU work. The previous
+configuration had prefetch enabled but `overlap_comm=false`, which placed
+gathering on the default stream; no throughput result was collected with that
+configuration. The fixed-batch loss check gates the new configuration before
+the sequence sweep.
 The exact retry config is `tools/zero3_cpu_offload.json`; qj5090's 32 GiB
 GPUs and 1.5 TiB host RAM may still limit feasible cases, so each sequence
 requires a fresh result or a recorded failure.

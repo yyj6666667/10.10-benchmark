@@ -34,7 +34,10 @@ def main() -> None:
     source = replace(
         source,
         "def _create_worker_gpu_context(rank, device_id, shared_state):\n",
-        '''def _alias_template_weights(template, flat):
+        '''ALIAS_LAYER_SLOTS = os.environ.get('MEGATRAIN_ALIAS_LAYER_SLOTS') == '1'
+
+
+def _alias_template_weights(template, flat):
     """Make a template's Parameter storages views of its slot's flat buffer."""
     offset = 0
     for parameter in template.parameters():
@@ -45,14 +48,6 @@ def main() -> None:
 
 def _create_worker_gpu_context(rank, device_id, shared_state):
 ''',
-    )
-    source = replace(
-        source,
-        "    ctx = _GPUContext(rank, device)\n\n"
-        "    logger.info(f\"Worker {rank}: creating GPU context on {device}...\")\n",
-        "    ctx = _GPUContext(rank, device)\n"
-        "    ctx.alias_layer_slots = os.environ.get('MEGATRAIN_ALIAS_LAYER_SLOTS') == '1'\n\n"
-        "    logger.info(f\"Worker {rank}: creating GPU context on {device}...\")\n",
     )
     source = replace(
         source,
@@ -162,16 +157,7 @@ def _create_worker_gpu_context(rank, device_id, shared_state):
         "        if ctx.alias_layer_slots:\n"
         "            ctx.buffer_free_events[buffer_idx].record(ctx.grad_stream)\n",
     )
-    source = replace(
-        source,
-        "    config = shared_state.config\n"
-        "    device = ctx.device\n\n"
-        "    # Rebuild flat buffers\n",
-        "    config = shared_state.config\n"
-        "    device = ctx.device\n"
-        "    ctx.alias_layer_slots = os.environ.get('MEGATRAIN_ALIAS_LAYER_SLOTS') == '1'\n\n"
-        "    # Rebuild flat buffers\n",
-    )
+    source = source.replace("ctx.alias_layer_slots", "ALIAS_LAYER_SLOTS")
     path.write_text(source)
     print(f"installed double-buffered aliased layer slots: {path}")
 

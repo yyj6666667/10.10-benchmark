@@ -326,10 +326,15 @@ def _wrap_deepspeed_step(trainer: Any, recorder: StepPhaseRecorder) -> None:
 
     @functools.wraps(original_step)
     def timed_step(*args: Any, **kwargs: Any) -> Any:
+        profiler = getattr(trainer, "_glm45_profiler_capture", None)
+        if profiler is not None:
+            profiler.begin_optimizer()
         started = time.perf_counter()
         try:
             return original_step(*args, **kwargs)
         finally:
+            if profiler is not None:
+                profiler.end_optimizer()
             recorder.add_phase("optimizer_sec", time.perf_counter() - started)
 
     engine.step = timed_step

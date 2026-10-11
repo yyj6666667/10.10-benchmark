@@ -94,6 +94,11 @@ nvidia-smi -L >> "$run_dir/versions.txt"
 cmd=("$torchrun" --standalone --nproc_per_node=8 -m kt_bench_entry "$run_dir/train_config.yaml")
 printf '%q ' "${cmd[@]}" > "$run_dir/command.txt"
 printf '\n' >> "$run_dir/command.txt"
+profile_dir=
+if [[ $mode == semantic && $model == glm ]]; then
+    profile_dir=$run_dir/profile
+    mkdir -p "$profile_dir"
+fi
 set +e
 bash "$root/tools/host_memory_guard.sh" "$$" "$run_dir" 20 \
     > "$run_dir/host_memory_guard.log" 2>&1 &
@@ -107,6 +112,7 @@ env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     FFT_STEP_TIMING_TOKENS_PER_STEP="$((8 * seq_len))" \
     FFT_TRAINING_BACKEND=deepspeed DISABLE_VERSION_CHECK=1 \
     FFT_EXPECTED_TRAINABLE_PARAMS="$expected_params" \
+    GLM45_PROFILE_DIR="$profile_dir" GLM45_PROFILE_STEP=3 GLM45_PROFILE_RANKS=0 \
     PYTORCH_ALLOC_CONF=expandable_segments:True \
     "$python" "$root/tools/kt_case_monitor.py" --output "$run_dir" \
     --gpu-ids 0,1,2,3,4,5,6,7 -- "${cmd[@]}" \

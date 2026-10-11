@@ -206,6 +206,11 @@ configuration had prefetch enabled but `overlap_comm=false`, which placed
 gathering on the default stream; no throughput result was collected with that
 configuration. The fixed-batch loss check gates the new configuration before
 the sequence sweep.
+The GLM seq32 fixed-batch check also records a CPU and CUDA PyTorch profiler
+trace for step 3 on rank 0. It marks forward, backward, and optimizer
+boundaries and captures the parameter fetch and GPU kernels in the same
+timeline. That check is not a throughput measurement; the subsequent clean
+seq32 run supplies the chart row.
 The exact retry config is `tools/zero3_cpu_offload.json`; qj5090's 32 GiB
 GPUs and 1.5 TiB host RAM may still limit feasible cases, so each sequence
 requires a fresh result or a recorded failure.

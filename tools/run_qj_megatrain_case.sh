@@ -21,6 +21,11 @@ profile_rank=${MEGATRAIN_PROFILE_RANK:-0}
 [[ $model_kind == glm45_air || $model_kind == qwen35_122b ]] || exit 2
 [[ $offload_emb_head == 0 || $offload_emb_head == 1 ]] || exit 2
 [[ $seq_len =~ ^[1-9][0-9]*$ && $steps =~ ^[1-9][0-9]*$ && $warmup =~ ^[0-9]+$ ]] || exit 2
+release_layer_slot=0
+[[ $model_kind == qwen35_122b ]] && release_layer_slot=1
+release_layer_slot=${MEGATRAIN_RELEASE_LAYER_SLOT_DURING_HEAD:-$release_layer_slot}
+[[ $release_layer_slot == 0 || $release_layer_slot == 1 ]] || exit 2
+[[ $release_layer_slot == 0 || $offload_emb_head == 1 ]] || exit 2
 checkpoint_interval=${MEGATRAIN_CHECKPOINT_INTERVAL:-$(( seq_len >= 4096 ? 2 : 1 ))}
 [[ $checkpoint_interval =~ ^[1-9][0-9]*$ ]] || exit 2
 num_grad_slabs=$((2 * checkpoint_interval))
@@ -74,16 +79,17 @@ if [[ -n $profile_dir && $mode != semantic ]]; then
 fi
 run_dir=$root/runs/${model_kind}_megatrain_seq${seq_len}_8gpu_${stamp}_$$_${mode}
 mkdir -p "$run_dir"
-"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" "$offload_emb_head" "$profile_dir" "$profile_step" "$profile_rank" "$checkpoint_interval" "$num_grad_slabs" <<'PY'
+"$python" - "$run_dir" "$model_kind" "$seq_len" "$steps" "$warmup" "$mode" "$offload_emb_head" "$release_layer_slot" "$profile_dir" "$profile_step" "$profile_rank" "$checkpoint_interval" "$num_grad_slabs" <<'PY'
 import json, sys
 from pathlib import Path
-run, model, seq, steps, warmup, mode, offload_emb_head, profile_dir, profile_step, profile_rank, checkpoint_interval, num_grad_slabs = sys.argv[1:]
+run, model, seq, steps, warmup, mode, offload_emb_head, release_layer_slot, profile_dir, profile_step, profile_rank, checkpoint_interval, num_grad_slabs = sys.argv[1:]
 Path(run, 'run_config.json').write_text(json.dumps({
     'host': 'qj5090', 'backend': 'megatrain', 'model_kind': model,
     'sequence_length': int(seq), 'global_batch': 8, 'precision': 'bf16',
     'steps': int(steps), 'warmup_steps': int(warmup),
     'mode': mode,
     'offload_embedding_head_gpu': offload_emb_head == '1',
+    'release_layer_slot_during_head': release_layer_slot == '1',
     'checkpoint_interval': int(checkpoint_interval),
     'num_grad_slabs': int(num_grad_slabs),
     'dataset': 'fft_real_100', 'gradient_clipping': 1.0,
@@ -126,6 +132,7 @@ guard_pid=$!
 env CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     OMP_NUM_THREADS=8 MKL_NUM_THREADS=8 OPENBLAS_NUM_THREADS=1 \
     MEGATRAIN_OFFLOAD_EMB_HEAD="$offload_emb_head" \
+    MEGATRAIN_RELEASE_LAYER_SLOT_DURING_HEAD="$release_layer_slot" \
     MEGATRAIN_PROFILE_DIR="$profile_dir" \
     MEGATRAIN_PROFILE_STEP="$profile_step" MEGATRAIN_PROFILE_RANK="$profile_rank" \
     TORCH_EXTENSIONS_DIR="$root/torch_extensions" \

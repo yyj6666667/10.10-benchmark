@@ -5,6 +5,9 @@ GLM diagnostic uses the actual ZeRO-3 CPU parameter and optimizer offload
 configuration, BF16 master weights/gradients and BF16 optimizer states. No
 checkpoint is saved. The pre-fix diagnostic was stopped deliberately after
 the memory cause was established, while 248.6 GiB remained available.
+The run used DeepSpeed 0.19.1, PyTorch 2.9.1+cu128, Transformers 5.6.0,
+and Accelerate 1.14.0; exact paths and hashes are in each run's `versions.txt`
+and `checksums.txt`.
 
 | Phase | Actual host memory | Increment | Allocation / copy | Evidence |
 |---|---:|---:|---|---|
@@ -15,6 +18,7 @@ the memory cause was established, while 248.6 GiB remained available.
 | Bounded shard loading, before optimizer | Peak task cgroup 247.9 GiB; rank PSS 245.9 GiB; checkpoint load and model finalize completed | At least 1177 GiB below the observed pre-fix cgroup peak | One complete GLM MoE layer is contained in each safetensors shard, so conversion and loading can release one shard before the next | [streaming phases](../runs/zero3-qj5090-20261011/diagnostic_streaming_load/launcher.log), [samples](../runs/zero3-qj5090-20261011/diagnostic_streaming_load/memory_diagnostic.jsonl) |
 | ZeRO optimizer initialization | Closest sample 2.9 s before completion: task cgroup 876.5 GiB; rank PSS 820.1 GiB | +~665 GiB from optimizer start | BF16 parameter partition and BF16 master partition have different storage pointers; gradients are allocated. Adam moments are lazy and were empty at this boundary | [first-step log](../runs/zero3-qj5090-20261011/diagnostic_first_step/launcher.log), [samples](../runs/zero3-qj5090-20261011/diagnostic_first_step/memory_diagnostic.jsonl) |
 | First forward/backward/step | Peak task cgroup 1269.7 GiB; rank PSS 1148.3 GiB; MemAvailable 441.5 GiB; GPU about 15.2 GiB/card | +~391 GiB from optimizer-initialized state | The first Adam step allocates moments lazily; `exp_avg` and `exp_avg_sq` are both separate CPU BF16 tensors | [first-step samples](../runs/zero3-qj5090-20261011/diagnostic_first_step/memory_diagnostic.jsonl), [four-step semantic log](../runs/zero3-qj5090-20261011/glm_semantic/launcher.log) |
+| Four-step steady training | Peak task cgroup 1301.3 GiB; rank PSS 1278.0 GiB; MemAvailable 180.2 GiB; GPU about 16.6 GiB/card | +31.6 GiB cgroup over one-step peak | Full four-step execution with two CPU BF16 Adam moments and no cgroup OOM event | [semantic samples](../runs/zero3-qj5090-20261011/glm_semantic/memory_diagnostic.jsonl) |
 
 The task cgroup had `memory.max=max` and `memory.events` showed no new OOM in
 the diagnostics. Rank PSS was collected from `/proc/<pid>/smaps_rollup`; summed

@@ -17,6 +17,8 @@ FILES = (
     "semantic_checks.csv",
 )
 DESTINATIONS = {
+    "glm_zero_offload_performance.csv": "qj5090_glm_zero_offload_performance.csv",
+    "qwen_zero_offload_performance.csv": "qj5090_qwen_zero_offload_performance.csv",
     "case_status.csv": "qj5090_zero_offload_case_status.csv",
     "semantic_checks.csv": "qj5090_zero_offload_semantic_checks.csv",
 }
@@ -51,7 +53,7 @@ def fetch_tables(clone: Path) -> list[Path]:
                     ("glm", "GLM-4.5-Air-106B"),
                     ("qwen", "Qwen3.5-122B-A10B"),
                 ):
-                    table = clone / "results" / f"{model}_zero_offload_performance.csv"
+                    table = clone / "results" / f"qj5090_{model}_zero_offload_performance.csv"
                     if table.exists():
                         with table.open(newline="") as stream:
                             successful.update((label, row["Seq"]) for row in csv.DictReader(stream))

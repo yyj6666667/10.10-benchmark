@@ -18,7 +18,7 @@ and `checksums.txt`.
 | Bounded shard loading, before optimizer | Peak task cgroup 247.9 GiB; rank PSS 245.9 GiB; checkpoint load and model finalize completed | At least 1177 GiB below the observed pre-fix cgroup peak | One complete GLM MoE layer is contained in each safetensors shard, so conversion and loading can release one shard before the next | [streaming phases](../runs/zero3-qj5090-20261011/diagnostic_streaming_load/launcher.log), [samples](../runs/zero3-qj5090-20261011/diagnostic_streaming_load/memory_diagnostic.jsonl) |
 | ZeRO optimizer initialization | Closest sample 2.9 s before completion: task cgroup 876.5 GiB; rank PSS 820.1 GiB | +~665 GiB from optimizer start | BF16 parameter partition and BF16 master partition have different storage pointers; gradients are allocated. Adam moments are lazy and were empty at this boundary | [first-step log](../runs/zero3-qj5090-20261011/diagnostic_first_step/launcher.log), [samples](../runs/zero3-qj5090-20261011/diagnostic_first_step/memory_diagnostic.jsonl) |
 | First forward/backward/step | Peak task cgroup 1269.7 GiB; rank PSS 1148.3 GiB; MemAvailable 441.5 GiB; GPU about 15.2 GiB/card | +~391 GiB from optimizer-initialized state | The first Adam step allocates moments lazily; `exp_avg` and `exp_avg_sq` are both separate CPU BF16 tensors | [first-step samples](../runs/zero3-qj5090-20261011/diagnostic_first_step/memory_diagnostic.jsonl), [four-step semantic log](../runs/zero3-qj5090-20261011/glm_semantic/launcher.log) |
-| Four-step steady training | Peak task cgroup 1301.3 GiB; rank PSS 1278.0 GiB; MemAvailable 180.2 GiB; GPU about 16.6 GiB/card | +31.6 GiB cgroup over one-step peak | Full four-step execution with two CPU BF16 Adam moments and no cgroup OOM event | [semantic samples](../runs/zero3-qj5090-20261011/glm_semantic/memory_diagnostic.jsonl) |
+| Four-step steady training | Peak task cgroup 1301.3 GiB; rank PSS 1278.0 GiB (1020.5 GiB anonymous + 256.2 GiB `Pss_Shmem`); MemAvailable 180.2 GiB; GPU about 16.6 GiB/card | +31.6 GiB cgroup over one-step peak | Full four-step execution with two CPU BF16 Adam moments and no cgroup OOM event | [semantic samples](../runs/zero3-qj5090-20261011/glm_semantic/memory_diagnostic.jsonl) |
 
 The task cgroup had `memory.max=max` and `memory.events` showed no new OOM in
 the diagnostics. Rank PSS was collected from `/proc/<pid>/smaps_rollup`; summed
@@ -57,7 +57,7 @@ passed with loss 4.005 → 2.158 → 1.289 → 1.082.
 |---|---:|---:|---|---|
 | Model loaded | Cgroup 239.4 GiB; rank PSS 239.4 GiB | — | CPU parameter partitions | [phase log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
 | Optimizer initialized | Cgroup 960.9 GiB; rank PSS 959.1 GiB, including 256.2 GiB shared-memory PSS | +721.5 GiB | Separate BF16 master and gradient buffers; eight private 32 GiB `/dev/zero` mappings appeared during this phase | [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
-| Four-step training | Peak cgroup 1418.5 GiB; rank PSS 1415.7 GiB (1158.5 GiB anonymous + 256.2 GiB shared mapping); MemAvailable 42.7 GiB | +457.6 GiB | Two distinct CPU BF16 Adam moments were allocated on the first step | [state dtype and loss log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
+| Four-step training | Peak cgroup 1418.5 GiB; rank PSS 1415.7 GiB (1158.5 GiB anonymous + 256.2 GiB `Pss_Shmem`); MemAvailable 42.7 GiB | +457.6 GiB | Two distinct CPU BF16 Adam moments were allocated on the first step | [state dtype and loss log](../runs/zero3-qj5090-20261011/qwen_semantic/launcher.log), [samples](../runs/zero3-qj5090-20261011/qwen_semantic/memory_diagnostic.jsonl) |
 
 Each `/dev/zero` mapping is 32 GiB of private dirty memory in one rank's
 `smaps`, even though `offload_param.pin_memory=false` and `Locked=0`.
@@ -70,6 +70,9 @@ that mapping; after Adam's first step, anonymous PSS grew to 1158.5 GiB while
 the mapping stayed at 256.2 GiB. This is consistent with five BF16 model-sized
 arrays in anonymous memory and a separate pinned flat parameter buffer, but
 only a live tensor-pointer-to-VMA check could prove the exact mapping identity.
+GLM independently ended with 1020.5 GiB anonymous PSS plus the same 256.2 GiB
+mapping, reinforcing that the mapping is an additional fixed-size allocation
+across these two model runs.
 
 For scale, five BF16 arrays (parameter, master, gradient, and two Adam moments)
 would occupy 995.1 GiB for 106.85B GLM parameters and 1137.3 GiB for 122.11B

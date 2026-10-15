@@ -1,0 +1,69 @@
+[startup] {"stage": "begin", "elapsed_sec": 0.002, "torch_threads": 64}
+[load] shard 1/46
+[load] shard 2/46
+[load] shard 3/46
+[load] shard 4/46
+[load] shard 5/46
+[load] shard 6/46
+[load] shard 7/46
+[load] shard 8/46
+[load] shard 9/46
+[load] shard 10/46
+[load] shard 11/46
+[load] shard 12/46
+[load] shard 13/46
+[load] shard 14/46
+[load] shard 15/46
+[load] shard 16/46
+[load] shard 17/46
+[load] shard 18/46
+[load] shard 19/46
+[load] shard 20/46
+[load] shard 21/46
+[load] shard 22/46
+[load] shard 23/46
+[load] shard 24/46
+[load] shard 25/46
+[load] shard 26/46
+[load] shard 27/46
+[load] shard 28/46
+[load] shard 29/46
+[load] shard 30/46
+[load] shard 31/46
+[load] shard 32/46
+[load] shard 33/46
+[load] shard 34/46
+[load] shard 35/46
+[load] shard 36/46
+[load] shard 37/46
+[load] shard 38/46
+[load] shard 39/46
+[load] shard 40/46
+[load] shard 41/46
+[load] shard 42/46
+[load] shard 43/46
+[load] shard 44/46
+[load] shard 45/46
+[load] shard 46/46
+[startup] {"stage": "checkpoint_loaded", "elapsed_sec": 80.474, "torch_threads": 64}
+[contract] {"parameters": 106852245504, "checkpoint_tensors": 17925}
+[WARNING|2026-10-15 15:01:41] llamafactory.data.template:149 >> You are using reasoning template, please add `_nothink` suffix if the model is not a reasoning model. e.g., qwen3_vl_nothink
+[INFO|2026-10-15 15:01:41] llamafactory.data.template:144 >> Add <|user|>,<|observation|> to stop words.
+[startup] {"stage": "examples_encoded", "elapsed_sec": 84.203, "torch_threads": 64}
+[shared_init] {"stage": "parameters_shared", "elapsed_sec": 76.564, "direct_shared_init": false}
+[shared_init] {"stage": "flats_shared", "elapsed_sec": 152.251, "direct_shared_init": false}
+[shared_init] {"stage": "gradients_shared", "elapsed_sec": 234.558, "direct_shared_init": false}
+[shared_init] {"stage": "state_ready", "elapsed_sec": 234.56, "direct_shared_init": false}
+[startup] {"stage": "engine_ready", "elapsed_sec": 336.345, "torch_threads": 64}
+[startup] {"stage": "optimizer_ready", "elapsed_sec": 339.354, "torch_threads": 64}
+[step] {"step": 1, "loss": 4.187525039403175, "grad_norm": 138.0, "tokens": 32768, "step_sec": 106.21909045055509, "forward_sec": 5.5315007324218755, "backward_sec": 28.47337890625, "optimizer_sec": 39.42815548554063}
+[step] {"step": 2, "loss": 0.6326160995667565, "grad_norm": 2.90625, "tokens": 32768, "step_sec": 58.9063123203814, "forward_sec": 5.166759765625001, "backward_sec": 27.60219702148437, "optimizer_sec": 23.010718394070864}
+[megatrain_profiler] GPU worker starts step 3
+[megatrain_profiler] saved /mnt/hurry-bench/runs/megatrain-glm4096-profile-20261015/rank0_step3.trace.json
+[step] {"step": 3, "loss": 0.4349699407083157, "grad_norm": 2.71875, "tokens": 32768, "step_sec": 129.37622533738613, "forward_sec": 5.086618774414063, "backward_sec": 28.000426025390627, "optimizer_sec": 17.95435642451048}
+[step] {"step": 4, "loss": 0.22530275007703743, "grad_norm": 2.015625, "tokens": 32768, "step_sec": 60.02377198636532, "forward_sec": 5.065394409179687, "backward_sec": 31.141443847656248, "optimizer_sec": 20.234569132328033}
+Worker 1132436 did not exit, terminating
+Worker 1132441 did not exit, terminating
+Worker 1132470 did not exit, terminating
+Worker 1132480 did not exit, terminating
+Worker 1132491 did not exit, terminating

@@ -1,0 +1,42 @@
+--- /tmp/megatrain-mp-worker-before-profile.ZtBjx6bp.py	2026-10-11 12:19:51.864655885 +0000
++++ /mnt/hurry-bench/src/megatrain/infinity/model/mp_worker.py	2026-10-15 15:00:04.778125202 +0000
+@@ -8,6 +8,7 @@
+ import logging
+ import os
+ import copy
++from contextlib import nullcontext
+ import threading
+ import queue
+ import torch
+@@ -274,6 +275,12 @@
+ 
+     cmd_q = shared_state.cmd_queues[rank]
+     result_q = shared_state.result_queues[rank]
++    profile_capture = None
++    if (os.environ.get('MEGATRAIN_PROFILE_DIR') and
++            rank == int(os.environ.get('MEGATRAIN_PROFILE_RANK', '0'))):
++        from megatrain_profile_hooks import MegaTrainWorkerProfiler
++        profile_capture = MegaTrainWorkerProfiler(ctx, globals())
++    train_step = 0
+ 
+     while True:
+         cmd = cmd_q.get()
+@@ -287,10 +294,14 @@
+             result_q.put(WorkerResult())
+ 
+         elif cmd.type == WorkerCommandType.FORWARD_BACKWARD:
+-            result = _run_forward_backward(
+-                rank, ctx, shared_state, grad_queue, cmd)
+-            # Wait for all grad tasks to complete before signaling main
+-            grad_queue.join()
++            train_step += 1
++            capture = (profile_capture.capture_step(train_step, tuple(cmd.input_ids.shape))
++                       if profile_capture is not None else nullcontext())
++            with capture:
++                result = _run_forward_backward(
++                    rank, ctx, shared_state, grad_queue, cmd)
++                # Include gradient D2H and CPU accumulation in the trace.
++                grad_queue.join()
+             result_q.put(result)
+ 
+         elif cmd.type == WorkerCommandType.FORWARD_LOGITS:

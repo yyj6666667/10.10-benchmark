@@ -40,10 +40,19 @@ No model or optimizer checkpoint was saved.
 
 ## Open locally
 
-From this directory:
+On this workstation, open [Perfetto](https://ui.perfetto.dev), choose
+**Open trace file**, and select `rank0_step3.trace.json` from this directory.
+This does not require a local server. If using a fresh clone, first expand
+the compressed copy:
 
 ~~~bash
 zstd -d -k rank0_step3.trace.json.zst -o rank0_step3.trace.json
+~~~
+
+The JSON is 327 MB. If browser-side loading runs out of memory or stalls,
+start the native Trace Processor instead:
+
+~~~bash
 curl -fLsS https://commondatastorage.googleapis.com/perfetto-luci-artifacts/v58.3/linux-amd64/trace_processor_shell \
   -o /tmp/trace_processor_v58_3
 chmod u+x /tmp/trace_processor_v58_3

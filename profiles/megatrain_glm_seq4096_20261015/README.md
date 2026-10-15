@@ -50,7 +50,10 @@ python3 /tmp/trace_processor server http --port 9013 --ip-address 127.0.0.1 \
 ~~~
 
 In the Perfetto UI, enable the **Relax CSP** flag once, then open
-[the native viewer](https://ui.perfetto.dev/#!/?rpc_port=9013).
+[the version-matched native viewer](https://ui.perfetto.dev/v58.2-add693d8b/#!/?rpc_port=9013).
+The downloaded Trace Processor is v58.2-add693d8b; the rolling UI may be
+newer and show a version mismatch. Its **Open .../v58.2-add693d8b/** button
+switches to the matching UI build.
 Port 9001 was occupied by an unrelated existing trace server during this run.
 The raw trace remains on this workstation for immediate viewing; the
 compressed file in the private repository is the durable copy.

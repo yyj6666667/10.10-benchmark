@@ -44,16 +44,20 @@ From this directory:
 
 ~~~bash
 zstd -d -k rank0_step3.trace.json.zst -o rank0_step3.trace.json
-curl -fsSL https://get.perfetto.dev/trace_processor -o /tmp/trace_processor
-python3 /tmp/trace_processor server http --port 9013 --ip-address 127.0.0.1 \
+curl -fLsS https://commondatastorage.googleapis.com/perfetto-luci-artifacts/v58.3/linux-amd64/trace_processor_shell \
+  -o /tmp/trace_processor_v58_3
+chmod u+x /tmp/trace_processor_v58_3
+/tmp/trace_processor_v58_3 server http --port 9013 --ip-address 127.0.0.1 \
   rank0_step3.trace.json
 ~~~
 
 In the Perfetto UI, enable the **Relax CSP** flag once, then open
-[the version-matched native viewer](https://ui.perfetto.dev/v58.2-add693d8b/#!/?rpc_port=9013).
-The downloaded Trace Processor is v58.2-add693d8b; the rolling UI may be
-newer and show a version mismatch. Its **Open .../v58.2-add693d8b/** button
-switches to the matching UI build.
+[the native viewer](https://ui.perfetto.dev/#!/?rpc_port=9013).
+The binary above is Perfetto v58.3-11fbaed83 (SHA-256
+`f13baf75f5655109a637b041e7f9c78ebe76d7c0f030cd6d611d5679cfcb4fb9`),
+matching the UI version used on 2026-10-15. The generic
+`get.perfetto.dev/trace_processor` wrapper downloaded v58.2 and triggered a
+version-mismatch dialog.
 Port 9001 was occupied by an unrelated existing trace server during this run.
 The raw trace remains on this workstation for immediate viewing; the
 compressed file in the private repository is the durable copy.
